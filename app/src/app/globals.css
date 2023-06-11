@@ -117,6 +117,76 @@ body {
   position: fixed !important;
   z-index: 99999 !important;
 }
+
+.timeline-line {
+  border-left: 2px solid #ccc;
+  height: 100%;
+  position: absolute;
+  left: 10px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 30px;
+}
+
+.timeline-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #ccc;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline {
+  position: relative;
+  width: 2px;
+  background-color: #ccc;
+  margin: 0 auto;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-icon {
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translate(-50%, -50%);
+  background-color: #ccc;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-content {
+  margin-left: 30px;
+}
+
+.timeline-content h4 {
+  margin-top: 0;
+}
+
+.timeline-content p {
+  margin-bottom: 0;
+}
+
+
 /*
 .carousel-control-prev{
   height: 5vh !important;
