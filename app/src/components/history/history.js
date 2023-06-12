@@ -6,14 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDispatch, useSelector } from "react-redux"
 import { Card } from "react-bootstrap"
 import { useRouter } from "next/navigation"
-import AssignTable from "./assignedTable"
 import Loading from "../loader/loading"
-// import {  setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice"
-// import Loading from "../loader/loading"
-// import { usePathname, useSearchParams } from 'next/navigation'
+import { MDBContainer } from "mdbreact";
+import { Container, Row, Col } from 'react-bootstrap';
+import { BsClock, BsCalendar, BsCheck } from 'react-icons/bs';
 
 
-export default function Asigned_enquiry() {
+export default function Staff_History() {
     
     const router = useRouter();
     // const dispatch = useDispatch()
@@ -61,9 +60,80 @@ export default function Asigned_enquiry() {
                                 Assigned Enquiries
                             </Card.Title>
                             <Card.Body>
-                                <div className="table-responsive">
-                                    <AssignTable/>
-                                </div>
+                              <div className="row overglow-scroll w-[full] ">
+                                <div className="col-4 !overflow-y-scroll">
+                              <Card>
+                                <Card.Title></Card.Title>
+                                <Card.Body>
+                                <div className="timeline">
+      <div className="timeline-item">
+        <div className="timeline-icon">
+          <BsClock />
+        </div>
+        <div className="timeline-content">
+          <h4>Event 1</h4>
+          <p>Some description of Event 1</p>
+        </div>
+      </div>
+      <div className="timeline-item">
+        <div className="timeline-icon">
+          <BsCalendar />
+        </div>
+        <div className="timeline-content">
+          <h4>Event 2</h4>
+          <p>Some description of Event 2</p>
+        </div>
+      </div>
+      <div className="timeline-item">
+        <div className="timeline-icon">
+          <BsCheck />
+        </div>
+        <div className="timeline-content">
+          <h4>Event 3</h4>
+          <p>Some description of Event 3</p>
+        </div>
+      </div>
+    </div>
+                                </Card.Body>
+                              </Card>
+                              </div>
+                              <div className=" col-4 !overflow-y-scroll">
+                              <Card>
+                                <Card.Title></Card.Title>
+                                <Card.Body>
+                                <div className="timeline">
+      <div className="timeline-item">
+        <div className="timeline-icon">
+          <BsClock />
+        </div>
+        <div className="timeline-content">
+          <h4>Event 1</h4>
+          <p>Some description of Event 1</p>
+        </div>
+      </div>
+      <div className="timeline-item">
+        <div className="timeline-icon">
+          <BsCalendar />
+        </div>
+        <div className="timeline-content">
+          <h4>Event 2</h4>
+          <p>Some description of Event 2</p>
+        </div>
+      </div>
+      <div className="timeline-item">
+        <div className="timeline-icon">
+          <BsCheck />
+        </div>
+        <div className="timeline-content">
+          <h4>Event 3</h4>
+          <p>Some description of Event 3</p>
+        </div>
+      </div>
+    </div>
+                                </Card.Body>
+                              </Card>
+                              </div>
+                              </div>
                             </Card.Body>
                         </Card>
                     </div>
