@@ -14,15 +14,20 @@ import axios from "axios";
 import { useDispatch,useSelector } from "react-redux";
 import { setUserInfo } from "@/store/slice/userInfoSlice";
 import { setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice";
+import { usePathname } from "next/navigation";
 import Loading from "../loader/loading";
+import DayOfWeekDropdown from "./myClientsDropDown";
 export default function TopNavbar(){
   const router = useRouter()
+  const pathname = usePathname()
+  console.log(pathname)
   const dispatch = useDispatch()
     const [isExpanded, setIsExpanded] = useState(false);
   const [isLeftBarExpanded, setIsLeftBarExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("Profile");
   const [toggleBottomNavbar, setToggleBottomNavbar] = useState("Dashboard")
   const sidebarRef = useRef(null);
+  const [activePage,setActivePage] = useState("dashboard")
   const leftSideBarRef = useRef(null)
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -32,12 +37,37 @@ export default function TopNavbar(){
 
   const userData = useSelector((state) => state?.userInfoReducer)
       // logout functionality
-      function handleSignOut(){
-        sessionStorage.removeItem("tmToken");
-        router.push("/login")
+      const  handleSignOut =  async()=>{
+        try{
+          const token = sessionStorage.getItem("tmToken")
+          const response = await axios.post("https://admin.tradingmaterials.com/api/staff/auth/logout",{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          console.log(response)
+          if(response?.status){
+            sessionStorage.removeItem("tmToken");
+            
+            router.push("/login")
+          }
+        }catch(err){
+          console.log("log out failed", err)
+        }
+
       }
   useEffect(() => {
     dispatch(setLoaderTrue())
+    if(pathname.includes("staff")){
+      setActivePage("staff")
+    }else if (pathname.includes("enquiry")){
+      setActivePage("enquiry")
+    }
+    else if(pathname.includes("staff")){
+      setActivePage("staff")
+    }else{
+      setActivePage("dashboard")
+    }
     const handleOutsideClick = (event) => {
       if ((sidebarRef.current && !sidebarRef.current.contains(event.target)) || (leftSideBarRef.current && !leftSideBarRef.current.contains(event.target))) {
         setIsExpanded(false);
@@ -82,13 +112,15 @@ export default function TopNavbar(){
             <nav className="navbar top-navbar col-lg-12 col-12 p-0 bg-[#25378b] h-[auto] ">
               <div className="container">
                 <div className="text-start navbar-brand-wrapper d-flex align-items-center content-start !col-lg-6">
-                  <a className="navbar-brand brand-logo" href="/"><img src="/images/logo.png" alt="logo" /></a>
-                  <a className="navbar-brand navbar-brand-logo brand-logo-mini" href="/"><img src="/images/logo.png" alt="brand logo" /></a>
+                  <a className="navbar-brand brand-logo" href="/"><img src="/images/brandWhite.png" alt="logo" /></a>
+                  <a className="navbar-brand navbar-brand-logo brand-logo-mini" href="/"><img src="/images/brandWhite.png" alt="brand logo" /></a>
+                  <DayOfWeekDropdown/>
                 </div>
                 <div className="navbar-menu-wrapper d-flex align-items-center justify-end !grow-0	">
                   <AiOutlineBell className="text-white text-xl mr-2	" />
                   <p className="align-center text-white  m-0">Praveen</p>
                   <Image src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
+                  
                   <div className=" flex ">
                     <div className="hidden lg:flex md:flex">
                       <div className="relative ml-2">
@@ -112,9 +144,9 @@ export default function TopNavbar(){
               <div className="container">
                 <ul className="nav page-navigation !justify-start	">
                   <li className="nav-item">
-                    <a className="nav-link nav_active" href="/dashboard" >
-                      <i className="mdi mdi-shield-check menu-icon nav_active"></i>
-                      <span className="menu-title nav_active">Dashboard</span>
+                    <a className={`nav-link ${activePage == "dashboard" ? "nav_active":""}`} href="/dashboard" >
+                      <i className={`mdi mdi-shield-check menu-icon ${activePage == "dashboard" ? "nav_active":""}`}></i>
+                      <span className={`"menu-title ${activePage == "dashboard" ? "nav_active":""}"`}>Dashboard</span>
                     </a>
                   </li>
                   <li className="lg:hidden md:hidden" >
@@ -122,7 +154,7 @@ export default function TopNavbar(){
                       <Accordion className="bg-white border-0">
                         <Accordion.Item className="border-0" eventKey="0">
                           <Accordion.Header className="menu-title !text-xs/[1rem] pl-[5px]	"><i className="mdi mdi-view-headline menu-icon"></i>
-                            <span className="menu-title !pl-[5px]"  >Enquiry</span> </Accordion.Header>
+                            <span className={`menu-title !pl-[5px] ${activePage == "enquiry" ? "nav_active":""} `}  >Enquiry</span> </Accordion.Header>
                           <Accordion.Body>
                             <ul className="submenu-item">
                               <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/fetch")}>Fetch</li>
@@ -141,31 +173,63 @@ export default function TopNavbar(){
                   <li className="!hidden lg:!block md:!block nav-item mega-menu" >
 
                     <a href="#" className="nav-link " >
-                      <i className="mdi mdi-view-headline menu-icon"></i>
-                      <span className="menu-title" >Enquiry</span>
-                      <i className="menu-arrow"></i>
+                      <i className={`mdi mdi-view-headline menu-icon ${activePage == "enquiry" ? "nav_active":""}`}></i>
+                      <span className={`menu-title ${activePage == "enquiry" ? "nav_active":""}`} >Enquiry</span>
+                      <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-1" id="count">{userData?.value?.data?.enq_counts?.ringing+userData?.value?.data?.new_enqs?.length+userData?.value?.data?.enq_counts?.postponed}</span>
+                      <i className={`menu-arrow `}></i>
                     </a>
 
                     <div className={`submenu `} >
                       <ul className="submenu-item">
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/fetch">Fetch </a></li>
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/assigned-enquiry">Assigned 		 
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10" id="count">{userData?.value?.data?.new_enqs?.length} </span> 
+                        <li className={`nav-item ${activePage == "fetch" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/fetch">Fetch </a></li>
+                        <li className={`nav-item ${activePage == "assigned-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/assigned-enquiry">Assigned 		 
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.new_enqs?.length} </span> 
 </a></li>
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/ringing-enquiry">Ringing
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10" id="count">{userData?.value?.data?.enq_counts?.ringing}</span></a></li>
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/postponed-enquiry">Postponed
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10" id="count">{userData?.value?.data?.enq_counts?.postponed}</span></a></li>
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/not-intersted-enquiry">Not Intrested
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10" id="count">{userData?.value?.data?.enq_counts?.notin}</span></a></li>
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/not-todays-postponed-enquiry">Todays postponed
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10" id="count">{userData?.value?.data?.enq_counts?.t_post}</span></a></li>
-                        <li className="nav-item"><a className="nav-link" href="/enquiry/not-todays-ringing-enquiry">Todays ringing
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10" id="count">{userData?.value?.data?.enq_counts?.t_ring}</span></a></li>
+                        <li className={`nav-item ${activePage == "ringing-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/ringing-enquiry">Ringing
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.ringing}</span></a></li>
+                        <li className={`nav-item ${activePage == "postponedenquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/postponed-enquiry">Postponed
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.postponed}</span></a></li>
+                        <li className={`nav-item ${activePage == "not-intrested-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/not-intersted-enquiry">Not Intrested
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.notin}</span></a></li>
+                        <li className={`nav-item ${activePage == "not-todays-postponed-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/not-todays-postponed-enquiry">Todays postponed
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.t_post}</span></a></li>
+                        <li className={`nav-item ${activePage == "not-todays-ringing-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/not-todays-ringing-enquiry">Todays ringing
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.t_ring}</span></a></li>
                       </ul>
                     </div>
 
                   </li>
+                  <li className="lg:hidden md:hidden" >
+                    <div className="">
+                      <Accordion className="bg-white border-0">
+                        <Accordion.Item className="border-0" eventKey="0">
+                          <Accordion.Header className={`menu-title !text-xs/[1rem] pl-[5px] ${activePage == "staff" ? "nav_active":""}	`}><i className={`mdi mdi-view-headline menu-icon ${activePage == "staff" ? "nav_active":""}`}></i>
+                            <span className={`menu-title !pl-[5px] ${activePage == "staff" ? "nav_active":""}`}  >Staff</span> </Accordion.Header>
+                          <Accordion.Body>
+                            <ul className="submenu-item">
+                              <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "history" ? "nav_active":""}`} onClick={()=>router.push("/staff/history")}>History</li>
+                              <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "attendance" ? "nav_active":""}`} onClick={()=>router.push("/staff/attendance")}>Attendance</li>
+                            </ul>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </div>
+                  </li>
+                  <li className="!hidden lg:!block md:!block nav-item mega-menu" >
+
+                    <a href="#" className="nav-link " >
+                      <i className={`mdi mdi-view-headline menu-icon ${activePage == "staff" ? "nav_active":""}`}></i>
+                      <span className={`menu-title ${activePage == "staff" ? "nav_active":""}`} >Staff</span>
+                      <i className="menu-arrow"></i>
+                    </a>
+
+                    <div className={`submenu  !left-[160px]`} >
+                      <ul className="submenu-item">
+                        <li className="nav-item"><a className="nav-link" href="/staff/history">History </a></li>
+                        <li className="nav-item"><a className="nav-link" href="/staff/attendance">Attendance 		  </a></li>
+                      </ul>
+                    </div>
+                    </li>
                 </ul>
               </div>
             </nav>

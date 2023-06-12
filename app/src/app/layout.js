@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
       <link rel="icon" href="/fav-icon.png" sizes="any" />
+      
       </head>
       <body className={inter.className}>
        <Suspense fallback={ <Loader/>}>
