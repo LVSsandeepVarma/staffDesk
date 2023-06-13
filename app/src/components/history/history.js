@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import TopNavbar from "../navbar/topNavbar"
 import NavbarMarquee from "../navbar/marquee"
 import { faLock } from "@fortawesome/free-solid-svg-icons"
@@ -11,6 +11,7 @@ import { MDBContainer } from "mdbreact";
 import { Container, Row, Col } from 'react-bootstrap';
 import { BsClock, BsCalendar, BsCheck } from 'react-icons/bs';
 import {TbCircleDot} from "react-icons/tb"
+import axios from "axios"
 
 
 export default function Staff_History() {
@@ -19,7 +20,29 @@ export default function Staff_History() {
     // const dispatch = useDispatch()
     const userData = useSelector((state) => state?.userInfoReducer)
     const loader = useSelector((state) => state?.loaderReducer)
-    console.log(userData, "data")
+    const [activityData, setActivityData] = useState([])
+    const [enquiryData, setEnquiryData] = useState([])
+    const [attendenceData, setAttendanceData] = useState([])
+    // console.log(userData, "data")
+    useEffect(()=>{
+      const fetchActivyData = async()=>{
+        try{
+          const token  =sessionStorage.getItem("tmToken");
+        const response =await axios.get(" https://admin.tradingmaterials.com/api/staff/activity", {
+          headers :{
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(response?.data?.data?.staff_logs)
+        setActivityData(response?.data?.data?.staff_logs?.activity);
+        setEnquiryData(response?.data?.data?.staff_logs?.enquiry);
+        setAttendanceData(response?.data?.data?.staff_logs?.attendance)
+        }catch(err){
+          console.log("err", err)
+        }
+      }
+      fetchActivyData()
+    },[])
 
     return (
         <>
@@ -62,69 +85,36 @@ export default function Staff_History() {
                             </Card.Title>
                             <Card.Body>
                               <div className=" row  overglow-scroll w-[full] ">
-                                <div className="col-12 col-md-4 overflow-x-hidden max-h-[55vh]  !overflow-y-visible	">
+                                <div className="col-12 col-md-4 overflow-x-hidden min-h-[55vh] max-h-[55vh] mb-5  !overflow-y-visible	">
                               <Card className="mt-[15px]">
                                 <Card.Title className="p-[1rem] pb-0">Enquiry</Card.Title>
                                 <Card.Body>
                                 <div className="timeline">
-      <div className="timeline-item w-[16rem] sm: w-[16rem] w-[16rem] sm: w-[16rem]">
-        <div className="timeline-icon">
-          <TbCircleDot />
-        </div>
-        <div className="timeline-content">
-          <div className="">
-            <div className="">
-              <h4>Event 1</h4>
-              <p>Some description of Event 1</p>
-            </div>
-              <div className="flex ">
-                <BsClock className="clock-icon" />
-                <p className="time">11/02/1123</p>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="timeline-item w-[16rem] sm: w-[16rem]">
-        <div className="timeline-icon">
-          <TbCircleDot />
-        </div>
-        <div className="timeline-content">
-          <div className="">
-            <div className="">
-              <h4>Event 1</h4>
-              <p>Some description of Event 1</p>
-            </div>
-              <div className="flex ">
-                <BsClock className="clock-icon" />
-                <p className="time">11/02/1123</p>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="timeline-item w-[16rem] sm: w-[16rem]">
-        <div className="timeline-icon">
-          <TbCircleDot />
-        </div>
-        <div className="timeline-content">
-          <div className="">
-            <div className="">
-              <h4>Event 1</h4>
-              <p>Some description of Event 1</p>
-            </div>
-              <div className="flex ">
-                <BsClock className="clock-icon" />
-                <p className="time">11/02/1123</p>
-            </div>
-          </div>
-        </div>
-      </div>
+                                {enquiryData.length>0 && enquiryData.map((enq,ind)=>(
+                                  <div className="timeline-item w-[16rem] sm: w-[16rem] w-[16rem] sm: w-[16rem]">
+                                  <div className="timeline-icon">
+                                    <TbCircleDot />
+                                  </div>
+                                  <div className="timeline-content">
+                                    <div className="">
+                                      <div >
+                                        <h4>{enq.action}</h4>
+                                        <p className="pt-3 pb-3">{enq.result}</p>
+                                      </div>
+                                        <div className="flex ">
+                                          <BsClock className="clock-icon" />
+                                          <p className="time">11/02/1123</p>
+                          
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+          ))}
     </div>
                                 </Card.Body>
                               </Card>
                               </div>
-                              <div className="col-12 col-md-4 overflow-x-hidden max-h-[55vh]  !overflow-y-visible	">
+                              <div className="col-12 col-md-4 overflow-x-hidden min-h-[55vh] max-h-[55vh]  !overflow-y-visible	">
                               <Card className="mt-[15px]">
                                 <Card.Title className="p-[1rem] pb-0">Enquiry Transfer Log</Card.Title>
                                 <Card.Body>
@@ -184,67 +174,86 @@ export default function Staff_History() {
                                 </Card.Body>
                               </Card>
                               </div>
-                              <div className="col-12 col-md-4 overflow-x-hidden max-h-[55vh]  !overflow-y-visible	">
+                              <div className="col-12 col-md-4 overflow-x-hidden min-h-[55vh] max-h-[55vh]  !overflow-y-visible	">
                               <Card className="mt-[15px]">
                                 <Card.Title className="p-[1rem] pb-0">Attendance</Card.Title>
                                 <Card.Body>
                                 <div className="timeline">
-      <div className="timeline-item w-[16rem] sm: w-[16rem]">
-        <div className="timeline-icon">
-          <TbCircleDot />
-        </div>
-        <div className="timeline-content">
-          <div className="">
-            <div className="">
-              <h4>Event 1</h4>
-              <p>Some description of Event 1</p>
-            </div>
-              <div className="flex ">
-                <BsClock className="clock-icon" />
-                <p className="time">11/02/1123</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="timeline-item w-[16rem] sm: w-[16rem]">
-        <div className="timeline-icon">
-          <TbCircleDot />
-        </div>
-        <div className="timeline-content">
-          <div className="">
-            <div className="">
-              <h4>Event 1</h4>
-              <p>Some description of Event 1</p>
-            </div>
-              <div className="flex ">
-                <BsClock className="clock-icon" />
-                <p className="time">11/02/1123</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="timeline-item w-[16rem] sm: w-[16rem]">
-        <div className="timeline-icon">
-          <TbCircleDot />
-        </div>
-        <div className="timeline-content">
-          <div className="">
-            <div className="">
-              <h4>Event 1</h4>
-              <p>Some description of Event 1</p>
-            </div>
-              <div className="flex ">
-                <BsClock className="clock-icon" />
-                <p className="time">11/02/1123</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                                  {attendenceData?.length>0 && attendenceData.map((logs,ind)=>(
+                                    <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div className="timeline-icon">
+                                      <TbCircleDot />
+                                    </div>
+                                    <div className="timeline-content">
+                                      <div className="">
+                                        <div className="">
+                                        <p>Login time : {logs?.login}</p>
+                                          <p>logout time: {logs?.logout}</p>
+                                        </div>
+                                          {/* <div className="flex ">
+                                            <BsClock className="clock-icon" />
+                                            <p className="time">11/02/1123</p>
+                                        </div> */}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  ))}
+                                  {/* <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div className="timeline-icon">
+                                      <TbCircleDot />
+                                    </div>
+                                    <div className="timeline-content">
+                                      <div className="">
+                                        <div className="">
+                                          <h4>Event 1</h4>
+                                          <p>Some description of Event 1</p>
+                                        </div>
+                                          <div className="flex ">
+                                            <BsClock className="clock-icon" />
+                                            <p className="time">11/02/1123</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div className="timeline-icon">
+                                      <TbCircleDot />
+                                    </div>
+                                    <div className="timeline-content">
+                                      <div className="">
+                                        <div className="">
+                                          <h4>Event 1</h4>
+                                          <p>Some description of Event 1</p>
+                                        </div>
+                                          <div className="flex ">
+                                            <BsClock className="clock-icon" />
+                                            <p className="time">11/02/1123</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div className="timeline-icon">
+                                      <TbCircleDot />
+                                    </div>
+                                    <div className="timeline-content">
+                                      <div className="">
+                                        <div className="">
+                                          <h4>Event 1</h4>
+                                          <p>Some description of Event 1</p>
+                                        </div>
+                                          <div className="flex ">
+                                            <BsClock className="clock-icon" />
+                                            <p className="time">11/02/1123</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div> */}
+                                </div>
                                 </Card.Body>
                               </Card>
                               </div>
-                              <div className="col-12 col-md-4 overflow-x-hidden max-h-[55vh]  !overflow-y-visible	">
+                              <div className="col-12 col-md-4 overflow-x-hidden min-h-[55vh] max-h-[55vh]  !overflow-y-visible	">
                               <Card className="mt-[15px]">
                                 <Card.Title className="p-[1rem] pb-0">Staff Transfer Log</Card.Title>
                                 <Card.Body>
@@ -304,12 +313,31 @@ export default function Staff_History() {
                                 </Card.Body>
                               </Card>
                               </div>
-                              <div className="col-12 col-md-4 overflow-x-hidden max-h-[55vh]  !overflow-y-visible	">
+                              <div className="col-12 col-md-4 overflow-x-hidden min-h-[55vh] max-h-[55vh]  !overflow-y-visible	">
                               <Card className="mt-[15px]">
                                 <Card.Title className="p-[1rem] pb-0">Activity</Card.Title>
                                 <Card.Body>
                                 <div className="timeline">
-      <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                  {activityData?.length >0 && activityData.map((activity,ind)=>(
+                                    <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div className="timeline-icon">
+                                      <TbCircleDot />
+                                    </div>
+                                    <div className="timeline-content">
+                                      <div className="">
+                                        <div className="">
+                                          <h4>{activity?.action}</h4>
+                                          <p>{activity?.result}</p>
+                                        </div>
+                                          <div className="flex mt-3">
+                                            <BsClock className="clock-icon mr-1" />
+                                            <p className="time">{new Date(activity?.created_at).toLocaleDateString()} {new Date(activity?.created_at).toLocaleTimeString()}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  ))}
+      {/* <div className="timeline-item w-[16rem] sm: w-[16rem]">
         <div className="timeline-icon">
           <TbCircleDot />
         </div>
@@ -359,7 +387,7 @@ export default function Staff_History() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
                                 </Card.Body>
                               </Card>

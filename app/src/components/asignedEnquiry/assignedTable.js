@@ -36,28 +36,32 @@ const AssignTable = () => {
     useEffect(()=>{
           // convert timestamp to time format
       const tabledata = data?.value?.data?.assigned_new;
-      const updatedTableData = tabledata.map( row=>{
-        const timestamp = row.created_at;
-        const date = new Date(timestamp)
-        const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        console.log(formattedTime)
-        return {
-            ...row, created_at: formattedTime
-        }
-    })
-    setTableData(updatedTableData)
+      if(tableData.length){
+        const updatedTableData = tabledata.map( row=>{
+          const timestamp = row.created_at;
+          const date = new Date(timestamp)
+          const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          console.log(formattedTime)
+          return {
+              ...row, created_at: formattedTime
+          }
+      })
+      setTableData(updatedTableData)
+      }
+
+
         // setTableData(data?.value?.data?.assigned_new)
     },[data])
 
-    const updatedTableData = tableData.map( row=>{
-        const timestamp = row.created_at;
-        const date = new Date(timestamp)
-        const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        console.log(formattedTime)
-        return {
-            ...row, created_at: formattedTime
-        }
-    })
+    // const updatedTableData = tableData?.map( row=>{
+    //     const timestamp = row.created_at;
+    //     const date = new Date(timestamp)
+    //     const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    //     console.log(formattedTime)
+    //     return {
+    //         ...row, created_at: formattedTime
+    //     }
+    // })
     // setTableData(updatedTableData)
 
     const handleSearchChange = (event) => {
@@ -137,7 +141,7 @@ const AssignTable = () => {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((row) => (
+          {currentData?.map((row) => (
             <tr key={row.id}>
               <td>{row.first_name}</td>
               {!row.email_verified == 1 ?

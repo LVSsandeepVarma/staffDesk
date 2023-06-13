@@ -67,7 +67,7 @@ export default function Login() {
                             <div className="col-lg-4 mx-auto flex items-center w-[100%] flex justify-center !p-0">
                                 <div className="auth-form-light text-start py-5 px-4 px-sm-5 bg-[#fff]">
                                     <div className="brand-logo mb-[2rem]">
-                                        <img src="images/logo.png" alt="logo" />
+                                        <img src="/images/logo.png" alt="logo" />
                                     </div>
                                     <h4 className="text-base	text-blue-950 font-extrabold	">Hello! lets get started</h4>
                                     <h6 className="fw-light text-sm">Sign in to continue.</h6>

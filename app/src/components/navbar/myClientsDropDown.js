@@ -85,16 +85,16 @@ const DayOfWeekDropdown = () => {
             {renderMarqueeItems()}
         </Marquee>
     </div>
-    <DropdownButton
+    {/* <DropdownButton
     className='!block sm:!hidden text-white flex !p-0 !m-0 h-[60%]'
-      title={<p className='text-white flex'> {selectedDay ? selectedDay : 'My client'}<RiArrowDropDownLine/></p>}
+      title={<p className='text-white flex m-0'> {selectedDay ? selectedDay : 'My client'}<RiArrowDropDownLine/></p>}
       variant="outline-secondary"
       onSelect={handleSelectDay}
       
     >
         
       {renderDropdownItems()}
-    </DropdownButton>
+    </DropdownButton> */}
     </>
 
   );

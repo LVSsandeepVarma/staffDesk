@@ -12,6 +12,8 @@ import { setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice"
 import { BsCalendar, BsCalendar2Check } from 'react-icons/bs';
 import { DateRangePicker } from 'rsuite';
 import axios from 'axios';
+import "rsuite/dist/rsuite.css";
+
 
 
 const AttendancePage = () => {
@@ -23,9 +25,60 @@ const AttendancePage = () => {
     const [tab2Content, setTab2Content] = useState("leaves");
     const [selectedDateRange, setSelectedDateRange] = useState(["", ""]);
     const [leaveType, setLeaveType] = useState("");
-    const [leaveDesc, setLeaveDesc] = useState("")
+    const [leaveDesc, setLeaveDesc] = useState("");
+    const [error, setError] = useState([]);
+    const [success, setSuccess] = useState("");
+    const [attendanceData , setAttendanceData] = useState([]);
+    const [leaveReqData, setLeaveReqData] = useState([]);
+    const [breakTimeData, setBreakTimeData] = useState([]);
+    const [deleteStatus, setDeleteStatus] = useState("");
+    const [successStatus, setSuccessStatus] = useState("") 
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    useEffect(()=>{
+      const fetchAttendanceData = async()=>{
+        try{
+          const token = sessionStorage.getItem("tmToken")
+          const response = await axios.get(" https://admin.tradingmaterials.com/api/staff/attendance", {
+            headers: { 
+              Authorization: `Bearer ${token}`
+            }
+          })
+          console.log(response, response?.data?.data["break-logs"])
+          const attendanceinfo = response?.data?.data?.attendance
+          const updatedInfo = attendanceinfo.map((val,ind)=>{
+            const dateTime = new Date(val.created_at);
+            const month =  dateTime.toLocaleString('default', { month: 'long' });
+            const day = dateTime.getDate();
+            const weekday = dateTime.toLocaleDateString('default', { weekday: 'long' });
+            return {...attendanceinfo[ind], "monthDay":  `${month} ${day}`,"weekday": `${weekday}`}
+          })
+          console.log("attendanceinfo",updatedInfo)
+          setAttendanceData(updatedInfo)
+          setLeaveReqData(response?.data?.data["leave-reqs"])
+          const breaklogs = response?.data?.data["break-logs"]
+          breaklogs.map((val,ind)=>{
+            const totalSeconds = val.break_time; // Example: 3665 seconds
+
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            console.log(formattedTime);
+            breaklogs[ind].break_time = formattedTime
+          })
+          setBreakTimeData(response?.data?.data["break-logs"])
+
+        }catch(err)
+        {
+          console.log(err)
+
+        }
+      }
+      fetchAttendanceData();
+    },[])
     var today = new Date();
 var dd = today.getDate()+2;
 
@@ -74,12 +127,13 @@ const handleLeaveTypeChange = (event)=>{
 
 const handleSubmit = async(event) => {
   event.preventDefault();
+  console.log(userData?.value?.data?.staff?.id, "id")
   try{
     const formData = new FormData
     formData.append("daterange" , `${selectedDateRange[0]}-${selectedDateRange[1]}`);
     formData.append("reason" , leaveType)
     formData.append("description", leaveDesc)
-    formData.append("staff_id", userData?.data?.staff?.id)
+    formData.append("staff_id", userData?.value?.data?.staff?.id)
   //   [{
   //     daterange : `${selectedDateRange[0]}-${selectedDateRange[1]}`,
   //     reason : leaveType,
@@ -92,9 +146,19 @@ const handleSubmit = async(event) => {
       Authorization: `Bearer ${token}`
     }
    })
+   setError([])
+   setSuccess(response?.data?.message)
    console.log(response)
   }catch(err){
-    console.log("err", err)
+    console.log("err", err?.response?.data?.errors)
+    const errorsArray = []
+    errorsArray[0] = err?.response?.data?.errors?.reason
+    errorsArray[1] = err?.response?.data?.errors?.description
+    errorsArray[2] = err?.response?.data?.errors?.daterange
+
+    setError(...errorsArray)
+    setSuccess("")
+
   }
   
   // Perform submit logic with selectedDateRange value
@@ -119,6 +183,33 @@ const handleSubmit = async(event) => {
     else setTab2Content("leaves")
   }
   console.log(selectedDateRange, "selected date range")
+
+  const handleDeleteLeaveRequest = (e)=>{
+    console.log(e.target.id)
+    const staffIDs = e.target.id.split("-")
+    const id = staffIDs[0]
+    const staff_id= staffIDs[1]
+    const deleteLeaveRequest = async()=>{
+        try{
+          const token = sessionStorage.getItem("tmToken")
+          const response = await axios.post("https://admin.tradingmaterials.com/api/staff/leave-request/delete",{
+            "id" : id,
+            "staff_id":staff_id
+          }, {
+            headers:{
+              Authorization : `Bearer ${token}`
+            }
+          })
+          console.log(response)
+          setSuccessStatus(response?.data?.message)
+        }catch(err){
+          setSuccessStatus("")
+          setDeleteStatus(err?.response?.data?.message)
+          console.log(err)
+        }
+    }
+    deleteLeaveRequest()
+  }
   return (
     <>
     <div className="container-scroller  ">
@@ -182,26 +273,28 @@ const handleSubmit = async(event) => {
             <Button variant="primary">Previous</Button>
             <h3>June 2023</h3>
           </div>
+          {console.log(leaveReqData)}
           {activeTab === 'tab1' && (
+            
             <Table striped bordered>
               <thead>
                 <tr>
+                  <th>Date</th>
                   <th>Day</th>
-                  <th>Attendance Log</th>
-                  <th>Time</th>
+                  <th>Login</th>
+                  <th>Logout</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Monday</td>
-                  <td>John Doe</td>
-                  <td>9:00 AM - 5:00 PM</td>
-                </tr>
-                <tr>
-                  <td>Tuesday</td>
-                  <td>Jane Smith</td>
-                  <td>8:30 AM - 4:30 PM</td>
-                </tr>
+                {attendanceData.length >0 && attendanceData.map((val,ind)=>(
+                  <tr key = {ind}>
+                    <td>{val.monthDay}</td>
+                    <td>{val.weekday}</td>
+                    <td>{val.login.split(" ")[1]}</td>
+                    <td>{val.logout.split(" ")[1]}</td>
+                  </tr>
+                ))}
+
                 {/* Add more rows as needed */}
               </tbody>
             </Table>
@@ -213,28 +306,38 @@ const handleSubmit = async(event) => {
             {/* <h3>June 2023</h3> */}
           </div>
             {tab2Content === "leaves" && (
+              <>
               <Table striped bordered>
               <thead>
                 <tr>
-                  <th>Day</th>
-                  <th>Attendance Log</th>
-                  <th>Time</th>
+                  <th>From date</th>
+                  <th>To Date</th>
+                  <th>Reason</th>
+                  <th>Description</th>
+                  <th>Created at</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Wednesday</td>
-                  <td>Mark Johnson</td>
-                  <td>10:00 AM - 6:00 PM</td>
-                </tr>
-                <tr>
-                  <td>Thursday</td>
-                  <td>Emily Brown</td>
-                  <td>9:30 AM - 5:30 PM</td>
-                </tr>
+                {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})}
+              {leaveReqData.length >0 && leaveReqData.map((val,ind)=>(
+                  <tr key = {ind}>
+                    <td>{val.from_date}</td>
+                    <td>{val.to_date}</td>
+                    <td>{val.reason}</td>
+                    <td>{val.description}</td>
+                    <td>{new Date(val?.created_at).toLocaleDateString()}</td>
+                    <td className={`${ val.status == 0 ? "!text-orange-700	" : val.status == 1 ? "!text-teal-900	" : "!text-red-900"}}`}>{val.status == 0 ? "pending" : val.status == 1 ? "approved" : "rejected"}</td>
+                    <td  onClick={handleDeleteLeaveRequest}>{val.status == 0 ? <button id={`${val.id}-${val.staff_id}`} className='btn btn-primary-outline'>Delete</button>: ""}</td>
+                  </tr>
+                ))}
                 {/* Add more rows as needed */}
               </tbody>
             </Table>
+            <p className={`${deleteStatus.length >0 ? "!text-red-800":""}`}>{deleteStatus}</p>
+            <p className={`${successStatus.length >0 ? "!text-green-800":""}`}>{successStatus}</p>
+            </>
             )}
             {tab2Content === "apply leave" && (
                           <div>
@@ -273,6 +376,10 @@ const handleSubmit = async(event) => {
                                 </Form>
                               </Card.Body>
                               <Card.Footer>
+                                {success.length>0 && <p className='text-green-900' >{success}</p>}
+                                {error.length > 0 && error.map((er,ind)=>(
+                                  <p key={ind} className='text-red-900'>{er}</p>
+                                ))}
                                 <Button variant="primary" onClick={handleSubmit} block>Submit</Button>
                               </Card.Footer>
                             </Card>
@@ -284,22 +391,21 @@ const handleSubmit = async(event) => {
             <Table striped bordered>
               <thead>
                 <tr>
-                  <th>Day</th>
-                  <th>Attendance Log</th>
-                  <th>Time</th>
+                  <th>Date</th>
+                  <th>lockout</th>
+                  <th>Login</th>
+                  <th>Break time (in sec)</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Friday</td>
-                  <td>Michael Davis</td>
-                  <td>8:00 AM - 4:00 PM</td>
-                </tr>
-                <tr>
-                  <td>Saturday</td>
-                  <td>Sarah Wilson</td>
-                  <td>9:00 AM - 1:00 PM</td>
-                </tr>
+                {breakTimeData.length>0 && breakTimeData.map((val,ind)=>(
+                  <tr>
+                    <td>{val.date}</td>
+                    <td>{val.lock_out}</td>
+                    <td>{val.log_in}</td>
+                    <td>{val.break_time}</td>
+                  </tr>
+                ))}
                 {/* Add more rows as needed */}
               </tbody>
             </Table>

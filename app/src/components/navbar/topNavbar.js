@@ -40,7 +40,8 @@ export default function TopNavbar(){
       const  handleSignOut =  async()=>{
         try{
           const token = sessionStorage.getItem("tmToken")
-          const response = await axios.post("https://admin.tradingmaterials.com/api/staff/auth/logout",{
+          console.log(token)
+          const response = await axios.post("https://admin.tradingmaterials.com/api/staff/auth/logout",{},{
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -52,6 +53,7 @@ export default function TopNavbar(){
             router.push("/login")
           }
         }catch(err){
+
           console.log("log out failed", err)
         }
 
@@ -141,7 +143,7 @@ export default function TopNavbar(){
               </div>
             </nav>
             <nav className={` ${toggleBottomNavbar == true ? "bottom-navbar header-toggled" : "!hidden sm:!block"} bottom-navbar header-toggled`}>
-              <div className="container">
+              <div className="container !flex">
                 <ul className="nav page-navigation !justify-start	">
                   <li className="nav-item">
                     <a className={`nav-link ${activePage == "dashboard" ? "nav_active":""}`} href="/dashboard" >
@@ -231,7 +233,13 @@ export default function TopNavbar(){
                     </div>
                     </li>
                 </ul>
+                <div className="nav !justify-end items-center">
+                <div class="login-time px-3 py-1 mt-3 d-flex align-items-center justify-content-center">
+        <div class="flex w-1vw  mb-0 mr-2"> Login :<span class="text-black">  07:38 </span></div> |
+         <div class="flex w-[100%] mb-0 ml-2"><span class="text-red-500 blink-soft">Late : </span> 00:00  Mins</div>
+      </div>                </div>
               </div>
+
             </nav>
           </div>
                   {/* side nav bar */}
