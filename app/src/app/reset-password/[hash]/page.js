@@ -1,3 +1,4 @@
+"use client"
 import PasswordHash from '@/components/forgotPassword/otpPage'
 import React, { useEffect } from 'react'
 
