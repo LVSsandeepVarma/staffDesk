@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import { FaGreaterThan, FaLessThan } from "react-icons/fa"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faCartPlus, faHeadphones, faPhone, faPhoneVolume, faUser, faWallet } from '@fortawesome/free-solid-svg-icons';
 import Barchart from './ordersbarchart';
 import Barcharts from './ordersbarchart';
 import PaymentsBarcharts from './paymentsBarchart';
@@ -61,6 +61,7 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Total Enquiries</Card.Title>
                             <Carousel className='' activeIndex={activeIndex} prevLabel="" nextLabel="">
@@ -76,6 +77,12 @@ export default function DashboardData() {
 
                             </Carousel>
                         </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full">
+                  <FontAwesomeIcon className=' !h-[4rem]' color='#ffc107' icon={faPhone}/>
+                  </span>
+                  </div>
+                        </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" onClick={handlePrev}>
                                 {'<'}
@@ -86,6 +93,7 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Ringing Enquiries</Card.Title>
                             <Carousel className='' activeIndex={activeIndex} prevLabel="" nextLabel="">
@@ -101,6 +109,12 @@ export default function DashboardData() {
 
                             </Carousel>
                         </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full ">
+                  <FontAwesomeIcon className=' !h-[4rem]' icon={faHeadphones} color='#28afd0'/>
+                  </span>
+                  </div>
+                        </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" onClick={handlePrev}>
                                 {'<'}
@@ -111,6 +125,7 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Postponed Enquiries</Card.Title>
                             <Carousel className='' activeIndex={activeIndex} prevLabel="" nextLabel="">
@@ -126,6 +141,12 @@ export default function DashboardData() {
 
                             </Carousel>
                         </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full ">
+                  <FontAwesomeIcon className=' !h-[4rem]' icon={faPhoneVolume} color='#467fcf'/>
+                  </span>
+                  </div>
+                        </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" onClick={handlePrev}>
                                 {'<'}
@@ -136,6 +157,7 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Not Interested Enquiries</Card.Title>
                             <Carousel className='' activeIndex={activeIndex} prevLabel="" nextLabel="">
@@ -151,6 +173,12 @@ export default function DashboardData() {
 
                             </Carousel>
                         </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full">
+                  <FontAwesomeIcon className=' !h-[4rem]' icon={faBan} color='#f66'/>
+                  </span>
+                  </div>
+                        </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" onClick={handlePrev}>
                                 {'<'}
@@ -161,6 +189,7 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Total Orders</Card.Title>
                             <Carousel className='' activeIndex={activeIndex} prevLabel="" nextLabel="">
@@ -176,6 +205,12 @@ export default function DashboardData() {
 
                             </Carousel>
                         </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full">
+                  <FontAwesomeIcon className=' !h-[4rem]' icon={faCartPlus} color='#467fcf'/>
+                  </span>
+                  </div>
+                        </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" onClick={handlePrev}>
                                 {'<'}
@@ -186,6 +221,7 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Total Sales</Card.Title>
                             <Carousel className='' activeIndex={activeIndex} prevLabel="" nextLabel="">
@@ -201,6 +237,12 @@ export default function DashboardData() {
 
                             </Carousel>
                         </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full !bg-green">
+                  <FontAwesomeIcon className=' !h-[4rem]' icon={faWallet} color='#ffc107'/>
+                  </span>
+                  </div>
+                        </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" onClick={handlePrev}>
                                 {'<'}

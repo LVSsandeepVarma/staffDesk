@@ -91,7 +91,7 @@ export default function Staff_History() {
                                 <Card.Body>
                                 <div className="timeline">
                                 {enquiryData.length>0 && enquiryData.map((enq,ind)=>(
-                                  <div className="timeline-item w-[16rem] sm: w-[16rem] w-[16rem] sm: w-[16rem]">
+                                  <div key={`enquiry-${ind}`} className="timeline-item w-[16rem] sm: w-[16rem] w-[16rem] sm: w-[16rem]">
                                   <div className="timeline-icon">
                                     <TbCircleDot />
                                   </div>
@@ -180,7 +180,7 @@ export default function Staff_History() {
                                 <Card.Body>
                                 <div className="timeline">
                                   {attendenceData?.length>0 && attendenceData.map((logs,ind)=>(
-                                    <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div key={`attendance-${ind}`} className="timeline-item w-[16rem] sm: w-[16rem]">
                                     <div className="timeline-icon">
                                       <TbCircleDot />
                                     </div>
@@ -319,7 +319,7 @@ export default function Staff_History() {
                                 <Card.Body>
                                 <div className="timeline">
                                   {activityData?.length >0 && activityData.map((activity,ind)=>(
-                                    <div className="timeline-item w-[16rem] sm: w-[16rem]">
+                                    <div key={`activity-${ind}`} className="timeline-item w-[16rem] sm: w-[16rem]">
                                     <div className="timeline-icon">
                                       <TbCircleDot />
                                     </div>

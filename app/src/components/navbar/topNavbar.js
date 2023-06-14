@@ -8,7 +8,8 @@ import { AiOutlineBell } from "react-icons/ai";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
 import { BsDisplay, BsThreeDots } from "react-icons/bs"
-import { GrClose } from "react-icons/gr"
+import {BiLockAlt} from "react-icons/bi";
+import { GrClose } from "react-icons/gr";
 import { FaUser, FaCog, FaEnvelope } from 'react-icons/fa';
 import axios from "axios";
 import { useDispatch,useSelector } from "react-redux";
@@ -17,6 +18,7 @@ import { setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice";
 import { usePathname } from "next/navigation";
 import Loading from "../loader/loading";
 import DayOfWeekDropdown from "./myClientsDropDown";
+import CountdownTimer from "../screenLockCountdown/screenlockCountdown";
 export default function TopNavbar(){
   const router = useRouter()
   const pathname = usePathname()
@@ -106,25 +108,44 @@ export default function TopNavbar(){
 
     };
   }, []);
-
+      const handleLockingScreen = async()=>{
+        try{
+          const token = sessionStorage.getItem("tmToken");
+          const response = await axios.post("https://admin.tradingmaterials.com/api/staff/lockout", {},{
+            headers:{
+              Authorization : `Bearer ${token}`
+            }
+          })
+          consoleḷog(response?.data?.status)
+          if(response?.data?.status){
+            router.push("/locked")
+          }
+          else{
+            prompt("failed to lock")
+          }
+        }catch(err){
+          console.log("err", err)
+        }
+      }        
       return(
         <>
         {loaderState.value == true ? <Loading/> : ""}
         <div className="horizontal-menu">
             <nav className="navbar top-navbar col-lg-12 col-12 p-0 bg-[#25378b] h-[auto] ">
-              <div className="container">
-                <div className="text-start navbar-brand-wrapper d-flex align-items-center content-start !col-lg-6">
+              <div className="container md:row" >
+                <div className="text-start navbar-brand-wrapper d-flex align-items-center content-start col-lg-4">
                   <a className="navbar-brand brand-logo" href="/"><img src="/images/brandWhite.png" alt="logo" /></a>
                   <a className="navbar-brand navbar-brand-logo brand-logo-mini" href="/"><img src="/images/brandWhite.png" alt="brand logo" /></a>
                   <DayOfWeekDropdown/>
                 </div>
-                <div className="navbar-menu-wrapper d-flex align-items-center justify-end !grow-0	">
+                <div className="navbar-menu-wrapper d-flex align-items-center justify-end !grow-0	" style={{width: "auto"}}>
+                  <BiLockAlt className="text-white text-xl mr-2	" onClick={()=>{handleLockingScreen()}}/>
                   <AiOutlineBell className="text-white text-xl mr-2	" />
                   <p className="align-center text-white  m-0">Praveen</p>
                   <Image src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
                   
-                  <div className=" flex ">
-                    <div className="hidden lg:flex md:flex">
+                  <div className=" flex  ">
+                    <div className="hidden lg:flex ">
                       <div className="relative ml-2">
                         <div className="absolute flex h-full justify-end	 items-center	">
                           < HiOutlineMagnifyingGlass className="mr-[10px]" />
@@ -142,9 +163,10 @@ export default function TopNavbar(){
                 </div>
               </div>
             </nav>
+            
             <nav className={` ${toggleBottomNavbar == true ? "bottom-navbar header-toggled" : "!hidden sm:!block"} bottom-navbar header-toggled`}>
               <div className="container !flex">
-                <ul className="nav page-navigation !justify-start	">
+                <ul className="nav  page-navigation !justify-start	">
                   <li className="nav-item">
                     <a className={`nav-link ${activePage == "dashboard" ? "nav_active":""}`} href="/dashboard" >
                       <i className={`mdi mdi-shield-check menu-icon ${activePage == "dashboard" ? "nav_active":""}`}></i>
@@ -233,11 +255,11 @@ export default function TopNavbar(){
                     </div>
                     </li>
                 </ul>
-                <div className="nav !justify-end items-center">
-                <div class="login-time px-3 py-1 mt-3 d-flex align-items-center justify-content-center">
-        <div class="flex w-1vw  mb-0 mr-2"> Login :<span class="text-black">  07:38 </span></div> |
-         <div class="flex w-[100%] mb-0 ml-2"><span class="text-red-500 blink-soft">Late : </span> 00:00  Mins</div>
-      </div>                </div>
+                <div className="w-full flex justify-end items-center">
+                  Login : 00:00 |  
+                  <span className="text-red-500"> &nbsp;Late: 00:00</span>
+                </div>
+                
               </div>
 
             </nav>
@@ -320,7 +342,7 @@ export default function TopNavbar(){
             </div>
           </div>
         </div>
-          
+        <CountdownTimer/>
         </>
     )
 

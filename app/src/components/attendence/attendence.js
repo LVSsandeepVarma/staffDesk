@@ -186,7 +186,7 @@ const handleSubmit = async(event) => {
 
   const handleDeleteLeaveRequest = (e)=>{
     console.log(e.target.id)
-    const staffIDs = e.target.id.split("-")
+    const staffIDs = e.target.id?.split("-")
     const id = staffIDs[0]
     const staff_id= staffIDs[1]
     const deleteLeaveRequest = async()=>{
@@ -290,8 +290,8 @@ const handleSubmit = async(event) => {
                   <tr key = {ind}>
                     <td>{val.monthDay}</td>
                     <td>{val.weekday}</td>
-                    <td>{val.login.split(" ")[1]}</td>
-                    <td>{val.logout.split(" ")[1]}</td>
+                    <td>{val.login?.split(" ")[1]}</td>
+                    <td>{val.logout?.split(" ")[1]}</td>
                   </tr>
                 ))}
 
@@ -399,7 +399,7 @@ const handleSubmit = async(event) => {
               </thead>
               <tbody>
                 {breakTimeData.length>0 && breakTimeData.map((val,ind)=>(
-                  <tr>
+                  <tr key={ind}>
                     <td>{val.date}</td>
                     <td>{val.lock_out}</td>
                     <td>{val.log_in}</td>

@@ -16,6 +16,11 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+@keyframes blink {
+  0% { color: red; }
+  50% { color: transparent; }
+  100% { color: red; }
+}
 
 body {
   color: rgb(var(--foreground-rgb));
