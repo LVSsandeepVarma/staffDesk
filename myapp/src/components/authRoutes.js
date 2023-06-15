@@ -11,7 +11,14 @@ const withAuth = (WrappedComponent) => {
         const checkAuthentication = async()=>{
             const token = sessionStorage.getItem("tmToken")
             if(token == null){
-                navigate("/login")
+                const lsToken = localStorage.getItem("tmToken")
+                if(lsToken == null){
+                    navigate("/login")
+                }
+                else{
+                    navigate("/#")
+                }
+                
             }
         }
         useEffect(()=>{

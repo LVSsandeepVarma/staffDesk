@@ -147,7 +147,7 @@ const PostponedTable = () => {
             <th>ACTION</th>
           </tr>
         </thead>
-        <tbody>
+        {currentData?.length >0 ? (<tbody>
           {currentData.map((row) => (
             <tr key={row.id}>
                 <td className="">
@@ -190,7 +190,13 @@ const PostponedTable = () => {
             </td>
             </tr>
           ))}
-        </tbody>
+        </tbody>):
+          <tr>
+          <td colSpan="6" className="text-center">
+            <p className="text-muted">No data available in table</p>
+          </td>
+        </tr>
+        }
       </Table>
 
       <div className='!flex  justify-end'>

@@ -8,6 +8,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import loaderSlice, { setLoaderFalse, setLoaderTrue } from '../../slice/loaderSlice';
 import Loading from '../loader/loading';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaUserEdit } from 'react-icons/fa';
+import { faUserAstronaut, faUserCheck, faUserLock } from '@fortawesome/free-solid-svg-icons';
+import { FormCheck, FormLabel } from 'react-bootstrap';
 // login component
 export default function Login() {
     const navigate = useNavigate()
@@ -48,14 +52,18 @@ export default function Login() {
             dispatch(setLoaderTrue())
             setResponseError("")
 
+            if(saveCredentials){
+                console.log("saved")    
+                localStorage.setItem("tmToken", response.data?.token)        
+                // need to add tw token from api respomse
+            }
+
         }catch(error){
             console.log(error?.response?.data?.message)
             setResponseError(error?.response?.data?.message)
             dispatch(setLoaderTrue())
         }
-        if(saveCredentials){
-            console.log("saved") // need to add tw token from api respomse
-        }
+        
         dispatch(setLoaderFalse())
     };
     return (
@@ -87,15 +95,28 @@ export default function Login() {
                                             <div className="mt-3">
                                                 <button type="submit" className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN IN</button >
                                             </div>
-                                            <div className="my-2 d-flex justify-content-between align-items-center">
-                                                <div className="form-check">
-                                                    <label className="form-check-label text-muted">
-                                                        <input type="checkbox" className="form-check-input" onClick={()=>setSaveCredentials(!saveCredentials)} />
+                                            <div className="my-2 flex justify-start align-items-center">
+                                                {/* <div className="form-check">
+                                                    <label className="form-check-label text-muted !ml-0">
+                                                        <input type="checkbox" className="form-check-input !opacity-100" onClick={()=>setSaveCredentials(!saveCredentials)} />
                                                         Keep me signed in
                                                     </label>
-                                                </div>
-                                                <a href="/reset-password" className="auth-link text-black">Forgot password?</a>
+                                                </div> */}
+                                                <FormCheck
+                                                    type="checkbox"
+                                                    id="keepSignedIn"
+                                                    className="me-2"
+                                                    onClick={()=>setSaveCredentials(!saveCredentials)}
+                                                />
+                                                <FormLabel htmlFor="keepSignedIn" className="mb-0">
+                                                    Keep me signed in
+                                                </FormLabel>
+                                                
                                             </div>
+                                            <p>
+                                            <FontAwesomeIcon icon={faUserLock} className='mr-2 cursor-pointer'/><a href="/reset-password" className="auth-link text-black">Forgot password?</a>
+                                            </p>
+                                            
                                         </Form>
                                     </Formik>
                                 </div>
