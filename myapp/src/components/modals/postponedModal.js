@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import SuccessModal from './successModal';
+import { useNavigate } from 'react-router-dom';
 
 const PostponedModal = (props) => {
   const id = props.id
@@ -19,7 +20,7 @@ const PostponedModal = (props) => {
   const handleStageChange = (e) => setSelectedStage(e.target.value);
   const handleTextareaChange = (e) => setTextareaValue(e.target.value);
   const handleDateChange = (e) => setDateValue(e.target.value);
-  const router = useRouter()
+  const navigate = useNavigate()
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const handleSubmit = async (e) => {
@@ -46,7 +47,7 @@ const PostponedModal = (props) => {
       console.log(response)
       setShowSuccessModal(true)
 
-      router.push("/enquiry/postponed-enquiry#")
+      navigate("/enquiry/postponed-enquiry#")
       // router.reload()
       // window.location.reload()
 

@@ -1,6 +1,6 @@
 "use client"
-import withAuth from "@/components/authRoutes";
-import Staff_History from "@/components/history/history";
+import withAuth from "../../../components/authRoutes";
+import Staff_History from "../../../components/history/history";
 
 const ProtectedStaffHistory = withAuth(Staff_History)
 

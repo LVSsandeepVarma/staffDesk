@@ -1,6 +1,6 @@
 "use client"
-import withAuth from "@/components/authRoutes";
-import Todays_Ringing_Enquiry from "@/components/todaysRinging/todaysRinging";
+import withAuth from "../../../components/authRoutes";
+import Todays_Ringing_Enquiry from "../../../components/todaysRinging/todaysRinging";
 
 const ProtectedFetchEnquiry = withAuth(Todays_Ringing_Enquiry)
 

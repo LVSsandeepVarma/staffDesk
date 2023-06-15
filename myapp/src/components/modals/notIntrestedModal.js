@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import SuccessModal from './successModal';
+import { useNavigate } from 'react-router-dom';
 
 
 const NotIntrestedModal = (props) => {
@@ -16,7 +17,7 @@ const NotIntrestedModal = (props) => {
     const [textareaValue, setTextareaValue] = useState('');
     const [dateValue, setDateValue] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false)
-    const router = useRouter()
+    const navigate = useNavigate()
     const handleClose = () => setShow(false);
     const handleTextareaChange = (e) => setTextareaValue(e.target.value);
     const handleDateChange = (e) => setDateValue(e.target.value);

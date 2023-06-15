@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Modal, Button } from 'react-bootstrap';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 const CountdownTimer = () => {
-  const router = useRouter()
+  const navigate = useNavigate()
   const [countdown, setCountdown] = useState(600);
   const [showModal, setShowModal] = useState(false);
   const [lockStatus, setLockStatus] = useState("lock");
@@ -38,7 +39,7 @@ const CountdownTimer = () => {
     else if (lockStatus == "lock" && countdown ==0){
       
       timeoutId = setTimeout(() => {
-        router.push("/locked")
+        navigate("/locked")
       }, 5000); 
       // Redirect to locked page after 5 seconds (adjust as needed)
     }
@@ -74,7 +75,7 @@ const CountdownTimer = () => {
 
   const handleLock = () => {
     // Redirect to locked page
-    router.push("/locked")
+    navigate("/locked")
   };
 
   return (

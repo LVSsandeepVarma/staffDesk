@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import TimedModal from '@/components/modals/passwordResetModal';
+import TimedModal from '../../../components/modals/passwordResetModal';
 // login component
 export default function NewPassword() {
-    const router = useRouter();;
+    // const router = useRouter();
     const hash = useSelector((state)=>state.passwordHashReducer.value)
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");

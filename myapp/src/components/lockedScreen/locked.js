@@ -1,21 +1,21 @@
 "use client"
 import axios from 'axios';
-import Image from "next/image";
+// import Image from "next/image";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import loaderSlice, { setLoaderFalse, setLoaderTrue } from '@/store/slice/loaderSlice';
+import loaderSlice, { setLoaderFalse, setLoaderTrue } from '../../slice/loaderSlice';
 import Loading from '../loader/loading';
-import { setUserInfo } from '@/store/slice/userInfoSlice';
+import { setUserInfo } from '../../slice/userInfoSlice';
+import { useNavigate } from 'react-router-dom';
 // login component
 export default function Locked() {
     const dispatch = useDispatch();
     const loaderState = useSelector((state)=>state.loaderReducer.value);
     const userInfo = useSelector((state) => state?.userInfoReducer);
-    console.log(userInfo)
-    const router = useRouter();
+    const navigate = useNavigate();
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [saveCredentials, setSaveCredentials] = useState(false)
@@ -70,22 +70,21 @@ export default function Locked() {
     // form submit handler
     const handleSubmit = async(values) => {
         // Handle form submission
-        console.log(values)
         dispatch(setLoaderTrue())
         try{
-            sessionStorage.setItem("tmToken",response.data?.token);
+            const token = sessionStorage.getItem("tmToken");
             const response= await axios.post("https://admin.tradingmaterials.com/api/staff/unlock",{"password":values.password},{
                 headers:{
                     Authorization: `Bearer ${token}`
                 }
             })
             console.log(response)
-            router.push("/dashboard")
+            navigate("/dashboard")
             dispatch(setLoaderTrue())
             setResponseError("")
 
         }catch(error){
-            console.log(error?.response?.data?.message)
+            console.log(error)
             setResponseError(error?.response?.data?.message)
             dispatch(setLoaderTrue())
         }
@@ -105,7 +104,7 @@ export default function Locked() {
                                         <img src="/images/logo.png" alt="logo" />
                                     </div>
                                     <div className=' mb-[2rem] flex flex-col items-center'>
-                                    <Image src="/images/emptyProfile.png" width={150} height={150} alt="" className="justify-center profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" style={{width:"5rem", height: "5rem"}} />
+                                    <img src="/images/emptyProfile.png" width={150} height={150} alt="" className="justify-center profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" style={{width:"5rem", height: "5rem"}} />
                                     <h4 className='block text-bold-500'>{userInfo?.value?.data?.staff?.username}</h4>
                                     </div>
 
@@ -116,7 +115,7 @@ export default function Locked() {
                                                 <ErrorMessage className='text-red-900' name="password" component="div" />
 
                                             </div>
-                                            {responseError.length ? <p className='text-red-900'>{responseError}</p> : ""}
+                                            {responseError?.length ? <p className='text-red-900'>{responseError}</p> : ""}
                                             <div className="mt-3">
                                                 <button type="submit" className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" >UNLOCK</button >
                                             </div>

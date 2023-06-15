@@ -47,7 +47,7 @@ export default function Fetch_Enquiry(){
   });
    const [showModal, setShowModal] = useState(false);
    const [showNoDataModAL, SetShowNoDataModal] = useState(false)
-   const {errorMessages, setErrorMessages} = useState([])
+   const [errorMessage, setErrorMessage] = useState("")
 
   const handleModalOpen = () => {
     setShowModal(true);
@@ -88,7 +88,8 @@ export default function Fetch_Enquiry(){
        })
        console.log("response", response)
    }catch(error){
-      console.log("error",error)
+      console.log("error",error?.message)
+	  setErrorMessage(error?.message)
    }
   }
 
@@ -479,7 +480,9 @@ export default function Fetch_Enquiry(){
                    </div>
                </div>
                <div className="modal-footer">
+			   {errorMessage !== "" ? <p className='text-red-900'>{errorMessage}</p> : ""}
             <button type="button" className="btn btn-warning py-1" data-dismiss="modal">Close</button>
+			
             <button type="submit" className="btn btn-success subbtn py-1" value="" data-type="">Save </button>
          </div>
             </Form>

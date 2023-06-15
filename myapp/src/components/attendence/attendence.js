@@ -6,18 +6,19 @@ import { faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDispatch, useSelector } from "react-redux"
 import { Card } from "react-bootstrap"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice"
+import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice"
 import { BsCalendar, BsCalendar2Check } from 'react-icons/bs';
 import { DateRangePicker } from 'rsuite';
 import axios from 'axios';
 import "rsuite/dist/rsuite.css";
+import { useNavigate } from 'react-router-dom';
 
 
 
 const AttendancePage = () => {
-    const router = useRouter() 
+    const navigate = useNavigate() 
     const {combine, allowedMaxDays, before} = DateRangePicker
     const userData = useSelector((state) => state?.userInfoReducer)
     console.log(userData, "data")
@@ -47,7 +48,7 @@ const AttendancePage = () => {
           console.log(response, response?.data?.data["break-logs"])
           const attendanceinfo = response?.data?.data?.attendance
           const updatedInfo = attendanceinfo.map((val,ind)=>{
-            const dateTime = new Date(val.created_at);
+            const dateTime = new Date(val.date);
             const month =  dateTime.toLocaleString('default', { month: 'long' });
             const day = dateTime.getDate();
             const weekday = dateTime.toLocaleDateString('default', { weekday: 'long' });
@@ -171,7 +172,7 @@ const handleSubmit = async(event) => {
         else{
             dispatch(setLoaderTrue())
         }
-    },[router])
+    },[navigate])
   const [activeTab, setActiveTab] = useState('tab1');
 
   const handleTabChange = (tab) => {
@@ -235,12 +236,12 @@ const handleSubmit = async(event) => {
                     </div>
                 </div>
                 {/* <div className=" page-header container " style={{display:"block"}}>
-                    <button type="button" onClick={()=>router.push("/enquiry/assigned-enquiry")} className="btn btn-outline-secondary  !text-[#467fcf]  position-relative mr-2 py-2 fs-14"> Assigned | {userData?.value?.data?.enq_counts?.remaining_count} </button>
-                    <button type="button" onClick={()=>router.push("/enquiry/ringing-enquiry")} className="btn btn-outline-secondary textwhite  !bg-[#28afd0] position-relative mr-2 py-2 fs-14"> Ringing | {userData?.value?.data?.enq_counts?.ringing} </button>
-                    <button type="button" onClick={()=>router.push("/enquiry/postponed-enquiry")} className="btn btn-outline-secondary !text-[#5eba00] position-relative mr-2 py-2 fs-14"> Postponed | {userData?.value?.data?.enq_counts?.postponed} </button>
-                    <button type="button" onClick={()=>router.push("/enquiry/not-intersted-enquiry")} className="btn btn-outline-secondary  !text-[#f66] position-relative mr-2 py-2 fs-14"> Not Intrested | {userData?.value?.data?.enq_counts?.notin}  </button>
-                    <button type="button" onClick={()=>router.push("/enquiry/not-todays-ringing-enquiry")} className="btn btn-outline-secondary !text-[#467fcf] position-relative mr-2 py-2 fs-14"> Total Ringing | {userData?.value?.data?.enq_counts?.t_ring}  </button>
-                    <button type="button" onClick={()=>router.push("/enquiry/not-todays-postponed-enquiry")} className="btn btn-outline-secondary  !text-[#ffc107] position-relative mr-2 py-2 fs-14"> Today Postponed | {userData?.value?.data?.enq_counts?.t_post} </button>
+                    <button type="button" onClick={()=>navigate("/enquiry/assigned-enquiry")} className="btn btn-outline-secondary  !text-[#467fcf]  position-relative mr-2 py-2 fs-14"> Assigned | {userData?.value?.data?.enq_counts?.remaining_count} </button>
+                    <button type="button" onClick={()=>navigate("/enquiry/ringing-enquiry")} className="btn btn-outline-secondary textwhite  !bg-[#28afd0] position-relative mr-2 py-2 fs-14"> Ringing | {userData?.value?.data?.enq_counts?.ringing} </button>
+                    <button type="button" onClick={()=>navigate("/enquiry/postponed-enquiry")} className="btn btn-outline-secondary !text-[#5eba00] position-relative mr-2 py-2 fs-14"> Postponed | {userData?.value?.data?.enq_counts?.postponed} </button>
+                    <button type="button" onClick={()=>navigate("/enquiry/not-intersted-enquiry")} className="btn btn-outline-secondary  !text-[#f66] position-relative mr-2 py-2 fs-14"> Not Intrested | {userData?.value?.data?.enq_counts?.notin}  </button>
+                    <button type="button" onClick={()=>navigate("/enquiry/not-todays-ringing-enquiry")} className="btn btn-outline-secondary !text-[#467fcf] position-relative mr-2 py-2 fs-14"> Total Ringing | {userData?.value?.data?.enq_counts?.t_ring}  </button>
+                    <button type="button" onClick={()=>navigate("/enquiry/not-todays-postponed-enquiry")} className="btn btn-outline-secondary  !text-[#ffc107] position-relative mr-2 py-2 fs-14"> Today Postponed | {userData?.value?.data?.enq_counts?.t_post} </button>
                 </div> */}
                 <div className="container">
                     <Card>
@@ -275,29 +276,32 @@ const handleSubmit = async(event) => {
           </div>
           {console.log(leaveReqData)}
           {activeTab === 'tab1' && (
-            
-            <Table striped bordered>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Day</th>
-                  <th>Login</th>
-                  <th>Logout</th>
-                </tr>
-              </thead>
-              <tbody>
-                {attendanceData.length >0 && attendanceData.map((val,ind)=>(
-                  <tr key = {ind}>
-                    <td>{val.monthDay}</td>
-                    <td>{val.weekday}</td>
-                    <td>{val.login?.split(" ")[1]}</td>
-                    <td>{val.logout?.split(" ")[1]}</td>
+            <div className='h-[45vh] overflow-auto'>
+              <Table striped bordered >
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Note</th>
+                    <th>Login</th>
+                    <th>Logout</th>
                   </tr>
-                ))}
+                </thead>
+                <tbody>
+                  {attendanceData?.length >0 && attendanceData.map((val,ind)=>(
+                    <tr key = {ind} >
+                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.monthDay}</td>
+                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.day}</td>
+                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.note}</td>
+                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.login?.split(" ")[1]}</td>
+                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.logout?.split(" ")[1]}</td>
+                    </tr>
+                  ))}
 
-                {/* Add more rows as needed */}
-              </tbody>
-            </Table>
+                  {/* Add more rows as needed */}
+                </tbody>
+              </Table>
+            </div>
           )}
           {activeTab === 'tab2' && (
             <div>
@@ -307,36 +311,38 @@ const handleSubmit = async(event) => {
           </div>
             {tab2Content === "leaves" && (
               <>
-              <Table striped bordered>
-              <thead>
-                <tr>
-                  <th>From date</th>
-                  <th>To Date</th>
-                  <th>Reason</th>
-                  <th>Description</th>
-                  <th>Created at</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})}
-              {leaveReqData.length >0 && leaveReqData.map((val,ind)=>(
-                  <tr key = {ind}>
-                    <td>{val.from_date}</td>
-                    <td>{val.to_date}</td>
-                    <td>{val.reason}</td>
-                    <td>{val.description}</td>
-                    <td>{new Date(val?.created_at).toLocaleDateString()}</td>
-                    <td className={`${ val.status == 0 ? "!text-orange-700	" : val.status == 1 ? "!text-teal-900	" : "!text-red-900"}}`}>{val.status == 0 ? "pending" : val.status == 1 ? "approved" : "rejected"}</td>
-                    <td  onClick={handleDeleteLeaveRequest}>{val.status == 0 ? <button id={`${val.id}-${val.staff_id}`} className='btn btn-primary-outline'>Delete</button>: ""}</td>
+                <div className='h-[45vh] overflow-auto'>
+                <Table striped bordered>
+                <thead>
+                  <tr>
+                    <th>From date</th>
+                    <th>To Date</th>
+                    <th>Reason</th>
+                    <th>Description</th>
+                    <th>Created at</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-                {/* Add more rows as needed */}
-              </tbody>
-            </Table>
-            <p className={`${deleteStatus.length >0 ? "!text-red-800":""}`}>{deleteStatus}</p>
-            <p className={`${successStatus.length >0 ? "!text-green-800":""}`}>{successStatus}</p>
+                </thead>
+                <tbody>
+                  {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})}
+                {leaveReqData?.length >0 && leaveReqData.map((val,ind)=>(
+                    <tr key = {ind}>
+                      <td>{val.from_date}</td>
+                      <td>{val.to_date}</td>
+                      <td>{val.reason}</td>
+                      <td>{val.description}</td>
+                      <td>{new Date(val?.created_at).toLocaleDateString()}</td>
+                      <td className={`${ val.status == 0 ? "!text-orange-700	" : val.status == 1 ? "!text-teal-900	" : "!text-red-900"}}`}>{val.status == 0 ? "pending" : val.status == 1 ? "approved" : "rejected"}</td>
+                      <td  onClick={handleDeleteLeaveRequest}>{val.status == 0 ? <button id={`${val.id}-${val.staff_id}`} className='btn btn-primary-outline'>Delete</button>: ""}</td>
+                    </tr>
+                  ))}
+                  {/* Add more rows as needed */}
+                </tbody>
+                </Table>
+                </div>
+                <p className={`${deleteStatus?.length >0 ? "!text-red-800":""}`}>{deleteStatus}</p>
+                <p className={`${successStatus?.length >0 ? "!text-green-800":""}`}>{successStatus}</p>
             </>
             )}
             {tab2Content === "apply leave" && (
@@ -376,8 +382,8 @@ const handleSubmit = async(event) => {
                                 </Form>
                               </Card.Body>
                               <Card.Footer>
-                                {success.length>0 && <p className='text-green-900' >{success}</p>}
-                                {error.length > 0 && error.map((er,ind)=>(
+                                {success?.length>0 && <p className='text-green-900' >{success}</p>}
+                                {error?.length > 0 && error.map((er,ind)=>(
                                   <p key={ind} className='text-red-900'>{er}</p>
                                 ))}
                                 <Button variant="primary" onClick={handleSubmit} block>Submit</Button>
@@ -388,27 +394,29 @@ const handleSubmit = async(event) => {
             </div>
           )}
           {activeTab === 'tab3' && (
-            <Table striped bordered>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>lockout</th>
-                  <th>Login</th>
-                  <th>Break time (in sec)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {breakTimeData.length>0 && breakTimeData.map((val,ind)=>(
-                  <tr key={ind}>
-                    <td>{val.date}</td>
-                    <td>{val.lock_out}</td>
-                    <td>{val.log_in}</td>
-                    <td>{val.break_time}</td>
+            <div className='h-[45vh] overflow-auto'>
+              <Table striped bordered>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>lockout</th>
+                    <th>Login</th>
+                    <th>Break time (in sec)</th>
                   </tr>
-                ))}
-                {/* Add more rows as needed */}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {breakTimeData.length>0 && breakTimeData.map((val,ind)=>(
+                    <tr key={ind}>
+                      <td>{val.date}</td>
+                      <td>{val.lock_out}</td>
+                      <td>{val.log_in}</td>
+                      <td>{val.break_time}</td>
+                    </tr>
+                  ))}
+                  {/* Add more rows as needed */}
+                </tbody>
+              </Table>
+            </div>
           )}
 
         </div>

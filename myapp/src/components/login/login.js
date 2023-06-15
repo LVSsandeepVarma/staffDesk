@@ -7,8 +7,10 @@ import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import loaderSlice, { setLoaderFalse, setLoaderTrue } from '../../slice/loaderSlice';
 import Loading from '../loader/loading';
+import { useNavigate } from 'react-router-dom';
 // login component
 export default function Login() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const loaderState = useSelector((state)=>state.loaderReducer.value)
     // const router = useRouter();
@@ -19,7 +21,6 @@ export default function Login() {
 
     useEffect(()=>{
         const credentials= localStorage?.getItem("saveCredentials")
-        console.log(credentials, "useEffect")
     },[])
     const initialValues=
     {
@@ -43,7 +44,7 @@ export default function Login() {
             const response= await axios.post("https://admin.tradingmaterials.com/api/staff/auth/login",{"email":values.email,"password":values.password})
             console.log(response.data?.token)
             sessionStorage.setItem("tmToken",response.data?.token);
-            // router.push("/dashboard")
+            navigate("/dashboard")
             dispatch(setLoaderTrue())
             setResponseError("")
 
@@ -56,7 +57,6 @@ export default function Login() {
             console.log("saved") // need to add tw token from api respomse
         }
         dispatch(setLoaderFalse())
-        console.log(values);
     };
     return (
         <main>

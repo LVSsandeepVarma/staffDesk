@@ -1,17 +1,17 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+// import { useParams } from 'next/navigation';
 import OtpInput from 'react-otp-input';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice";
-import { setHash } from '@/store/slice/passwordHashSlice';
-import { useRouter } from 'next/navigation';
+import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice";
+import { setHash } from '../../slice/passwordHashSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import Loading from '@/components/loader/loading';
+import Loading from '../loader/loading';
 
 export default function PasswordHash() {
-  const router = useRouter()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const loaderState = useSelector((state)=>state.loaderReducer.value)  
   const [responseError, setResponseError] = useState("")
@@ -19,7 +19,7 @@ export default function PasswordHash() {
     const params = useParams()
     const [otp, setOtp] = useState('');
 
-    // console.log(hash)
+    console.log(params)
     
     useEffect(()=>{
       const verifyHash = async()=>{
@@ -48,14 +48,15 @@ export default function PasswordHash() {
         const urlParameter = window.location.pathname
         const hash = urlParameter.substring(urlParameter.lastIndexOf('/') + 1);
         const response = await axios.post("https://admin.tradingmaterials.com/api/staff/verify/otp",{
-          hash: hash,
+          hash: params?.hash,
           otp:otp
         })
         console.log(response.data?.status)
         dispatch(setHash(hash))
-        if(response.data?.status){
-          router.push("/reset-password/new-password")
-        }
+        navigate("/new/password")
+        // if(response.data?.status){
+         
+        // }
         setResponseError("")
       }catch(err){
         console.log(err)

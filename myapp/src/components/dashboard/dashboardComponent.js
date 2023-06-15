@@ -1,4 +1,4 @@
-import Top_navbar from "@/components/navbar/horizontal_navabar";
+import Top_navbar from "../../components/navbar/horizontal_navabar";
 export default function DashboardContent(){
 
     return(

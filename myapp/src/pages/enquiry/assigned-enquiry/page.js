@@ -1,6 +1,6 @@
 "use client"
-import withAuth from "@/components/authRoutes";
-import Asigned_enquiry from "@/components/asignedEnquiry/asignedEnquiry";
+import withAuth from "../../../components/authRoutes";
+import Asigned_enquiry from "../../../components/asignedEnquiry/asignedEnquiry";
 
 
 const ProtectedFetchEnquiry = withAuth(Asigned_enquiry)

@@ -5,18 +5,19 @@ import { faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDispatch, useSelector } from "react-redux"
 import { Card } from "react-bootstrap"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import Loading from "../loader/loading"
 import { MDBContainer } from "mdbreact";
 import { Container, Row, Col } from 'react-bootstrap';
 import { BsClock, BsCalendar, BsCheck } from 'react-icons/bs';
 import {TbCircleDot} from "react-icons/tb"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Staff_History() {
     
-    const router = useRouter();
+    const router = useNavigate();
     // const dispatch = useDispatch()
     const userData = useSelector((state) => state?.userInfoReducer)
     const loader = useSelector((state) => state?.loaderReducer)

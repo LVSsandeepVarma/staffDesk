@@ -1,6 +1,6 @@
 "use client"
-import AttendancePage from "@/components/attendence/attendence";
-import withAuth from "@/components/authRoutes";
+import AttendancePage from "../../../components/attendence/attendence";
+import withAuth from "../../../components/authRoutes";
 
 const ProtectedStaffHistory = withAuth(AttendancePage)
 

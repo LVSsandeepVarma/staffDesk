@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import SuccessModal from './successModal';
+import { useNavigate } from 'react-router-dom';
 
 
 const RingingModal = (props) => {
-  const router = useRouter()
+  const navigate = useNavigate()
   const id = props.id
   const source = props.source;
   const show = props.show
@@ -42,7 +43,7 @@ const RingingModal = (props) => {
         })
       console.log(response)
       setShowSuccessModal(true)
-      router.push("/enquiry/ringing-enquiry#")
+      navigate("/enquiry/ringing-enquiry#")
       
       // window.location.reload()
       handleClose();

@@ -1,11 +1,12 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { Modal, ProgressBar } from 'react-bootstrap';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const TimedModal = ({ show, handleClose }) => {
-    const router = useRouter()
-  const [progress, setProgress] = useState(0);
+    const navigate = useNavigate()
+  const [progress, setProgress] = useState(60);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -22,9 +23,10 @@ const TimedModal = ({ show, handleClose }) => {
     return () => {
         
       clearInterval(timer);
-      router.push("/login")
+      
     };
-  }, [handleClose]);
+    
+  }, []);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -39,7 +41,9 @@ const TimedModal = ({ show, handleClose }) => {
           </>
         ) : (
           <p>Password reset successful!</p>
+          
         )}
+        <Navigate to={"/login"} />
       </Modal.Body>
     </Modal>
   );

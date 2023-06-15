@@ -15,6 +15,7 @@ import CommentsModal from '../modals/commentsModal';
 import EmailVerificationModal from '../modals/emailVerifiedModal';
 import emailVerification from '../verification/emailVerification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const PostponedTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -101,6 +102,21 @@ const PostponedTable = () => {
     setVerifyEmail(emailVerifyResponse)
   }
 
+  const handleRingingTransferModal=(id)=>{
+    setRingingEnquiryShowModal(true);
+    setId(id)
+  }
+  
+  const handlePostponedTransferModal = (id)=>{
+    setShow(true);
+    setId(id)
+  }
+  
+  const handleNotIntrestedTransferModal = (id)=>{
+    setNotIntrestedModalShow(true);
+    setId(id)
+  }
+
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
@@ -158,13 +174,13 @@ const PostponedTable = () => {
            <AiOutlineReload className="mr-2"/>
           </Dropdown.Item> */}
           <Dropdown.Divider />
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{setRingingEnquiryShowModal(true), setId(row.id)}} >
+          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleRingingTransferModal(row.id)}} >
             <CgPhone className="mr-2"/> Ringing
           </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center"  onClick={()=>{setShow(true), setId(row.id)}} >
+          <Dropdown.Item className="!flex justify-center"  onClick={()=>{handlePostponedTransferModal(row.id)}} >
            <BsCalendarPlus className="mr-2"/> Postponed
           </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{setNotIntrestedModalShow(true), setId(row.id)}}>
+          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleNotIntrestedTransferModal(row.id)}}>
            <TbPlugConnected className="mr-2"/> Not interested
           </Dropdown.Item>
         </Dropdown.Menu>

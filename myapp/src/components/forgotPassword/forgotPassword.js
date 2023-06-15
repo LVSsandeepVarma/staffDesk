@@ -3,16 +3,16 @@ import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useState } from 'react';
 import * as Yup from 'yup';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import loaderSlice, { setLoaderFalse, setLoaderTrue } from '@/store/slice/loaderSlice';
+import loaderSlice, { setLoaderFalse, setLoaderTrue } from '../../slice/loaderSlice';
 import Loading from '../loader/loading';
 import EmailModal from '../modals/emailModal';
 
 // login component
 export default function Forgot_Password() {
     const dispatch = useDispatch();
-    const router = useRouter();
+    // const router = useRouter();
     const [email,setEmail] = useState("");
     const [responseError, setResponseError] = useState("")
     const [disabled, setDisabled] = useState(false)

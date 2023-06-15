@@ -7,7 +7,7 @@ import {AiOutlineReload, AiOutlineCaretDown} from "react-icons/ai"
 import {CgPhone} from "react-icons/cg";
 import {BsCalendarPlus} from "react-icons/bs";
 import {TbPlugConnected} from "react-icons/tb"
-import PostponedModal from '../modals/postponedModal';
+import PostponedModal from '..//modals/postponedModal';
 import RingingModal from '../modals/ringingModal';
 import NotIntrestedModal from '../modals/notIntrestedModal';
 import CommentsModal from '../modals/commentsModal';
@@ -111,6 +111,22 @@ const AssignTable = () => {
   setVerifyEmail(emailVerifyResponse)
 }
 
+const handleRingingTransferModal=(id)=>{
+  setRingingEnquiryShowModal(true);
+  setId(id)
+}
+
+const handlePostponedTransferModal = (id)=>{
+  setShow(true);
+  setId(id)
+}
+
+const handleNotIntrestedTransferModal = (id)=>{
+  setNotIntrestedModalShow(true);
+  setId(id)
+}
+
+
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
@@ -163,13 +179,13 @@ const AssignTable = () => {
            <AiOutlineReload className="mr-2"  />
           </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{setRingingEnquiryShowModal(true), setId(row.id)}}>
+          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleRingingTransferModal(row.id)}}>
             <CgPhone className="mr-2"/> Ringing
           </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center" key={row.id} onClick={()=>{setShow(true), setId(row.id)}}>
+          <Dropdown.Item className="!flex justify-center" key={row.id} onClick={()=>{handlePostponedTransferModal(row.id)}}>
            <BsCalendarPlus  className="mr-2"/> Postponed
           </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{setNotIntrestedModalShow(true), setId(row.id)}}>
+          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleNotIntrestedTransferModal(row.id)}}>
            <TbPlugConnected className="mr-2"/> Not interested
           </Dropdown.Item>
         </Dropdown.Menu>

@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import Image from "next/image";
+import { useNavigate, useLocation } from 'react-router-dom';
 import '@mdi/font/css/materialdesignicons.min.css';
 import { Accordion } from "react-bootstrap";
 // import { MDBBadge } from 'mdb-react-ui-kit';
@@ -13,15 +13,15 @@ import { GrClose } from "react-icons/gr";
 import { FaUser, FaCog, FaEnvelope } from 'react-icons/fa';
 import axios from "axios";
 import { useDispatch,useSelector } from "react-redux";
-import { setUserInfo } from "@/store/slice/userInfoSlice";
-import { setLoaderFalse, setLoaderTrue } from "@/store/slice/loaderSlice";
-import { usePathname } from "next/navigation";
+import { setUserInfo } from "../../slice/userInfoSlice";
+import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice";
+// import { usePathname } from "next/navigation";
 import Loading from "../loader/loading";
 import DayOfWeekDropdown from "./myClientsDropDown";
 import CountdownTimer from "../screenLockCountdown/screenlockCountdown";
 export default function TopNavbar(){
-  const router = useRouter()
-  const pathname = usePathname()
+  const navigate = useNavigate()
+  const pathname = useLocation()
   console.log(pathname)
   const dispatch = useDispatch()
     const [isExpanded, setIsExpanded] = useState(false);
@@ -52,7 +52,7 @@ export default function TopNavbar(){
           if(response?.status){
             sessionStorage.removeItem("tmToken");
             
-            router.push("/login")
+            navigate("/login")
           }
         }catch(err){
 
@@ -62,12 +62,12 @@ export default function TopNavbar(){
       }
   useEffect(() => {
     dispatch(setLoaderTrue())
-    if(pathname.includes("staff")){
+    if(pathname.pathname.includes("staff")){
       setActivePage("staff")
-    }else if (pathname.includes("enquiry")){
+    }else if (pathname.pathname.includes("enquiry")){
       setActivePage("enquiry")
     }
-    else if(pathname.includes("staff")){
+    else if(pathname.pathname.includes("staff")){
       setActivePage("staff")
     }else{
       setActivePage("dashboard")
@@ -116,9 +116,9 @@ export default function TopNavbar(){
               Authorization : `Bearer ${token}`
             }
           })
-          consoleḷog(response?.data?.status)
+          console.log(response?.data?.status)
           if(response?.data?.status){
-            router.push("/locked")
+            navigate("/locked")
           }
           else{
             prompt("failed to lock")
@@ -142,7 +142,7 @@ export default function TopNavbar(){
                   <BiLockAlt className="text-white text-xl mr-2	" onClick={()=>{handleLockingScreen()}}/>
                   <AiOutlineBell className="text-white text-xl mr-2	" />
                   <p className="align-center text-white  m-0">Praveen</p>
-                  <Image src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
+                  <img src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
                   
                   <div className=" flex  ">
                     <div className="hidden lg:flex ">
@@ -181,13 +181,13 @@ export default function TopNavbar(){
                             <span className={`menu-title !pl-[5px] ${activePage == "enquiry" ? "nav_active":""} `}  >Enquiry</span> </Accordion.Header>
                           <Accordion.Body>
                             <ul className="submenu-item">
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/fetch")}>Fetch</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/assigned-enquiry")}>Assigned</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/ringing-enquiry")}>Ringing</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/postponed-enquiry")}>Postponed</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/not-intersted-enquiry")}>Not Intrested</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/not-todays-postponed-enquiry")}>Todays postponed</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>router.push("/enquiry/not-todays-ringing-enquiry")}>Todays ringing</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/fetch")}>Fetch</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/assigned-enquiry")}>Assigned</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/ringing-enquiry")}>Ringing</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/postponed-enquiry")}>Postponed</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-intersted-enquiry")}>Not Intrested</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-todays-postponed-enquiry")}>Todays postponed</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-todays-ringing-enquiry")}>Todays ringing</li>
                             </ul>
                           </Accordion.Body>
                         </Accordion.Item>
@@ -231,8 +231,8 @@ export default function TopNavbar(){
                             <span className={`menu-title !pl-[5px] ${activePage == "staff" ? "nav_active":""}`}  >Staff</span> </Accordion.Header>
                           <Accordion.Body>
                             <ul className="submenu-item">
-                              <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "history" ? "nav_active":""}`} onClick={()=>router.push("/staff/history")}>History</li>
-                              <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "attendance" ? "nav_active":""}`} onClick={()=>router.push("/staff/attendance")}>Attendance</li>
+                              <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "history" ? "nav_active":""}`} onClick={()=>navigate("/staff/history")}>History</li>
+                              <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "attendance" ? "nav_active":""}`} onClick={()=>navigate("/staff/attendance")}>Attendance</li>
                             </ul>
                           </Accordion.Body>
                         </Accordion.Item>
@@ -256,8 +256,8 @@ export default function TopNavbar(){
                     </li>
                 </ul>
                 <div className="w-full flex justify-end items-center">
-                  Login : 00:00 |  
-                  <span className="text-red-500"> &nbsp;Late: 00:00</span>
+                  Login : {userData?.value?.data?.login?.split(" ")[1]} |  
+                  <span className="text-red-500"> &nbsp;Late: {parseInt((userData?.value?.data?.late_login)/3600)<10 ? `0${parseInt((userData?.value?.data?.late_login)/3600)}`: parseInt((userData?.value?.data?.late_login)/3600)}:{parseInt((userData?.value?.data?.late_login)/60) <10 ? `0${parseInt((userData?.value?.data?.late_login)/60)}`: parseInt((userData?.value?.data?.late_login)/60)}:{(userData?.value?.data?.late_login)%60}</span>
                 </div>
                 
               </div>
