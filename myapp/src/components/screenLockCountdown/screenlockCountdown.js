@@ -53,7 +53,7 @@ const CountdownTimer = () => {
     };
 
     
-  }, [countdown]);
+  }, [countdown,setCountdown]);
 
 
 

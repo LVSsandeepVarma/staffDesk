@@ -19,6 +19,7 @@ import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice";
 import Loading from "../loader/loading";
 import DayOfWeekDropdown from "./myClientsDropDown";
 import CountdownTimer from "../screenLockCountdown/screenlockCountdown";
+import NavSearchResults from './navSearchResults';
 export default function TopNavbar(){
   const navigate = useNavigate()
   const pathname = useLocation()
@@ -30,6 +31,7 @@ export default function TopNavbar(){
   const [toggleBottomNavbar, setToggleBottomNavbar] = useState("Dashboard")
   const sidebarRef = useRef(null);
   const [activePage,setActivePage] = useState("dashboard")
+  const [showSearchRes,  setShowSearchRes] = useState(false)
   const leftSideBarRef = useRef(null)
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -151,6 +153,9 @@ export default function TopNavbar(){
                           < HiOutlineMagnifyingGlass className="mr-[10px]" />
                         </div>
                         <input type="text" className="form-control" placeholder="Search" aria-label="search" aria-describedby="search" />
+                        <div>
+                          {showSearchRes == true ? <NavSearchResults/> : ""}
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center !ml-[1rem]">
@@ -256,8 +261,8 @@ export default function TopNavbar(){
                     </li>
                 </ul>
                 <div className="w-full flex justify-end items-center">
-                  Login : {userData?.value?.data?.login?.split(" ")[1]} |  
-                  <span className="text-red-500"> &nbsp;Late: {parseInt((userData?.value?.data?.late_login)/3600)<10 ? `0${parseInt((userData?.value?.data?.late_login)/3600)}`: parseInt((userData?.value?.data?.late_login)/3600)}:{parseInt((userData?.value?.data?.late_login)/60) <10 ? `0${parseInt((userData?.value?.data?.late_login)/60)}`: parseInt((userData?.value?.data?.late_login)/60)}:{(userData?.value?.data?.late_login)%60}</span>
+                  <b>Login</b> : {userData?.value?.data?.login?.split(" ")[1]} |  
+                  <span className="text-red-500"> &nbsp; <b>Late</b>: {parseInt((userData?.value?.data?.late_login)/3600)<10 ? `0${parseInt((userData?.value?.data?.late_login)/3600)}`: parseInt((userData?.value?.data?.late_login)/3600)}:{parseInt((userData?.value?.data?.late_login)/60) <10 ? `0${parseInt((userData?.value?.data?.late_login)/60)}`: parseInt((userData?.value?.data?.late_login)/60)}:{(userData?.value?.data?.late_login)%60}</span>
                 </div>
                 
               </div>

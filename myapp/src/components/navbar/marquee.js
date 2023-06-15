@@ -7,7 +7,7 @@ import {RxCross2} from "react-icons/rx";
 import {BiDollar} from "react-icons/bi";
 export default function NavbarMarquee(){
     return(
-        <main className=" relative top-[63px] sm:top-[0px] container topmarquee">
+        <main className=" relative top-[63px] sm:top-[0px] container topmarquee !flex !items-center">
             <Marquee className="fixed container" autoFill={true} pauseOnHover={true} >
                 <p className=" mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(255,162,43,.1)]  rounded-full w-[2rem] h-[2rem]">
