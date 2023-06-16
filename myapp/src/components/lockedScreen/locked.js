@@ -85,7 +85,8 @@ export default function Locked() {
 
         }catch(error){
             console.log(error)
-            setResponseError(error?.response?.data?.message)
+            setResponseError(error?.response?.data?.message);
+            // setResponseError(error)
             dispatch(setLoaderTrue())
         }
         dispatch(setLoaderFalse())

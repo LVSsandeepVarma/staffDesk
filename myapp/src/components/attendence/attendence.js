@@ -206,7 +206,7 @@ const handleSubmit = async(event) => {
         }catch(err){
           setSuccessStatus("")
           setDeleteStatus(err?.response?.data?.message)
-          console.log(err)
+          console.log(err?.response?.data?.message)
         }
     }
     deleteLeaveRequest()

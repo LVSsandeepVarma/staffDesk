@@ -121,7 +121,7 @@ export default function Fetch_Enquiry(){
          </span>
          </a>
       </div>
-      <Modal show={showModal} onHide={handleModalClose} centered>
+      <Modal size="lg" show={showModal} onHide={handleModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Create Enquiry</Modal.Title>
         </Modal.Header>
@@ -134,61 +134,61 @@ export default function Fetch_Enquiry(){
                        <div className="form-group">
                           <label for="fname">First Name</label>
                           <Field type="text" id="fname" placeholder="Enter First Name..." className="form-control name" name="first_name"/>
-                          <ErrorMessage className='text-red-900' name="first_name" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="first_name" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-6">
                        <div className="form-group">
                           <label for="lname">Last Name</label>
                           <Field type="text" id="lname" placeholder="Enter Last Name..." className="form-control name" name="last_name"/>
-                          <ErrorMessage className='text-red-900' name="last_name" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="last_name" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-6">
                        <div className="form-group">
                           <label for="mob">Phone</label>
                           <Field id="mob"  placeholder="Enter Phone Number" className="form-control number" name="phone"/>
-                          <ErrorMessage className='text-red-900' name="phone" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="phone" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-6">
                        <div className="form-group">
                           <label for="mail">Email</label>
                           <Field id="mail" type="email" placeholder="Enter Email Address" className="form-control" name="email"/>
-                          <ErrorMessage className='text-red-900' name="email" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="email" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-6">
                        <div className="form-group">
                           <label for="add_1">Address 1</label>
                           <Field as="textarea" id="" cols="30" rows="2" className="form-control" placeholder="Address Line 1" name="add_1"></Field>
-                          <ErrorMessage className='text-red-900' name="add_1" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="add_1" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-6">
                        <div className="form-group">
                           <label for="add_1">Address 2</label>
                           <Field as="textarea" id="" cols="30" rows="2" className="form-control" placeholder="Address Line 2" name="add_2"></Field>
-                          <ErrorMessage className='text-red-900' name="add_2" component="div" />                       </div>
+                          <ErrorMessage className='text-red-900 !absolute' name="add_2" component="div" />                       </div>
                    </div>
                    <div className="col-12 col-md-3">
                        <div className="form-group">
                           <label for="cty">city</label>
                           <Field type="text" id="cty" className="form-control name" placeholder="Enter city" name="city"/>
-                          <ErrorMessage className='text-red-900' name="city" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="city" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-3">
                        <div className="form-group">
                           <label for="state">state</label>
                           <Field type="text" className="form-control name" placeholder="Enter state" name="state"/>
-                          <ErrorMessage className='text-red-900' name="state" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="state" component="div" />
                        </div>
                    </div>
                    <div className="col-12 col-md-3">
                        <div className="form-group">
 							<label for="cntry">country</label>
-							<Field as="select" className="form-control select2-show-search select2-hidden-accessible" data-placeholder="Choose one (with searchbox)" name="country" tabindex="-1" aria-hidden="true">
+							<Field as="select" className="form-control select2-show-search select2-hidden-accessible !bg-white" data-placeholder="Choose one (with searchbox)" name="country" tabindex="-1" aria-hidden="true">
 							   <option value=" " selected="">-Select country-</option>
 							    							        <option value="Afghanistan">Afghanistan</option>
 							    							        <option value="Aland Islands">Aland Islands</option>
@@ -467,21 +467,22 @@ export default function Fetch_Enquiry(){
 								<!--	<option value="TN">Tennessee</option>-->
 								<!--	<option value="WI">Wisconsin</option>-->
 								<!--</optgroup>--> */}
-							</Field>						
+							</Field>	
+							<ErrorMessage className='text-red-900 !absolute' name="country" component="div" />					
 						</div>
-                  <ErrorMessage className='text-red-900' name="country" component="div" />
+                  
                    </div>
                    <div className="col-12 col-md-3">
                        <div className="form-group">
                           <label for="pode">Pincode</label>
                           <Field type="text" id="pcode" className="form-control number" placeholder="Enter Pincode" name="zip"/>
-                          <ErrorMessage className='text-red-900' name="zip" component="div" />
+                          <ErrorMessage className='text-red-900 !absolute' name="zip" component="div" />
                        </div>
                    </div>
                </div>
                <div className="modal-footer">
-			   {errorMessage !== "" ? <p className='text-red-900'>{errorMessage}</p> : ""}
-            <button type="button" className="btn btn-warning py-1" data-dismiss="modal">Close</button>
+			   {errorMessage !== "" ? <p className='text-red-900 !absolute'>{errorMessage}</p> : ""}
+            <button type="button" className="btn btn-warning py-1" data-dismiss="modal" onClick={handleModalClose}>Close</button>
 			
             <button type="submit" className="btn btn-success subbtn py-1" value="" data-type="">Save </button>
          </div>
