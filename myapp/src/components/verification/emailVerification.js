@@ -6,7 +6,7 @@ import axios from "axios";
     let responseMessage 
     const verifyEmail = async()=>{
                     try{
-                        const token = sessionStorage.getItem("tmToken")
+                        const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
                             const response =await axios.get("https://admin.tradingmaterials.com/api/staff/verify-email?",{
                                 params:{
                                     client_id: id

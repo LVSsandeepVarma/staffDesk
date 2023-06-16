@@ -24,7 +24,7 @@ export default function Locked() {
     useEffect(()=>{
         const fetchUserInfo = async () =>{
             try{
-              const token = sessionStorage.getItem("tmToken")
+                const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
               const response = await axios.get("https://admin.tradingmaterials.com/api/staff/get-user-info", {
                 headers: {
                   Authorization: `Bearer ${token}`
@@ -42,7 +42,7 @@ export default function Locked() {
           })
           const lockUser = async()=>{
             try{
-                const token = sessionStorage.getItem("tmToken");
+                const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken");
                 const response = await axios.post("https://admin.tradingmaterials.com/api/staff/lockout", {}, {
                     headers:{
                         Authorization: `Bearer ${token}`
@@ -72,7 +72,7 @@ export default function Locked() {
         // Handle form submission
         dispatch(setLoaderTrue())
         try{
-            const token = sessionStorage.getItem("tmToken");
+            const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken");
             const response= await axios.post("https://admin.tradingmaterials.com/api/staff/unlock",{"password":values.password},{
                 headers:{
                     Authorization: `Bearer ${token}`

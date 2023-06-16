@@ -14,7 +14,7 @@ const FetchTable = () => {
   const [filteredTable, setFilteredTable] = useState([]);
   useEffect(()=>{
     // convert timestamp to time format
-const tabledata = data?.value?.data?.assigned_new;
+const tabledata = data?.value?.data?.new_enqs;
 const updatedTableData = tabledata.map( row=>{
   const timestamp = row.created_at;
   const date = new Date(timestamp)

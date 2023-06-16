@@ -109,6 +109,14 @@ body {
   margin-bottom: 0px!important;
 }
 
+.optionListContainer{
+  position: absolute !important;
+}
+.multiSelectContainer ul{
+  height: 16vh;
+  overflow-y: scroll;
+}
+
 .modal-backdrop {
   opacity: 0.5; /* Adjust the opacity as desired */
   background-color: #000; /* Adjust the color as desired */

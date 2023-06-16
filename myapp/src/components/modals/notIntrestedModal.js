@@ -27,7 +27,7 @@ const NotIntrestedModal = (props) => {
         e.preventDefault();
         // Handle form submission
         try {
-            const token = sessionStorage.getItem("tmToken")
+            const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
             const response = await axios.post("https://admin.tradingmaterials.com/api/staff/move-enquiry", {
                 client_id: id,
                 source: source,

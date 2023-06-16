@@ -497,7 +497,7 @@ export default function Fetch_Enquiry(){
          </div>
          <div className="container">
          <button type="button" className="btn btn-outline-info position-relative py-2 fs-14"> Remaining 
-		 <span className="position-absolute start-100 translate-middle badge rounded-pill bg-danger fs-10" id="count">{userData?.value?.data?.enq_counts?.remaining_count} </span> 
+		 <span className="position-absolute start-100 translate-middle badge rounded-pill bg-danger fs-10" id="count">{userData?.value?.data?.staff?.enqlimit} </span> 
 		 </button>
          </div>
          <div className=" mt-2 container">

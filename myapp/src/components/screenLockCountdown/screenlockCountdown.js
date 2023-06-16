@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Card, Modal, Button } from 'react-bootstrap';
 // import { useRouter } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const CountdownTimer = () => {
+  const userData  =  useSelector((state) => state?.userInfoReducer)
   const navigate = useNavigate()
-  const [countdown, setCountdown] = useState(600);
+  const [countdown, setCountdown] = useState(parseInt(userData?.value?.data?.staff_screen_lock_time) *60 || 660);
   const [showModal, setShowModal] = useState(false);
   const [lockStatus, setLockStatus] = useState("lock");
   const [userInfo,  setUserInfo] = useState()
@@ -24,11 +26,14 @@ const CountdownTimer = () => {
     }
     if( countdown >=300){
       const element = document.getElementById("blinkElement");
-      element.style.color = "green"
+      element.style.color = "green ";
+      element.style.animation="none"
+
     }
     else if(countdown <=300 && countdown >=10){
       const element = document.getElementById("blinkElement");
-      element.style.color = "orange"
+      element.style.color = "orange ";
+      element.style.animation="none"
     }
     else if(countdown <= 10 && countdown !=0){
         blinkInterval = setInterval(()=>{
@@ -68,7 +73,7 @@ const CountdownTimer = () => {
   };
 
   const handleContinue = () => {
-    setCountdown(600);
+    setCountdown(parseInt(userData?.value?.data?.staff_screen_lock_time) *60 || 660);
     setShowModal(false);
     setLockStatus("continue")
   };

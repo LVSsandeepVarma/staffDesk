@@ -28,7 +28,7 @@ export default function Staff_History() {
     useEffect(()=>{
       const fetchActivyData = async()=>{
         try{
-          const token  =sessionStorage.getItem("tmToken");
+          const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken");
         const response =await axios.get(" https://admin.tradingmaterials.com/api/staff/activity", {
           headers :{
             Authorization: `Bearer ${token}`
@@ -104,7 +104,7 @@ export default function Staff_History() {
                                       </div>
                                         <div className="flex ">
                                           <BsClock className="clock-icon" />
-                                          <p className="time">11/02/1123</p>
+                                          <p className="time">{enq?.updated_at?.split("T")[0]}</p>
                           
                                       </div>
                                     </div>

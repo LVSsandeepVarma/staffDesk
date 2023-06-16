@@ -20,10 +20,10 @@ import Loading from "../loader/loading";
 import DayOfWeekDropdown from "./myClientsDropDown";
 import CountdownTimer from "../screenLockCountdown/screenlockCountdown";
 import NavSearchResults from './navSearchResults';
+import ErrorTimedModal from '../modals/errorModal';
 export default function TopNavbar(){
   const navigate = useNavigate()
   const pathname = useLocation()
-  console.log(pathname)
   const dispatch = useDispatch()
     const [isExpanded, setIsExpanded] = useState(false);
   const [isLeftBarExpanded, setIsLeftBarExpanded] = useState(false);
@@ -31,20 +31,26 @@ export default function TopNavbar(){
   const [toggleBottomNavbar, setToggleBottomNavbar] = useState("Dashboard")
   const sidebarRef = useRef(null);
   const [activePage,setActivePage] = useState("dashboard")
-  const [showSearchRes,  setShowSearchRes] = useState(false)
+  const [showSearchRes,  setShowSearchRes] = useState(false);
+  const [showTimedErrorModal, setShowTimedErrorModal] = useState(false);
   const leftSideBarRef = useRef(null)
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
     setActiveTab("Profile")
   };
+
+  const handleClose = ()=>{
+      setShowTimedErrorModal(false)
+  }
   const loaderState = useSelector((state) => state?.loaderReducer)
 
   const userData = useSelector((state) => state?.userInfoReducer)
+
       // logout functionality
       const  handleSignOut =  async()=>{
         try{
-          const token = sessionStorage.getItem("tmToken")
-          console.log(token)
+          const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
+          console.log(token, "token")
           const response = await axios.post("https://admin.tradingmaterials.com/api/staff/auth/logout",{},{
             headers: {
               Authorization: `Bearer ${token}`
@@ -53,11 +59,12 @@ export default function TopNavbar(){
           console.log(response)
           if(response?.status){
             sessionStorage.removeItem("tmToken");
+            localStorage.removeItem("tmToken")
             
             navigate("/login")
           }
         }catch(err){
-
+          setShowTimedErrorModal(true)
           console.log("log out failed", err)
         }
 
@@ -88,7 +95,8 @@ export default function TopNavbar(){
     // for updateing userinfo
     const fetchUserInfo = async () =>{
       try{
-        const token = sessionStorage.getItem("tmToken")
+        const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
+        console.log(token)
         const response = await axios.get("https://admin.tradingmaterials.com/api/staff/get-user-info", {
           headers: {
             Authorization: `Bearer ${token}`
@@ -97,6 +105,7 @@ export default function TopNavbar(){
         console.log(response?.data)
         dispatch(setUserInfo(response?.data))
       }catch(error){
+        navigate("/login")
         console.error(error)
       }
     }
@@ -112,7 +121,7 @@ export default function TopNavbar(){
   }, []);
       const handleLockingScreen = async()=>{
         try{
-          const token = sessionStorage.getItem("tmToken");
+          const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken");
           const response = await axios.post("https://admin.tradingmaterials.com/api/staff/lockout", {},{
             headers:{
               Authorization : `Bearer ${token}`
@@ -132,18 +141,19 @@ export default function TopNavbar(){
       return(
         <>
         {loaderState.value == true ? <Loading/> : ""}
+        {/* <ErrorTimedModal show={showTimedErrorModal} handleClose={handleClose}/> */}
         <div className="horizontal-menu">
             <nav className="navbar top-navbar col-lg-12 col-12 p-0 bg-[#25378b] h-[auto] ">
               <div className="container md:row" >
                 <div className="text-start navbar-brand-wrapper d-flex align-items-center content-start col-lg-4">
                   <a className="navbar-brand brand-logo" href="/"><img src="/images/brandWhite.png" alt="logo" /></a>
-                  <a className="navbar-brand navbar-brand-logo brand-logo-mini" href="/"><img src="/images/brandWhite.png" alt="brand logo" /></a>
+                  <a className="navbar-brand navbar-brand-logo brand-logo-mini" href="/"><img src="/images/brandWhite.png" alt="brand logo" style={{width: "auto"}}/></a>
                   <DayOfWeekDropdown/>
                 </div>
                 <div className="navbar-menu-wrapper d-flex align-items-center justify-end !grow-0	" style={{width: "auto"}}>
-                  <BiLockAlt className="text-white text-xl mr-2	" onClick={()=>{handleLockingScreen()}}/>
+                  <BiLockAlt className="text-white text-xl mr-2	cursor-pointer" onClick={()=>{handleLockingScreen()}}/>
                   <AiOutlineBell className="text-white text-xl mr-2	" />
-                  <p className="align-center text-white  m-0">Praveen</p>
+                  <p className="align-center text-white  m-0">{userData?.value?.data?.staff?.name}</p>
                   <img src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
                   
                   <div className=" flex  ">

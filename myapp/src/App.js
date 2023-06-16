@@ -16,6 +16,7 @@ import NewPassword from './pages/reset-password/new-password/page';
 import OTP from './pages/reset-password/hash/page';
 import StaffAttendance from './pages/staff/attendance/page';
 import StaffHistory from './pages/staff/history/page';
+import Products from './components/EnquiryCompleted/products';
 
 
 
@@ -40,6 +41,8 @@ function App() {
             <Route path="/locked" element={<LockedScreen/>}></Route>
             <Route path="/staff/attendance" element={<StaffAttendance/>}></Route>
             <Route path="staff/history" element={<StaffHistory/>}></Route>
+            {/* not protected route */}
+            <Route path='/staff/enquiry-completed' element={<Products/>}></Route>
           </Routes>
         </BrowserRouter>
   );

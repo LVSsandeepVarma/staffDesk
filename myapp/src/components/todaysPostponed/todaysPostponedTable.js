@@ -32,7 +32,7 @@ const TodaysPostponedTable = () => {
     useEffect(()=>{
         const fetchUserInfo = async () =>{
             try{
-              const token = sessionStorage.getItem("tmToken")
+              const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
               const response = await axios.get("https://admin.tradingmaterials.com/api/staff/enq-by-type?", {
                 params: {
                     type: 'POSTPONED'

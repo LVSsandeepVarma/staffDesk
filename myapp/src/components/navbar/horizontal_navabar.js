@@ -1,14 +1,6 @@
 "use client"
-// import Image from "next/image";
-// import { AiOutlineBell } from "react-icons/ai";
-// import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
-// import { FaUser, FaCog, FaEnvelope } from 'react-icons/fa';
-// import { GrClose } from "react-icons/gr"
-// import { BsThreeDots } from "react-icons/bs"
 import { useState, useEffect, useRef } from "react";
-// import Head from "next/head";
-// import '@mdi/font/css/materialdesignicons.min.css';
-
+import { useSelector } from "react-redux";
 import NavbarMarquee from "./marquee";
 import axios from "axios";
 import DashboardData from "../dashboard/dashboardCarousel";
@@ -19,6 +11,7 @@ export default function Top_navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("Profile");
   const sidebarRef = useRef(null);
+  const userData = useSelector((state)=>state?.userInfoReducer)
 
 
 
@@ -40,7 +33,7 @@ export default function Top_navbar() {
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-sm-6 mb-4 mb-xl-0">
-                      <h3>Congrats Edwin!</h3>
+                      <h3>Congrats {userData?.value?.data?.staff?.username !="" ? userData?.value?.data?.staff?.username : "User"}!</h3>
                       <h6 className="fw-normal mb-0 text-muted">You have done 57.6% more sales today.</h6>
                     </div>
                     <div className="col-sm-6">

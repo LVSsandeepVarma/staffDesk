@@ -47,7 +47,7 @@ export default function Login() {
         try{
             const response= await axios.post("https://admin.tradingmaterials.com/api/staff/auth/login",{"email":values.email,"password":values.password})
             console.log(response.data?.token)
-            sessionStorage.setItem("tmToken",response.data?.token);
+            localStorage.setItem("tmToken",response.data?.token);
             navigate("/dashboard")
             dispatch(setLoaderTrue())
             setResponseError("")
@@ -56,6 +56,11 @@ export default function Login() {
                 console.log("saved")    
                 localStorage.setItem("tmToken", response.data?.token)        
                 // need to add tw token from api respomse
+            }else{
+                let expireToken;
+                expireToken = setInterval(()=>{
+                    localStorage.removeItem("tmToken")
+                }, 7200000)
             }
 
         }catch(error){
