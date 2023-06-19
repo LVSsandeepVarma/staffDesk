@@ -39,67 +39,67 @@ function CommentsModal(props) {
           <Card.Body className='!max-h-[60vh]  !overflow-y-scroll'>
             <Card.Title><b>Destination :</b>Not Interested</Card.Title>
             <Card.Text>
-              {data?.length &&  data[0]?.map((enq,ind)=>(
+              {data?.length  ? (data[0]?.map((enq,ind)=>(
                 // <p>{ind}</p>
                 <div key={`enquiry-${ind}`} className="timeline-item !8903233335 !max-h-[25rem]  !w-[100%] sm: w-[20rem] w-[16rem] sm: w-[18rem] overflow-y-scroll ">
                 <div className="timeline-icon ml-5">
                   <TbCircleDot />
                 </div>
-                <div className="timeline-content ml-15">
+                <div className="timeline-content ml-15 w-[100%]">
                   <div className="ml-5">
                     <div >
                     <p><b>Source:</b> {enq?.source}</p>
-                       <span className='!block text-truncate' onMouseOver={()=>handleShowModal(enq?.description)} style={{maxWidth:"150px"}}>{enq?.description}</span>
+                       <span className='!block text-truncate !max-w-[200px] sm:!max-w-[300px] md:!max-w-[300px] lg:!max-w-[600px]' onMouseOver={()=>handleShowModal(enq?.description)} style={{maxWidth:"600px"}}>{enq?.description}</span>
                       {/* </p> */}
                     </div>
-                      <div className="flex ">
+                      <div className="flex items-center justify-end  mr-5">
                         <BsClock className="clock-icon" />
                         <p className="time">{enq?.updated_at?.split("T")[0]}</p>
         
                     </div>
                   </div>
                 </div>
-              </div>
-              ))}
+              </div>)
+              )) : <p className='text-red-500 mb-3'>No Comments Yet</p>}
             </Card.Text>
             <Card.Title><b>Destination :</b>Postponed</Card.Title>
             <Card.Text>
-              {data?.length && data[1]?.map((enq,ind)=>(
+              {data?.length ?  (data[1]?.map((enq,ind)=>(
                 // <p>{ind}</p>
                 <div key={`enquiry-${ind}`} className="timeline-item !8903233335 !max-h-[25rem]  !w-[100%] sm: w-[20rem] w-[16rem] sm: w-[18rem] overflow-y-scroll ">
                 <div className="timeline-icon ml-5">
                   <TbCircleDot />
                 </div>
-                <div className="timeline-content ml-15">
+                <div className="timeline-content ml-15  w-[100%]">
                   <div className="ml-5">
                     <div >
                       <p><b>Source:</b> {enq?.source}</p>
-                       <span className='!block text-truncate' onMouseOver={()=>handleShowModal(enq?.description)} style={{maxWidth:"150px"}}>{enq?.description}</span>
+                       <span className='!block text-truncate !max-w-[200px] sm:!max-w-[300px] md:!max-w-[300px] lg:!max-w-[600px]' onMouseOver={()=>handleShowModal(enq?.description)}>{enq?.description}</span>
                     </div>
-                      <div className="flex ">
+                      <div className="flex items-center justify-end  mr-5 ">
                         <BsClock className="clock-icon" />
                         <p className="time">{enq?.date?.split(" ")[0]}</p>
                     </div>
                   </div>
                 </div>
               </div>
-              ))}
+              ))):<p className='text-red-500 mb-3'>No Comments Yet</p>}
             </Card.Text>
             <Card.Title><b>Destination :</b>Ringing</Card.Title>
             <Card.Text>
-              {data?.length && data[2]?.map((enq,ind)=>(
+              {data?.length ? (data[2]?.map((enq,ind)=>(
                 // <p>{ind}</p>
                 <div key={`enquiry-${ind}`} className="timeline-item !8903233335 !max-h-[25rem]  !w-[100%] sm: w-[20rem] w-[16rem] sm: w-[18rem] overflow-y-scroll ">
                 <div className="timeline-icon ml-5">
                   <TbCircleDot />
                 </div>
-                <div className="timeline-content ml-15">
+                <div className="timeline-content ml-15 w-[100%]">
                   <div className="ml-5">
                     <div >
                     <p><b>Source:</b> {enq?.source}</p>
-                       <span className='!block text-truncate' onMouseOver={()=>handleShowModal(enq?.description)} style={{maxWidth:"150px"}}>{enq?.description}</span>
+                       <p className='!block text-truncate !max-w-[200px] sm:!max-w-[300px] md:!max-w-[300px] lg:!max-w-[600px]' onMouseOver={()=>handleShowModal(enq?.description)} >{enq?.description}</p>
                     </div>
-                      <div className="flex ">
+                      <div className="flex items-center justify-end  mr-5 ">
                         <BsClock className="clock-icon" />
                         <p className="time">{enq?.updated_at?.split("T")[0]}</p>
         
@@ -107,7 +107,7 @@ function CommentsModal(props) {
                   </div>
                 </div>
               </div>
-              ))}
+              ))):<p className='text-red-500 mb-3'>No Comments Yet</p>}
             </Card.Text>
           </Card.Body>
         </Card>

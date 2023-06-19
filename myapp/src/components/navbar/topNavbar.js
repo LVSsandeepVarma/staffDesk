@@ -21,6 +21,8 @@ import DayOfWeekDropdown from "./mySalesDropDown";
 import CountdownTimer from "../screenLockCountdown/screenlockCountdown";
 import NavSearchResults from './navSearchResults';
 import ErrorTimedModal from '../modals/errorModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 export default function TopNavbar(){
   const navigate = useNavigate()
   const pathname = useLocation()
@@ -162,7 +164,8 @@ export default function TopNavbar(){
                         {/* <div className="absolute flex h-full justify-end	 items-center	">
                           < HiOutlineMagnifyingGlass className="mr-[20px]" />
                         </div> */}
-                        <input type="search" className="form-control" placeholder="Search" aria-label="search" aria-describedby="search" style={{backgroundImage: "/images/searchIcon.png"}} />
+                        <input  className="form-control" placeholder="Search" aria-label="search" aria-describedby="search" style={{backgroundImage: "/images/searchIcon.png"}} />
+                        <FontAwesomeIcon icon={faSearch} className='search-icon'/>
                         <div>
                           {showSearchRes == true ? <NavSearchResults/> : ""}
                         </div>
@@ -183,7 +186,7 @@ export default function TopNavbar(){
             
             <nav className={` ${toggleBottomNavbar == true ? "bottom-navbar header-toggled" : "!hidden sm:!block"} bottom-navbar header-toggled`}>
               <div className="container !flex">
-                <ul className="nav  page-navigation !justify-start	">
+                <ul className="!block sm:!flex nav  page-navigation !justify-start	">
                   <li className="nav-item">
                     <a className={`nav-link ${activePage == "dashboard" ? "nav_active":""}`} href="/dashboard" >
                       <i className={`mdi mdi-shield-check menu-icon ${activePage == "dashboard" ? "nav_active":""}`}></i>
@@ -197,15 +200,17 @@ export default function TopNavbar(){
                           <Accordion.Header className="menu-title !text-xs/[1rem] pl-[5px]	"><i className="mdi mdi-view-headline menu-icon"></i>
                             <span className={`menu-title !pl-[5px] ${activePage == "enquiry" ? "nav_active":""} `}  >Enquiry</span> </Accordion.Header>
                           <Accordion.Body>
-                            <ul className="submenu-item">
+                            <div className='submenu'>
+                            <ul className="!p-[0]">
                               <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/fetch")}>Fetch</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/assigned-enquiry")}>Assigned</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/ringing-enquiry")}>Ringing</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/postponed-enquiry")}>Postponed</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-intersted-enquiry")}>Not Intrested</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-todays-postponed-enquiry")}>Todays postponed</li>
-                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-todays-ringing-enquiry")}>Todays ringing</li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/assigned-enquiry")}>Assigned <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.new} </span></li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/ringing-enquiry")}>Ringing <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.ringing}</span></li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/postponed-enquiry")}>Postponed <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.postponed}</span></li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-intersted-enquiry")}>Not Intrested <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.notin}</span></li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-todays-postponed-enquiry")}>Todays postponed  <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.t_post}</span></li>
+                              <li className="nav-item !text-[#686868] cursor-pointer" onClick={()=>navigate("/enquiry/not-todays-ringing-enquiry")}>Todays ringing <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.t_ring}</span></li>
                             </ul>
+                            </div>
                           </Accordion.Body>
                         </Accordion.Item>
                       </Accordion>
@@ -247,7 +252,7 @@ export default function TopNavbar(){
                           <Accordion.Header className={`menu-title !text-xs/[1rem] pl-[5px] ${activePage == "staff" ? "nav_active":""}	`}><i className={`mdi mdi-view-headline menu-icon ${activePage == "staff" ? "nav_active":""}`}></i>
                             <span className={`menu-title !pl-[5px] ${activePage == "staff" ? "nav_active":""}`}  >Staff</span> </Accordion.Header>
                           <Accordion.Body>
-                            <ul className="submenu-item">
+                            <ul className="submenu-item !p-[0]">
                               <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "history" ? "nav_active":""}`} onClick={()=>navigate("/staff/history")}>History</li>
                               <li className={`nav-item !text-[#686868] cursor-pointer ${activePage == "attendance" ? "nav_active":""}`} onClick={()=>navigate("/staff/attendance")}>Attendance</li>
                             </ul>
@@ -272,7 +277,7 @@ export default function TopNavbar(){
                     </div>
                     </li>
                 </ul>
-                <div className="w-full flex justify-end items-center">
+                <div className="w-full contents  md:!flex justify-end items-center">
                   <span className=''><b>Login</b> : {userData?.value?.data?.login?.split(" ")[1]} | </span> 
                   <span className="text-red-500"> &nbsp; <b>Late</b>: {parseInt((userData?.value?.data?.late_login)/3600)<10 ? `0${parseInt((userData?.value?.data?.late_login)/3600)}`: parseInt((userData?.value?.data?.late_login)/3600)}:{parseInt((userData?.value?.data?.late_login)/60) <10 ? `0${parseInt((userData?.value?.data?.late_login)/60)}`: parseInt((userData?.value?.data?.late_login)/60)}:{(userData?.value?.data?.late_login)%60}</span>
                 </div>

@@ -15,7 +15,7 @@ import CommentsModal from '../modals/commentsModal';
 import EmailVerificationModal from '../modals/emailVerifiedModal';
 import emailVerification from '../verification/emailVerification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const PostponedTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -24,9 +24,12 @@ const PostponedTable = () => {
     const [show, setShow] = useState(false);
     const [ringingEnquiryModalShow, setRingingEnquiryShowModal] = useState(false);
     const [notIntrestedModalShow, setNotIntrestedModalShow] = useState(false);
-    const [showCommetnsModal, setShowCommentsModal] = useState(false);
+    // const [showCommetnsModal, setShowCommentsModal] = useState(false);
     const [verifyEmail, setVerifyEmail] = useState()
-    const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false)
+    const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false);
+    const [showCommetnsModal, setShowCommentsModal] = useState(false);
+    const [clientID, setClientID] = useState();
+    const [commentsArr, setCommentsArr] = useState([])
 
 
     const [id, setId] = useState("")
@@ -117,6 +120,30 @@ const PostponedTable = () => {
     setId(id)
   }
 
+  const handleCommentModalDispaly =(id)=>{
+    setShowCommentsModal(true)
+    setClientID(id)
+    const fetchEnquiryComments=async()=>{
+      try{
+        const token = localStorage.getItem("tmToken");
+        const response = await axios.get(`https://admin.tradingmaterials.com/api/staff/get-comments?client_id=${id}`,{
+          headers:{Authorization: `Bearer ${token}`}
+        })
+        console.log(response?.data?.data?.notin_comments)
+        let comments =[[],[],[]];
+        comments[0].push(...response?.data?.data?.notin_comments)
+        comments[1].push(...response?.data?.data?.post_comments)
+        comments[2].push(...response?.data?.data?.ring_comments)
+        setCommentsArr([...comments])
+
+      }catch(err){
+        console.log(err)
+      }
+    }
+    
+    fetchEnquiryComments()
+  }
+
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
@@ -145,6 +172,7 @@ const PostponedTable = () => {
             <th>Phone</th>
             <th>MODIFIED DATE</th>
             <th>ACTION</th>
+            <th></th>
           </tr>
         </thead>
         {currentData?.length >0 ? (<tbody>
@@ -186,6 +214,13 @@ const PostponedTable = () => {
         </Dropdown.Menu>
       </Dropdown>
     </ButtonGroup>
+                
+            </td>
+            <td > 
+                <div className='!flex items-center justify-center' onClick={()=>handleCommentModalDispaly(row?.id)}>
+                    <FontAwesomeIcon className='mr-2' color="grey" icon={faComment} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
+                    <FontAwesomeIcon color="#25378b" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
+                </div>
                 
             </td>
             </tr>

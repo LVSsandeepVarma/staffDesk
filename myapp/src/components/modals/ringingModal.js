@@ -16,7 +16,7 @@ const RingingModal = (props) => {
   const [textareaValue, setTextareaValue] = useState('');
   const [dateValue, setDateValue] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-
+  const [errorMsg, setErrorMsg] = useState("")
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleTextareaChange = (e) => setTextareaValue(e.target.value);
@@ -41,14 +41,22 @@ const RingingModal = (props) => {
             Authorization: `Bearer ${token}`
           }
         })
-      console.log(response)
-      setShowSuccessModal(true)
-      navigate("/enquiry/ringing-enquiry#")
+      console.log(response,response?.data?.status)
+      if(response?.data?.status){
+        setShowSuccessModal(true)
+        navigate("/enquiry/ringing-enquiry#");
+        handleClose();
+      }else{
+        console.log(response?.data?.message)
+        setErrorMsg(response?.data?.message)
+      }
+
       
       // window.location.reload()
-      handleClose();
+     
     } catch (error) {
       console.log("error", error)
+      setErrorMsg(error?.data?.message)
     }
 
   };
@@ -67,9 +75,10 @@ const RingingModal = (props) => {
             </Form.Group>
             <Form.Group controlId="dateInput">
               <Form.Label>Date</Form.Label>
-              <Form.Control type="date" value={dateValue} onChange={handleDateChange} />
+              <Form.Control type="date" min={new Date().toISOString().split('T')[0]} value={dateValue} onChange={handleDateChange} />
             </Form.Group>
-            <Button className='mt-[20px mb-[20px' variant="primary" type="submit">
+            {errorMsg !="" ? <p className='text-red-900'>{errorMsg}</p>: ""}
+            <Button className='mt-[20px] mb-[20px]' variant="primary" type="submit">
               Submit
             </Button>
           </Form>

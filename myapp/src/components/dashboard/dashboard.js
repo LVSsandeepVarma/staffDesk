@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import DashboardData from "./dashboardCarousel";
 
 export default function DashboardMainComponent(){
-  const [greetUser, setGreetUser] = useState("Good morning")
+  const [greetUser, setGreetUser] = useState("Good Morning")
   useEffect(()=>{
     function updateGreeting() {
       var currentTime = new Date();
@@ -10,13 +10,13 @@ export default function DashboardMainComponent(){
       var greeting;
 
       if (currentHour < 12) {
-        greeting = "Good morning";
+        greeting = "Good Morning";
       } else if (currentHour < 18) {
-        greeting = "Good afternoon";
+        greeting = "Good Afternoon";
       } else if (currentHour < 22) {
-        greeting = "Good evening";
+        greeting = "Good Evening";
       } else {
-        greeting = "Good night";
+        greeting = "Good Night";
       }
       return greeting
     }
@@ -39,7 +39,7 @@ export default function DashboardMainComponent(){
                       <div className="d-flex align-items-center justify-content-end">
                         <div className="border-right-dark pe-4 mb-3 mb-xl-0 d-xl-block d-none">
                           <p className="text-muted">Today</p>
-                          <h6 className="font-weight-medium text-muted mb-0">23 Aug 2019</h6>
+                          <h6 className="font-weight-medium text-muted mb-0">{new Date(date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</h6>
                         </div>
                         <div className="pe-4 ps-4 mb-3 mb-xl-0 d-xl-block d-none">
                           <p className="text-muted">Category</p>
@@ -49,7 +49,7 @@ export default function DashboardMainComponent(){
                           <button type="button" className="btn btn-success btn-icon me-2"><i className="mdi mdi-filter-variant"></i></button>
                         </div>
                         <div className="pe-1 mb-3 mb-xl-0">
-                          <button type="button" className="btn btn-success btn-icon me-2"><i className="mdi mdi-refresh"></i></button>
+                          <button type="button" className="btn btn-success btn-icon me-2" onClick={window.location.reload()} ><i className="mdi mdi-refresh"></i></button>
                         </div>
                         <div className="mb-3 mb-xl-0">
                           <div className="btn-group dropdown">

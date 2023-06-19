@@ -15,7 +15,7 @@ import CommentsModal from '../modals/commentsModal';
 import EmailVerificationModal from '../modals/emailVerifiedModal';
 import emailVerification from '../verification/emailVerification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const PostponedTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -24,12 +24,13 @@ const PostponedTable = () => {
     const [show, setShow] = useState(false);
     const [ringingEnquiryModalShow, setRingingEnquiryShowModal] = useState(false);
     const [notIntrestedModalShow, setNotIntrestedModalShow] = useState(false);
-    const [showCommetnsModal, setShowCommentsModal] = useState(false);
+    // const [showCommetnsModal, setShowCommentsModal] = useState(false);
     const [verifyEmail, setVerifyEmail] = useState()
     const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false)
-
-
-    const [id, setId] = useState("")
+    const [id, setId] = useState("");
+    const [showCommetnsModal, setShowCommentsModal] = useState(false);
+    const [clientID, setClientID] = useState();
+    const [commentsArr, setCommentsArr] = useState([])
 
     useEffect(()=>{
         const fetchUserInfo = async () =>{
@@ -95,6 +96,7 @@ const PostponedTable = () => {
   }
 
   async function handleEmailverification(id){
+    console.log(id)
     setId(id)
     const emailVerifyResponse  =await emailVerification(id)
     setShowEmailVerifyModal(true)
@@ -117,6 +119,30 @@ const PostponedTable = () => {
     setId(id)
   }
 
+  const handleCommentModalDispaly =(id)=>{
+    setShowCommentsModal(true)
+    setClientID(id)
+    const fetchEnquiryComments=async()=>{
+      try{
+        const token = localStorage.getItem("tmToken");
+        const response = await axios.get(`https://admin.tradingmaterials.com/api/staff/get-comments?client_id=${id}`,{
+          headers:{Authorization: `Bearer ${token}`}
+        })
+        console.log(response?.data?.data?.notin_comments)
+        let comments =[[],[],[]];
+        comments[0].push(...response?.data?.data?.notin_comments)
+        comments[1].push(...response?.data?.data?.post_comments)
+        comments[2].push(...response?.data?.data?.ring_comments)
+        setCommentsArr([...comments])
+
+      }catch(err){
+        console.log(err)
+      }
+    }
+    
+    fetchEnquiryComments()
+  }
+
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
@@ -137,7 +163,7 @@ const PostponedTable = () => {
       
     </div>
        </div>
-      <Table responsive striped bordered hover>
+      <Table responsive={true} striped bordered hover>
         <thead>
           <tr>
             <th>ENQUIRY</th>
@@ -145,6 +171,7 @@ const PostponedTable = () => {
             <th>Phone</th>
             <th>MODIFIED DATE</th>
             <th>ACTION</th>
+            <th></th>
           </tr>
         </thead>
         {currentData?.length >0 ? (<tbody>
@@ -156,16 +183,17 @@ const PostponedTable = () => {
                         </td>
               {/* <td>{row.first_name}</td> */}
               {!row.email_verified == 1 ?
-              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
+              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>handleEmailverification(row?.id)}>
               {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
               {row.email}
               </td>) : (<td>{row?.email}</td>)
               }
               <td>{row.phone}</td>
               <td>{row.modified_date}</td>
-              <td  key={row.id}> 
+              <td   className='!relative' key={row.id}> 
+              <div className='!relative'>
               <ButtonGroup className="mt-2 mb-2">
-      <Dropdown>
+      <Dropdown >
         <Dropdown.Toggle className="!flex items-center" variant="default" id="dropdown-basic">
           Action <AiOutlineCaretDown/>
         </Dropdown.Toggle>
@@ -186,6 +214,14 @@ const PostponedTable = () => {
         </Dropdown.Menu>
       </Dropdown>
     </ButtonGroup>
+    </div>
+                
+            </td>
+            <td > 
+                <div className='!flex items-center justify-center' onClick={()=>handleCommentModalDispaly(row?.id)}>
+                    <FontAwesomeIcon className='mr-2' color="grey" icon={faComment} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
+                    <FontAwesomeIcon color="#25378b" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
+                </div>
                 
             </td>
             </tr>

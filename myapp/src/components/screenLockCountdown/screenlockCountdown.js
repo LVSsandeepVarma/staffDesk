@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 const CountdownTimer = () => {
   const userData  =  useSelector((state) => state?.userInfoReducer)
   const navigate = useNavigate()
-  const [countdown, setCountdown] = useState(parseInt(userData?.value?.data?.staff_screen_lock_time) *60 || 660);
+  const [countdown, setCountdown] = useState(parseInt(userData?.value?.data?.staff_screen_lock_time) *60 || 600);
   const [showModal, setShowModal] = useState(false);
   const [lockStatus, setLockStatus] = useState("lock");
   const [userInfo,  setUserInfo] = useState()

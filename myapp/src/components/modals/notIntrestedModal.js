@@ -16,7 +16,9 @@ const NotIntrestedModal = (props) => {
     const [selectedStage, setSelectedStage] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
     const [dateValue, setDateValue] = useState('');
-    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+
     const navigate = useNavigate()
     const handleClose = () => setShow(false);
     const handleTextareaChange = (e) => setTextareaValue(e.target.value);
@@ -39,10 +41,17 @@ const NotIntrestedModal = (props) => {
                     Authorization: `Bearer ${token}`
                 }
             })
+            if(response?.data?.status){
             window.location.reload()
             console.log(response)
+            }else{
+                console.log(response?.data?.message)
+                setErrorMsg(response?.data?.message)
+              }
         } catch (error) {
-            console.log("error", error)
+            console.log("error", error);
+            setErrorMsg(error?.data?.message)
+
         }
         handleClose();
     };
@@ -61,9 +70,9 @@ const NotIntrestedModal = (props) => {
                         </Form.Group>
                         <Form.Group controlId="dateInput">
                             <Form.Label>Date</Form.Label>
-                            <Form.Control type="date" value={dateValue} onChange={handleDateChange} />
+                            <Form.Control type="date" min={new Date().toISOString().split('T')[0]} value={dateValue} onChange={handleDateChange} />
                         </Form.Group>
-                        <Button className='mt-[20px mb-[20px' variant="primary" type="submit">
+                        <Button className='mt-[20px] mb-[20px]' variant="primary" type="submit">
                             Submit
                         </Button>
                     </Form>

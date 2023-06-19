@@ -99,8 +99,8 @@ export default function Locked() {
                 <div className="container-fluid page-body-wrapper full-page-wrapper !p-0">
                     <div className="content-wrapper d-flex align-items-center auth px-0">
                         <div className="row w-100 mx-0 h-[100vh] bg-[#edeef2]">
-                            <div className="col-lg-4 mx-auto flex items-center w-[100%] flex justify-center !p-0">
-                                <div className="auth-form-light text-start py-5 px-4 px-sm-5 bg-[#fff]">
+                            <div className="col-lg-4 mx-auto flex items-center w-[100%] flex justify-center !pl-5 sm:!pl-0 !pr-5 sm:!pr-0" >
+                                <div className="auth-form-light text-start py-5 px-4 px-sm-5 bg-[#fff] " style={{width: "100%"}}>
                                     <div className="brand-logo mb-[2rem]">
                                         <img src="/images/logo.png" alt="logo" />
                                     </div>

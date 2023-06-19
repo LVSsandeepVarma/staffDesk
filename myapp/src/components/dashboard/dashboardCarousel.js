@@ -272,10 +272,10 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <div className='row  mt-5'>
-                    <div className='col-6'>
+                    <div className='col-md-6'>
                     <Barcharts className="ml-5"/>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-md-6'>
                     <PaymentsBarcharts/>
                     </div>
 

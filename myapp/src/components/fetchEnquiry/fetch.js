@@ -11,12 +11,17 @@ import * as Yup from "yup"
 import axios from "axios";
 import DatatablePage from "./fetchEnquiryTable";
 import MyTable from "./fetchEnquiryTable";
-import { useSelector } from "react-redux";
+import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice"
+import { useDispatch, useSelector } from "react-redux";
 import NoDataModal from "./noDataModal";
 import FetchTable from "./fetchEnquiryTable";
+import Loading from "../loader/loading";
 // import { data } from "autoprefixer";
 export default function Fetch_Enquiry(){
-   const userData = useSelector((state)=>state?.userInfoReducer)
+   const userData = useSelector((state)=>state?.userInfoReducer);
+   const loaderState = useSelector((state) => state?.loaderReducer)
+
+   const dispatch = useDispatch();
    console.log(userData, "data")
    const initialValues=
    {
@@ -50,6 +55,7 @@ export default function Fetch_Enquiry(){
    const [noDataMessage, setNoDataMessage] = useState("");
    const [fetchEnquiryStatus, setFetchEnquiryStatus] = useState(false)
    const [errorMessage, setErrorMessage] = useState("");
+   const [successMessage, setSuccessMessage] = useState("")
    const [autoassignFetchData, setAutoAssignFetchData] = useState([]);
    const [tableData, setTableData]= useState([])
 //    const [isVisible, setIsVisible] = useState("block")
@@ -78,6 +84,7 @@ export default function Fetch_Enquiry(){
 
   const handleSubmit = async(values) => {
    try{
+	  dispatch(setLoaderTrue())
       const token = localStorage.getItem("tmToken")
       const postData = new FormData();
       if(values){
@@ -99,19 +106,25 @@ export default function Fetch_Enquiry(){
        })
        console.log("response", response)
 	   setErrorMessage("")
+	   setSuccessMessage(response?.data?.message)
    }catch(error){
       console.log("error",error)
 	  setErrorMessage(error?.response?.data?.errors?.email)
+	  dispatch(setLoaderFalse())
    }
+   dispatch(setLoaderFalse())
+
   }
    const FetchAutoAssignData= async()=>{
 	try{
+		dispatch(setLoaderTrue())
 		const token = localStorage.getItem("tmToken");
 		const response =await axios.get("https://admin.tradingmaterials.com/api/staff/auto-assign-enquiry", {headers:{Authorization: `Bearer ${token}`}})
 		console.log(response?.data,response?.data?.data?.f_enq, "response")
 		if(!response?.data?.status){
 			setNoDataMessage(response?.data?.message)
 			setFetchEnquiryStatus(response?.data?.status);
+			console.log(response?.data?.status)
 			// TimedVisibleFunction()
 			// const tableData = [...autoassignFetchData]
 			// setAutoAssignFetchData([...tableData, response?.data?.data])
@@ -120,18 +133,23 @@ export default function Fetch_Enquiry(){
 		}else{
 			setFetchEnquiryStatus(true)
 			console.log(response?.data?.data?.f_enq)
-			setTableData(response?.data?.data?.f_enq)
+			setTableData([response?.data?.data?.f_enq])
 		}
 	}catch(err){
 		console.log(err)
+		dispatch(setLoaderFalse())
 	}
+	dispatch(setLoaderFalse())
    }
-  tableData?.map((row)=>{
-	console.log(row,"row")
-  })
+//   tableData?.map((row)=>{
+// 	console.log(row,"row")
+//   })
+
+   
 
     return(
         <>
+	    {loaderState.value == true ? <Loading/> : ""}
         <div className="container-scroller  ">
           <TopNavbar/>
           <div className="top-[63px] sm:top-[0px]">
@@ -519,6 +537,8 @@ export default function Fetch_Enquiry(){
                </div>
                <div className="modal-footer">
 			   {errorMessage !== "" ? <p className='text-red-900'>{errorMessage}</p> : ""}
+			   {successMessage != "" ? <p className="text-green-900">{successMessage}</p>: ""}
+			   {loaderState.value == true ? <Loading/> : ""}
             <button type="button" className="btn btn-warning py-1" data-dismiss="modal" onClick={handleModalClose}>Close</button>
 			
             <button type="submit" className="btn btn-success subbtn py-1" value="" data-type="">Save </button>
@@ -575,6 +595,7 @@ export default function Fetch_Enquiry(){
             </div>
          </div>
       </div>
+	  {console.log(tableData.length)}
 	  {fetchEnquiryStatus == true && <div className={`mt-5`}>
 	  {/* <FetchTable/> */}
 	  <Table responsive striped bordered hover>
@@ -585,7 +606,8 @@ export default function Fetch_Enquiry(){
             <th>Phone</th>
           </tr>
         </thead>
-        {tableData?.length>0 ?
+		{/* {console.log(tableData.length)} */}
+        {tableData?.length?
          (<tbody>
           {tableData?.map((row) => (
             <tr key={row.id}>

@@ -15,6 +15,8 @@ const PostponedModal = (props) => {
   const [selectedStage, setSelectedStage] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   const [dateValue, setDateValue] = useState('');
+  const [errorMsg, setErrorMsg] = useState("")
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleStageChange = (e) => setSelectedStage(e.target.value);
@@ -44,16 +46,24 @@ const PostponedModal = (props) => {
             Authorization: `Bearer ${token}`
           }
       })
-      console.log(response)
-      setShowSuccessModal(true)
 
-      navigate("/enquiry/postponed-enquiry#")
+      console.log(response)
+      if(response?.data?.status){
+        setShowSuccessModal(true);
+        navigate("/enquiry/postponed-enquiry#")
       // router.reload()
       // window.location.reload()
 
-      handleClose();
+        handleClose();
+      }else{
+        console.log(response?.data?.message)
+        setErrorMsg(response?.data?.message)
+      }
+      
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
+      setErrorMsg(error?.data?.message)
+
     }
 
   };
@@ -95,9 +105,9 @@ const PostponedModal = (props) => {
             )}
             <Form.Group controlId="dateInput">
               <Form.Label>Date</Form.Label>
-              <Form.Control type="date" value={dateValue} onChange={(e)=>handleDateChange(e)} />
+              <Form.Control type="date" min={new Date().toISOString().split('T')[0]} value={dateValue} onChange={(e)=>handleDateChange(e)} />
             </Form.Group>
-            <Button className='mt-[20px mb-[20px' variant="primary" type="button" onClick={(e)=>{handleSubmit(e)}}>
+            <Button className='mt-[20px] mb-[20px]' variant="primary" type="button" onClick={(e)=>{handleSubmit(e)}}>
               Submit
             </Button>
           </Form>

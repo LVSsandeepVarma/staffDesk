@@ -5,6 +5,8 @@ import CommentsModal from '../modals/commentsModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import emailVerification from '../verification/emailVerification';
+import EmailVerificationModal from '../modals/emailVerifiedModal';
 const FetchTable = () => {
     const data = useSelector((state)=>state?.userInfoReducer)
     console.log(data?.value?.data?.assigned_new, "data")
@@ -13,6 +15,9 @@ const FetchTable = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showCommetnsModal, setShowCommentsModal] = useState(false)
   const [filteredTable, setFilteredTable] = useState([]);
+  const [verifyEmail, setVerifyEmail] = useState()
+  const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false)
+  const [id, setId] = useState("")
   useEffect(()=>{
     // convert timestamp to time format
    const fetchEnquiryData =  async()=>{
@@ -80,11 +85,23 @@ setTableData(updatedTableData)
   if(searchQuery != ""){
     currentData = filteredTable.slice(startIndex, endIndex);
   }
+
+  async function handleEmailverification(id){
+    console.log(id)
+    setId(id)
+    const emailVerifyResponse  =await emailVerification(id)
+    setShowEmailVerifyModal(true)
+    console.log(emailVerifyResponse )
+    setVerifyEmail(emailVerifyResponse)
+  }
+
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
-            <div className='!flex justify-end !w-[100%] mb-1'>
-       <div className="input-group !w-[15vw] ">
+      <EmailVerificationModal show={showEmailVerifyModal}  setShowEmailVerifyModal={setShowEmailVerifyModal} response={verifyEmail}  />
+
+            <div className='!flex justify-end !w-[100%] mb-1 !mt-5 lg:!mt-0'>
+       <div className="input-group !w-[42%] sm:!w-[15vw] ">
       <input
         type="text"
         className="form-control flex w-[100%] justify-end"
@@ -111,7 +128,7 @@ setTableData(updatedTableData)
             <tr key={row.id}>
               <td>{row.first_name}</td>
               {!row.email_verified == 1 ?
-              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
+              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>handleEmailverification(row?.id)}>
 
               {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
               {row.email}

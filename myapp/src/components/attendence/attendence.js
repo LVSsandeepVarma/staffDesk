@@ -15,14 +15,15 @@ import axios from 'axios';
 import "rsuite/dist/rsuite.css";
 import { useNavigate } from 'react-router-dom';
 import TruncateModal from '../modals/truncateModal';
+import Loading from '../loader/loading';
 
 
 
 const AttendancePage = () => {
     const navigate = useNavigate() 
     const {combine, allowedMaxDays, before} = DateRangePicker
-    const userData = useSelector((state) => state?.userInfoReducer)
-    console.log(userData, "data")
+    const userData = useSelector((state) => state?.userInfoReducer);
+    //console.log(userData, "data")
     const loaderState = useSelector((state)=>state.loaderReducer.value)
     const [tab2Content, setTab2Content] = useState("leaves");
     const [selectedDateRange, setSelectedDateRange] = useState(["", ""]);
@@ -58,7 +59,7 @@ const AttendancePage = () => {
               Authorization: `Bearer ${token}`
             }
           })
-          console.log(response, response?.data?.data["break-logs"])
+          //console.log(response, response?.data?.data["break-logs"])
           const attendanceinfo = response?.data?.data?.attendance
           const updatedInfo = attendanceinfo.map((val,ind)=>{
             const dateTime = new Date(val.date);
@@ -67,7 +68,7 @@ const AttendancePage = () => {
             const weekday = dateTime.toLocaleDateString('default', { weekday: 'long' });
             return {...attendanceinfo[ind], "monthDay":  `${month} ${day}`,"weekday": `${weekday}`}
           })
-          console.log("attendanceinfo",updatedInfo)
+          //console.log("attendanceinfo",updatedInfo)
           setAttendanceData(updatedInfo)
           setLeaveReqData(response?.data?.data["leave-reqs"])
           const breaklogs = response?.data?.data["break-logs"]
@@ -80,7 +81,7 @@ const AttendancePage = () => {
 
             const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-            console.log(formattedTime);
+            //console.log(formattedTime);
             breaklogs[ind].break_time = formattedTime
           })
           setBreakTimeData(response?.data?.data["break-logs"])
@@ -109,11 +110,11 @@ if(mm<10)
 } 
 today = yyyy+'/'+mm+'/'+dd;
 
-console.log(today);
+//console.log(today);
 const handleDateRangeChange = (value) => {
-  console.log(value)
+  //console.log(value)
   value.map((val,ind)=>{
-    console.log(val)
+    //console.log(val)
     const date = new Date(val);
 
     // Get the year, month, and day from the Date object
@@ -124,7 +125,7 @@ const handleDateRangeChange = (value) => {
     // Format the date as "yyyy/mm/dd"
     const formattedDate = `${year}/${month}/${day}`;
     
-    console.log(formattedDate); // Output: "2023/06/01"
+    //console.log(formattedDate); // Output: "2023/06/01"
     const timeRange = selectedDateRange
     timeRange[ind] = formattedDate
     setSelectedDateRange([...timeRange])
@@ -141,7 +142,8 @@ const handleLeaveTypeChange = (event)=>{
 
 const handleSubmit = async(event) => {
   event.preventDefault();
-  console.log(userData?.value?.data?.staff?.id, "id")
+  dispatch(setLoaderTrue())
+  //console.log(userData?.value?.data?.staff?.id, "id")
   try{
     const formData = new FormData
     formData.append("daterange" , `${selectedDateRange[0]}-${selectedDateRange[1]}`);
@@ -162,9 +164,10 @@ const handleSubmit = async(event) => {
    })
    setError([])
    setSuccess(response?.data?.message)
-   console.log(response)
+   //console.log(response)
+   window?.location?.reload()
   }catch(err){
-    console.log("err", err?.response?.data?.errors)
+    //console.log("err", err?.response?.data?.errors)
     const errorsArray = []
     errorsArray[0] = err?.response?.data?.errors?.reason
     errorsArray[1] = err?.response?.data?.errors?.description
@@ -172,11 +175,12 @@ const handleSubmit = async(event) => {
 
     setError(...errorsArray)
     setSuccess("")
+    dispatch(setLoaderFalse())
 
   }
-  
+  dispatch(setLoaderFalse())
   // Perform submit logic with selectedDateRange value
-  console.log(selectedDateRange);
+  //console.log(selectedDateRange);
 };
     useEffect(()=>{
         if(loaderState){
@@ -196,14 +200,15 @@ const handleSubmit = async(event) => {
     if(tab2Content === "leaves") setTab2Content("apply leave")
     else setTab2Content("leaves")
   }
-  console.log(selectedDateRange, "selected date range")
+  //console.log(selectedDateRange, "selected date range")
 
   const handleDeleteLeaveRequest = (e)=>{
-    console.log(e.target.id)
+    //console.log(e.target.id)
     const staffIDs = e.target.id?.split("-")
     const id = staffIDs[0]
     const staff_id= staffIDs[1]
     const deleteLeaveRequest = async()=>{
+      dispatch(setLoaderTrue())
         try{
           const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
           const response = await axios.post("https://admin.tradingmaterials.com/api/staff/leave-request/delete",{
@@ -214,13 +219,18 @@ const handleSubmit = async(event) => {
               Authorization : `Bearer ${token}`
             }
           })
-          console.log(response)
-          setSuccessStatus(response?.data?.message)
+          //console.log(response)
+          setSuccessStatus(response?.data?.message);
+          // navigate("/staff/attendance")
+          window?.location?.reload()
+          
         }catch(err){
           setSuccessStatus("")
           setDeleteStatus(err?.response?.data?.message)
-          console.log(err?.response?.data?.message)
+          //console.log(err?.response?.data?.message)
+          dispatch(setLoaderFalse())
         }
+        dispatch(setLoaderFalse())
     }
     deleteLeaveRequest()
   }
@@ -228,6 +238,7 @@ const handleSubmit = async(event) => {
 
   return (
     <>
+    {loaderState.value == true ? <Loading/> : ""}
     <div className="container-scroller  ">
                 <TopNavbar />
                 <div className="top-[63px] sm:top-[0px]">
@@ -289,7 +300,7 @@ const handleSubmit = async(event) => {
             <Button variant="primary">Previous</Button>
             <h3>June 2023</h3>
           </div>
-          {console.log(leaveReqData)}
+          {/* {console.log(leaveReqData)} */}
           {activeTab === 'tab1' && (
             <div className='h-[45vh] overflow-auto'>
               <Table striped bordered >
@@ -341,7 +352,7 @@ const handleSubmit = async(event) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})}
+                  {/* {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})} */}
                 {leaveReqData?.length >0 && leaveReqData.map((val,ind)=>(
                     <tr key = {ind}>
                       <td>{val.from_date}</td>
@@ -417,7 +428,7 @@ const handleSubmit = async(event) => {
                     <th>Date</th>
                     <th>lockout</th>
                     <th>Login</th>
-                    <th>Break time (in sec)</th>
+                    <th>Break time</th>
                   </tr>
                 </thead>
                 <tbody>

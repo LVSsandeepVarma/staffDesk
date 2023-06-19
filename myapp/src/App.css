@@ -126,12 +126,28 @@ body {
   margin-bottom: 13px;
 }
 
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: gray;
+  cursor: pointer;
+}
+
 .dropdown-menu{
-  inset: -4px auto auto 0px !important;
+  /* inset: -4% auto auto 0px !important; */
   /* position: fixed !important; */
   z-index: 99999 !important;
   overflow: hidden !important;
 }
+
+/* @media (min-width : 500) {
+  .dropdown-menu{
+    inset: -40.px auto auto -120px !important;
+
+  }
+} */
 
 .timeline-line {
   border-left: 2px solid #ccc;
