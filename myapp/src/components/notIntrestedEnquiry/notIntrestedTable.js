@@ -10,7 +10,9 @@ const NotIntrestedTable = () => {
     const [tableData, setTableData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredTable, setFilteredTable] = useState([]);
-    const [showCommetnsModal, setShowCommentsModal] = useState(false)
+    const [showCommetnsModal, setShowCommentsModal] = useState(false);
+    const [clientID, setClientID] = useState();
+    const [commentsArr, setCommentsArr] = useState([])
 
     useEffect(()=>{
         const fetchUserInfo = async () =>{
@@ -24,7 +26,7 @@ const NotIntrestedTable = () => {
                   Authorization: `Bearer ${token}`
                 }
               })
-              console.log(response?.data.data.enquiries, "nitable")
+              // console.log(response?.data.data.enquiries, "nitable")
               setTableData(response?.data?.data?.enquiries)
               // setFilteredTable(response?.data?.data?.enquiries)
             //   dispatch(setUserInfo(response?.data))
@@ -76,9 +78,33 @@ const NotIntrestedTable = () => {
     currentData = filteredTable.slice(startIndex, endIndex);
   }
 
+  const handleCommentModalDispaly =(id)=>{
+    setShowCommentsModal(true)
+    setClientID(id)
+    const fetchEnquiryComments=async()=>{
+      try{
+        const token = localStorage.getItem("tmToken");
+        const response = await axios.get(`https://admin.tradingmaterials.com/api/staff/get-comments?client_id=${id}`,{
+          headers:{Authorization: `Bearer ${token}`}
+        })
+        console.log(response?.data?.data?.notin_comments)
+        let comments =[[],[],[]];
+        comments[0].push(...response?.data?.data?.notin_comments)
+        comments[1].push(...response?.data?.data?.post_comments)
+        comments[2].push(...response?.data?.data?.ring_comments)
+        setCommentsArr([...comments])
+
+      }catch(err){
+        console.log(err)
+      }
+    }
+    
+    fetchEnquiryComments()
+  }
+
   return (
     <div>
-      <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
+      <CommentsModal show = {showCommetnsModal} data={commentsArr} setShowCommentsModal={setShowCommentsModal}/>
        <div className='!flex justify-end !w-[100%] mb-1'>
        <div className="input-group !w-[15vw] ">
       <input
@@ -103,14 +129,14 @@ const NotIntrestedTable = () => {
         </thead>
         {currentData.length>0 ? (<tbody>
           {currentData.map((row) => (
-            <tr key={row.id}>
+            <tr key={row?.id}>
                 <td className="">
                            <h5 className="text-[#25378b] mb-1">{row.first_name}</h5>
                            <p className="mb-0">{row.city} / {row.country} /ip</p>
                         </td>
               {/* <td>{row.first_name}</td> */}
               {!row.email_verified == 1 ?
-              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
+              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} >
 
               {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
               {row.email}
@@ -119,7 +145,7 @@ const NotIntrestedTable = () => {
               <td>{row.phone}</td>
               <td>{row.created_at?.substring(0, 10)}</td>
               <td > 
-                <div className='!flex items-center justify-center'>
+                <div className='!flex items-center justify-center' onClick={()=>handleCommentModalDispaly(row?.id)}>
                     <FontAwesomeIcon className='mr-2' color="grey" icon={faComment} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
                     <FontAwesomeIcon color="#25378b" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
                 </div>

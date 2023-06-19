@@ -12,7 +12,27 @@ export default function Top_navbar() {
   const [activeTab, setActiveTab] = useState("Profile");
   const sidebarRef = useRef(null);
   const userData = useSelector((state)=>state?.userInfoReducer)
+  const [greetUser, setGreetUser] = useState("Good morning")
+  useEffect(()=>{
+    function updateGreeting() {
+      var currentTime = new Date();
+      var currentHour = currentTime.getHours();
+      var greeting;
 
+      if (currentHour < 12) {
+        greeting = "Good morning";
+      } else if (currentHour < 18) {
+        greeting = "Good afternoon";
+      } else if (currentHour < 22) {
+        greeting = "Good evening";
+      } else {
+        greeting = "Good night";
+      }
+      return greeting
+    }
+      const greet = updateGreeting()
+      setGreetUser(greet)
+  },[])
 
 
   return (
@@ -33,7 +53,7 @@ export default function Top_navbar() {
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-sm-6 mb-4 mb-xl-0">
-                      <h3>Congrats {userData?.value?.data?.staff?.username !="" ? userData?.value?.data?.staff?.username : "User"}!</h3>
+                      <h3>{greetUser} {userData?.value?.data?.staff?.username !="" ? userData?.value?.data?.staff?.username : "User"}!</h3>
                       <h6 className="fw-normal mb-0 text-muted">You have done 57.6% more sales today.</h6>
                     </div>
                     <div className="col-sm-6">

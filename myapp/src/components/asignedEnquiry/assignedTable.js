@@ -1,68 +1,58 @@
 import { Table, Pagination } from 'react-bootstrap';
 import {useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import { ButtonGroup, Dropdown } from 'react-bootstrap';
 // import { FaRepeat, FaPhoneVolume, FaCalendarPlus, FaHeadset } from 'react-icons/fa';
 import {AiOutlineReload, AiOutlineCaretDown} from "react-icons/ai"
 import {CgPhone} from "react-icons/cg";
 import {BsCalendarPlus} from "react-icons/bs";
 import {TbPlugConnected} from "react-icons/tb"
-import PostponedModal from '..//modals/postponedModal';
+import PostponedModal from '../modals/postponedModal';
 import RingingModal from '../modals/ringingModal';
 import NotIntrestedModal from '../modals/notIntrestedModal';
 import CommentsModal from '../modals/commentsModal';
+import EmailVerificationModal from '../modals/emailVerifiedModal';
+import emailVerification from '../verification/emailVerification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import emailVerification from '../verification/emailVerification';
-import EmailVerificationModal from '../modals/emailVerifiedModal';
-const AssignTable = () => {
-  const [show,setShow] = useState(false);
-  const [id, setId] = useState("");
-  const [ringingEnquiryModalShow, setRingingEnquiryShowModal] = useState(false);
-  const [notIntrestedModalShow, setNotIntrestedModalShow] = useState(false)
+
+const PostponedTable = () => {
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTable, setFilteredTable] = useState([]);
-  const [showCommetnsModal, setShowCommentsModal] = useState(false)
-  const [verifyEmail, setVerifyEmail] = useState()
-  const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false)
+    const [show, setShow] = useState(false);
+    const [ringingEnquiryModalShow, setRingingEnquiryShowModal] = useState(false);
+    const [notIntrestedModalShow, setNotIntrestedModalShow] = useState(false);
+    const [showCommetnsModal, setShowCommentsModal] = useState(false);
+    const [verifyEmail, setVerifyEmail] = useState()
+    const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false)
 
 
+    const [id, setId] = useState("")
 
-
-    const data = useSelector((state)=>state?.userInfoReducer)
-    console.log(data?.value?.data?.assigned_new, "data")
-  // Sample data for the table
     useEffect(()=>{
-          // convert timestamp to time format
-      const tabledata = data?.value?.data?.assigned_new;
-      if(tableData.length){
-        const updatedTableData = tabledata.map( row=>{
-          const timestamp = row.created_at;
-          const date = new Date(timestamp)
-          const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          console.log(formattedTime)
-          return {
-              ...row, created_at: formattedTime
+        const fetchUserInfo = async () =>{
+            try{
+              const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
+              const response = await axios.get("https://admin.tradingmaterials.com/api/staff/enq-by-type?", {
+                params: {
+                    type: 'NEW'
+                  },
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              })
+              console.log(response?.data.data.enquiries, "nitable")
+              setTableData(response?.data?.data?.enquiries)
+            //   dispatch(setUserInfo(response?.data))
+            }catch(error){
+              console.error(error)
+            }
           }
-      })
-      setTableData(updatedTableData)
-      }
-
-
-        // setTableData(data?.value?.data?.assigned_new)
-    },[data])
-
-    // const updatedTableData = tableData?.map( row=>{
-    //     const timestamp = row.created_at;
-    //     const date = new Date(timestamp)
-    //     const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    //     console.log(formattedTime)
-    //     return {
-    //         ...row, created_at: formattedTime
-    //     }
-    // })
-    // setTableData(updatedTableData)
+      
+          fetchUserInfo()
+    },[])
 
     const handleSearchChange = (event) => {
       setSearchQuery(event.target.value);
@@ -103,37 +93,38 @@ const AssignTable = () => {
   if(searchQuery != ""){
     currentData = filteredTable.slice(startIndex, endIndex);
   }
- async function handleEmailverification(id){
-  setId(id)
-  const emailVerifyResponse  =await emailVerification(id)
-  setShowEmailVerifyModal(true)
-  console.log(emailVerifyResponse )
-  setVerifyEmail(emailVerifyResponse)
-}
 
-const handleRingingTransferModal=(id)=>{
-  setRingingEnquiryShowModal(true);
-  setId(id)
-}
+  async function handleEmailverification(id){
+    setId(id)
+    const emailVerifyResponse  =await emailVerification(id)
+    setShowEmailVerifyModal(true)
+    console.log(emailVerifyResponse )
+    setVerifyEmail(emailVerifyResponse)
+  }
 
-const handlePostponedTransferModal = (id)=>{
-  setShow(true);
-  setId(id)
-}
-
-const handleNotIntrestedTransferModal = (id)=>{
-  setNotIntrestedModalShow(true);
-  setId(id)
-}
-
+  const handleRingingTransferModal=(id)=>{
+    setRingingEnquiryShowModal(true);
+    setId(id)
+  }
+  
+  const handlePostponedTransferModal = (id)=>{
+    setShow(true);
+    setId(id)
+  }
+  
+  const handleNotIntrestedTransferModal = (id)=>{
+    setNotIntrestedModalShow(true);
+    setId(id)
+  }
 
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
-      <PostponedModal show={show} setShow={setShow} id={id} source={"NEW"} />
-      <RingingModal show={ringingEnquiryModalShow} setShow={setRingingEnquiryShowModal} id={id} source={"NEW"}/>
-      <NotIntrestedModal show={notIntrestedModalShow} setShow={setNotIntrestedModalShow} id={id} source={"NEW"}/>
+      <PostponedModal show={show} setShow={setShow} id={id} source={"POSTPONED"}/>
+      <RingingModal show={ringingEnquiryModalShow} setShow={setRingingEnquiryShowModal} id={id} source={"POSTPONED"}/>
+      <NotIntrestedModal show={notIntrestedModalShow} setShow={setNotIntrestedModalShow} id={id} source={"POSTPONED"}/>
       <EmailVerificationModal show={showEmailVerifyModal}  setShowEmailVerifyModal={setShowEmailVerifyModal} response={verifyEmail}  />
+
       <div className='!flex justify-end !w-[100%] mb-1'>
        <div className="input-group !w-[15vw] ">
       <input
@@ -149,41 +140,45 @@ const handleNotIntrestedTransferModal = (id)=>{
       <Table responsive striped bordered hover>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>ENQUIRY</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Time</th>
-            <th>Action</th>
+            <th>MODIFIED DATE</th>
+            <th>ACTION</th>
           </tr>
         </thead>
-        {currentData?.length>0 ? (<tbody>
-          {currentData?.map((row) => (
+        {currentData?.length >0 ? (<tbody>
+          {currentData.map((row) => (
             <tr key={row.id}>
-              <td>{row.first_name}</td>
+                <td className="">
+                           <h5 className="text-[#25378b] mb-1">{row.first_name}</h5>
+                           <p className="mb-0">{row.city} / {row.country} /ip</p>
+                        </td>
+              {/* <td>{row.first_name}</td> */}
               {!row.email_verified == 1 ?
               (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
-
               {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
               {row.email}
               </td>) : (<td>{row?.email}</td>)
-              }           <td>{row.phone}</td>
-              <td>{row.created_at}</td>
-              <td>
+              }
+              <td>{row.phone}</td>
+              <td>{row.modified_date}</td>
+              <td  key={row.id}> 
               <ButtonGroup className="mt-2 mb-2">
       <Dropdown>
         <Dropdown.Toggle className="!flex items-center" variant="default" id="dropdown-basic">
           Action <AiOutlineCaretDown/>
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleEmailverification(row.id)}}>
-           <AiOutlineReload className="mr-2"  />
-          </Dropdown.Item>
+          {/* <Dropdown.Item className="!flex justify-center" onClick={()=>{handleEmailverification(row.id)}}>
+           <AiOutlineReload className="mr-2"/>
+          </Dropdown.Item> */}
           <Dropdown.Divider />
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleRingingTransferModal(row.id)}}>
+          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleRingingTransferModal(row.id)}} >
             <CgPhone className="mr-2"/> Ringing
           </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center" key={row.id} onClick={()=>{handlePostponedTransferModal(row.id)}}>
-           <BsCalendarPlus  className="mr-2"/> Postponed
+          <Dropdown.Item className="!flex justify-center"  onClick={()=>{handlePostponedTransferModal(row.id)}} >
+           <BsCalendarPlus className="mr-2"/> Postponed
           </Dropdown.Item>
           <Dropdown.Item className="!flex justify-center" onClick={()=>{handleNotIntrestedTransferModal(row.id)}}>
            <TbPlugConnected className="mr-2"/> Not interested
@@ -191,7 +186,8 @@ const handleNotIntrestedTransferModal = (id)=>{
         </Dropdown.Menu>
       </Dropdown>
     </ButtonGroup>
-              </td>
+                
+            </td>
             </tr>
           ))}
         </tbody>):
@@ -202,6 +198,7 @@ const handleNotIntrestedTransferModal = (id)=>{
         </tr>
         }
       </Table>
+
       <div className='!flex  justify-end'>
             <ul className="pagination">
           <li class={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
@@ -233,4 +230,4 @@ const handleNotIntrestedTransferModal = (id)=>{
   );
 };
 
-export default AssignTable;
+export default PostponedTable;

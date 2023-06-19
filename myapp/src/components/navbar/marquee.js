@@ -1,70 +1,85 @@
 
 import Marquee from "react-fast-marquee";
 import {FaTrophy, FaUsers, FaSignal, FaBriefcase,FaMoneyBillAlt,FaShoppingCart} from "react-icons/fa"
+import {FiPhoneCall} from "react-icons/fi"
 import {HiCheckCircle} from "react-icons/hi";
 import {SlEnvolope} from "react-icons/sl";
 import {RxCross2} from "react-icons/rx";
-import {BiDollar} from "react-icons/bi";
+import {BiDollar, BiPhoneCall} from "react-icons/bi";
+import {BsTelephoneForward} from "react-icons/bs";
 export default function NavbarMarquee(){
     return(
         <main className=" relative top-[63px] sm:top-[0px] container topmarquee !flex !items-center">
             <Marquee className="fixed container" autoFill={true} pauseOnHover={true} >
                 <p className=" mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(255,162,43,.1)]  rounded-full w-[2rem] h-[2rem]">
-                        <FaTrophy className="h-auto text-[#ffc107] opacity-100"/>
+                        <FiPhoneCall className="h-auto text-[#ffc107] opacity-100"/>
                     </span>
-                    Total Wins 
+                    Today's ringing 
+                    <span className="text-[#2fd8c6] font-bold ml-2">0</span>
                 </p>
                 <p className="mr-5 flex items-center">
                     <span className=" flex justify-center mr-1 bg-[rgba(255,56,43,0.1)]  rounded-full w-[2rem] h-[2rem] ">
-                    <HiCheckCircle className=" h-auto text-[#f66] opacity-100" />
+                    <BsTelephoneForward className=" h-auto text-[#f66] opacity-100" />
                     </span>
-                     Active Requests</p>
+                    Today's postponed
+                     <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center"> 
                 <span className="flex justify-center mr-1 bg-[rgba(255,56,43,0.1)]  rounded-full w-[2rem] h-[2rem]">
-                <FaUsers className="h-auto text-[#28afd0] opacity-100"/>
+                <BiPhoneCall className="h-auto text-[#28afd0] opacity-100"/>
                 </span>
-                  Total Users
+                Total Ringing
+                  <span className="text-[#2fd8c6] font-bold ml-2">0</span>
                   </p>
                 <p className="mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(0,214,230,.1)]  rounded-full w-[2rem] h-[2rem]">
-                     <FaSignal className="h-auto text-[#f66] opacity-100"/></span> Total Leads</p>
+                     <BsTelephoneForward className="h-auto text-[#f66] opacity-100"/></span>Total Postponed</p>
                 <p className="mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(0,230,130,.1)]  rounded-full w-[2rem] h-[2rem]">
-                         <FaBriefcase className="h-auto text-[#15c763] opacity-100"/>
-                         </span> Total Trails
+                         <BiDollar className="h-auto text-[#15c763] opacity-100"/>
+                         </span> Total sale's
+                         <span className="text-[#2fd8c6] font-bold ml-2">0</span>
                          </p>
                 <p className="mr-5  flex items-center">
                      <span className="flex justify-center mr-1 bg-[rgba(70,127,207,.1)]  rounded-full w-[2rem] h-[2rem]">
-                        <SlEnvolope className="h-auto text-[#467fcf] opacity-100"/></span> Active Email Accounts </p> 
+                        <SlEnvolope className="h-auto text-[#467fcf] opacity-100"/></span> Today Invoices
+                        <span className="text-[#2fd8c6] font-bold ml-2">0</span> </p> 
                  <p className="mr-5  flex items-center"> 
                  <span className="flex justify-center mr-1 bg-[rgba(70,127,207,.1)]  rounded-full w-[2rem] h-[2rem]">
-                    <SlEnvolope className="h-auto text-[#5eba00] opacity-100"/></span>Deactive Email Accounts</p>
+                    <SlEnvolope className="h-auto text-[#5eba00] opacity-100"/></span>Paid Invoices
+                    <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center"> 
                 <span className="flex justify-center mr-1 bg-[rgba(0,214,230,.1)]  rounded-full w-[2rem] h-[2rem]">
-                    <RxCross2 className="h-auto text-[#28afd0] opacity-100"/></span>Deactive Requests</p>
+                    <RxCross2 className="h-auto text-[#28afd0] opacity-100"/></span>Unpaid Invoices
+                    <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center"> 
                 <span className="flex justify-center mr-1 bg-[rgba(0,230,130,.1)]  rounded-full w-[2rem] h-[2rem]">
-                    <BiDollar className="h-auto text-[#15c763] opacity-100"/></span> Total Balance</p>
+                    <BiDollar className="h-auto text-[#15c763] opacity-100"/></span> Due Invoices
+                    <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(255,56,43,.1)]  rounded-full w-[2rem] h-[2rem]">
-                        <FaShoppingCart className="h-auto text-[#f66] opacity-100"/></span> Total Sales</p>
-                <p className="mr-5  flex items-center"> 
+                        <FaShoppingCart className="h-auto text-[#f66] opacity-100"/></span> New Enquiries
+                        <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
+                {/* <p className="mr-5  flex items-center"> 
                 <span className="flex justify-center mr-1 bg-[rgba(255,162,43,.1)]  rounded-full w-[2rem] h-[2rem]">
-                    <FaMoneyBillAlt className="h-auto text-[#ffc107!] opacity-100"/></span> Total Purchase</p>
+                    <FaMoneyBillAlt className="h-auto text-[#ffc107!] opacity-100"/></span> Total Purchase
+                    <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center">
                 <span className="flex justify-center mr-1 bg-[rgba(255,56,43,.1)]  rounded-full w-[2rem] h-[2rem]">
-                     <BiDollar className="h-auto text-[#f66] opacity-100"/></span>Total Cost Production </p>
+                     <BiDollar className="h-auto text-[#f66] opacity-100"/></span>Total Cost Production
+                     <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center">
                 <span className="flex justify-center mr-1 bg-[rgba(70,127,207,.1)]  rounded-full w-[2rem] h-[2rem]">
-                     <FaMoneyBillAlt className="h-auto text-[#467fcf] opacity-100"/></span>Total Cost Savings</p>
+                     <FaMoneyBillAlt className="h-auto text-[#467fcf] opacity-100"/></span>Total Cost Savings
+                     <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(0,214,230,.1)]  rounded-full w-[2rem] h-[2rem]">
-                     <FaBriefcase className="h-auto text-[#28afd0] opacity-100"/></span>Total Projects</p>
+                     <FaBriefcase className="h-auto text-[#28afd0] opacity-100"/></span>Total Projects
+                     <span className="text-[#2fd8c6] font-bold ml-2">0</span></p>
                 <p className="mr-5  flex items-center">
                     <span className="flex justify-center mr-1 bg-[rgba(0,230,130,.1)]  rounded-full w-[2rem] h-[2rem]">
                      <FaUsers className="h-auto text-[#15c763] opacity-100"/></span>Total Employees
-                     <span className="text-[#2fd8c6] font-bold ml-2">4738</span></p>
+                     <span className="text-[#2fd8c6] font-bold ml-2">0</span></p> */}
             </Marquee>
         </main>
     )

@@ -1,6 +1,28 @@
+import { useEffect } from "react";
 import DashboardData from "./dashboardCarousel";
 
 export default function DashboardMainComponent(){
+  const [greetUser, setGreetUser] = useState("Good morning")
+  useEffect(()=>{
+    function updateGreeting() {
+      var currentTime = new Date();
+      var currentHour = currentTime.getHours();
+      var greeting;
+
+      if (currentHour < 12) {
+        greeting = "Good morning";
+      } else if (currentHour < 18) {
+        greeting = "Good afternoon";
+      } else if (currentHour < 22) {
+        greeting = "Good evening";
+      } else {
+        greeting = "Good night";
+      }
+      return greeting
+    }
+      const greet = updateGreeting()
+      setGreetUser(greet)
+  },[])
     return(
         <>
                                 <div className="container-fluid page-body-wrapper">
@@ -10,7 +32,7 @@ export default function DashboardMainComponent(){
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-sm-6 mb-4 mb-xl-0">
-                      <h3>Congrats Edwin!</h3>
+                      <h3>{greetUser} Edwin!</h3>
                       <h6 className="fw-normal mb-0 text-muted">You have done 57.6% more sales today.</h6>
                     </div>
                     <div className="col-sm-6">

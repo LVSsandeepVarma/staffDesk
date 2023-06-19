@@ -1,7 +1,7 @@
 "use client"
 import TopNavbar from "../navbar/topNavbar";
 import { useState } from "react";
-import {Modal, Button} from "react-bootstrap"
+import {Modal, Button, Table} from "react-bootstrap"
 import NavbarMarquee from "../navbar/marquee";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faLock, faPlane, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -46,8 +46,19 @@ export default function Fetch_Enquiry(){
       zip: Yup.string().required("pincode is required")
   });
    const [showModal, setShowModal] = useState(false);
-   const [showNoDataModAL, SetShowNoDataModal] = useState(false)
-   const [errorMessage, setErrorMessage] = useState("")
+   const [showNoDataModAL, SetShowNoDataModal] = useState(false);
+   const [noDataMessage, setNoDataMessage] = useState("");
+   const [fetchEnquiryStatus, setFetchEnquiryStatus] = useState(false)
+   const [errorMessage, setErrorMessage] = useState("");
+   const [autoassignFetchData, setAutoAssignFetchData] = useState([]);
+   const [tableData, setTableData]= useState([])
+//    const [isVisible, setIsVisible] = useState("block")
+
+//   const TimedVisibleFunction = () =>{
+// 	setTimeout(()=>{
+// 		setIsVisible("none")
+// 	},5000)
+//   }
 
   const handleModalOpen = () => {
     setShowModal(true);
@@ -67,7 +78,7 @@ export default function Fetch_Enquiry(){
 
   const handleSubmit = async(values) => {
    try{
-      const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiMGRjM2JjZmQ0ODczYTEyNjJkYWE1MTM4MTcwYjk5ZTQ5ZTAyMWEwM2IzYWIyOWY3OGU2YjJkMzY3YTZkNTAzZDFjNzljZDEyMTE3NTFkOWUiLCJpYXQiOjE2ODYwMjc4NDUuOTgyMzgzMDEyNzcxNjA2NDQ1MzEyNSwibmJmIjoxNjg2MDI3ODQ1Ljk4MjM4Mzk2NjQ0NTkyMjg1MTU2MjUsImV4cCI6MTcwMTgzOTA0NS45NzQyMzI5MTIwNjM1OTg2MzI4MTI1LCJzdWIiOiIyNyIsInNjb3BlcyI6WyJzdGFmZnMiXX0.EbTIlfhZCLOa9WESfmh7i9g9FsyNlM6YiLHaJZ13Q8QfwBuqYrpvd1E3QGOzkjzGocNM7s3u01XGh9Il477BbqBAFdr3nfsq_TPgoErflfimBSZqa-WnId8uhfL21brLb-DpbRRRUV-yL-IP9jB8ldqPqbrq0e6tOK9xNPhoTmA2QOo0M9rOCL5AVlM61FeWatigNp5sm2rbl4mcxp2QSBRsYM498V1lux3uBPzvONDXUERjhCm3vqeyna2b5YbFSZQ9vidGQQzI64YEhjTKcLaSfLcael_zkc9860MjFUNtmltOfXbd1D9iKrQYTrRTGR89eK3fjvLsrStDWP3nxXC3Cu6Fd1YGc4YbVr9YpoCeExzfAkSxAZ0Gff7DuObe1tX61oY32ngd6lqiJ5d_WClP_5xdkp_M6Uf_92SN88QD0nXJmfDeduAVRM_K1oGOJ8bgR8SvaEbOHyoW9M29RIMqluC5gQY36rx3_QwktCN25pWxa1WF9_yxc9GrH95zpWNXiklXV8eWIonJUOnon6eyrntKjkIfG5FSV1wySLJIYqYCirmkm-8s5b1_DAohhRoqcu3vUQI3XE2-oixiTGxrMH2OVRpI5LCHWk88m0DlEZp-y2v1KQVatm0N_2jxFFCUtejF_8Xsm2YF1Gr0_EsX4TraqPP44gXJ7GwVoZo"
+      const token = localStorage.getItem("tmToken")
       const postData = new FormData();
       if(values){
          postData.append("first_name",values.first_name);
@@ -87,11 +98,37 @@ export default function Fetch_Enquiry(){
          }
        })
        console.log("response", response)
+	   setErrorMessage("")
    }catch(error){
-      console.log("error",error?.message)
-	  setErrorMessage(error?.message)
+      console.log("error",error)
+	  setErrorMessage(error?.response?.data?.errors?.email)
    }
   }
+   const FetchAutoAssignData= async()=>{
+	try{
+		const token = localStorage.getItem("tmToken");
+		const response =await axios.get("https://admin.tradingmaterials.com/api/staff/auto-assign-enquiry", {headers:{Authorization: `Bearer ${token}`}})
+		console.log(response?.data,response?.data?.data?.f_enq, "response")
+		if(!response?.data?.status){
+			setNoDataMessage(response?.data?.message)
+			setFetchEnquiryStatus(response?.data?.status);
+			// TimedVisibleFunction()
+			// const tableData = [...autoassignFetchData]
+			// setAutoAssignFetchData([...tableData, response?.data?.data])
+			handleNoDataModalOpen()
+			// setIsVisible("block")
+		}else{
+			setFetchEnquiryStatus(true)
+			console.log(response?.data?.data?.f_enq)
+			setTableData(response?.data?.data?.f_enq)
+		}
+	}catch(err){
+		console.log(err)
+	}
+   }
+  tableData?.map((row)=>{
+	console.log(row,"row")
+  })
 
     return(
         <>
@@ -188,7 +225,7 @@ export default function Fetch_Enquiry(){
                    <div className="col-12 col-md-3">
                        <div className="form-group">
 							<label for="cntry">country</label>
-							<Field as="select" className="form-control select2-show-search select2-hidden-accessible !bg-white" data-placeholder="Choose one (with searchbox)" name="country" tabindex="-1" aria-hidden="true">
+							<Field as="select" className="form-control select2-show-search select2-hidden-accessible !bg-white" data-placeholder="Choose one (with searchbox)" name="country" tabIndex="-1" aria-hidden="true">
 							   <option value=" " selected="">-Select country-</option>
 							    							        <option value="Afghanistan">Afghanistan</option>
 							    							        <option value="Aland Islands">Aland Islands</option>
@@ -481,7 +518,7 @@ export default function Fetch_Enquiry(){
                    </div>
                </div>
                <div className="modal-footer">
-			   {errorMessage !== "" ? <p className='text-red-900 !absolute'>{errorMessage}</p> : ""}
+			   {errorMessage !== "" ? <p className='text-red-900'>{errorMessage}</p> : ""}
             <button type="button" className="btn btn-warning py-1" data-dismiss="modal" onClick={handleModalClose}>Close</button>
 			
             <button type="submit" className="btn btn-success subbtn py-1" value="" data-type="">Save </button>
@@ -498,7 +535,7 @@ export default function Fetch_Enquiry(){
          </div>
          <div className="container">
          <button type="button" className="btn btn-outline-info position-relative py-2 fs-14"> Remaining 
-		 <span className="position-absolute start-100 translate-middle badge rounded-pill bg-danger fs-10" id="count">{userData?.value?.data?.staff?.enqlimit} </span> 
+		 <span className="position-absolute start-100 translate-middle badge rounded-pill bg-danger fs-10" id="count">{userData?.value?.data?.enq_counts?.remaining_count} </span> 
 		 </button>
          </div>
          <div className=" mt-2 container">
@@ -506,18 +543,18 @@ export default function Fetch_Enquiry(){
          <div className="col-sm-12 col-lg-5 col-xl-6">
       <div className="card">
          <div className="card-header py-4">
-            <button className="btn btn-primary btnfetch" onClick={()=>handleNoDataModalOpen()} >Fetch Enquiry  <FontAwesomeIcon icon={faEye} title="" data-toggle="tooltip" aria-hidden="true" data-original-title="Click here to get single enquiry"/></button>
+            <button className="btn btn-primary btnfetch" onClick={()=>FetchAutoAssignData()} >Fetch Enquiry  <FontAwesomeIcon icon={faEye} title="" data-toggle="tooltip" aria-hidden="true" data-original-title="Click here to get single enquiry"/></button>
          </div>
          <Modal show={showNoDataModAL} onHide={handleNoDataModalClose} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create Enquiry</Modal.Title>
+                    <Modal.Title>Fetch Enquiry</Modal.Title>
                 </Modal.Header>
                             <Modal.Body>
                                {/* Content of the modal */}
-                               <div aria-labelledby="swal2-title" aria-describedby="swal2-html-container" className="flex flex-col	items-center justify-center" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style={{ display: "flex" }}>
+                               <div aria-labelledby="swal2-title" aria-describedby="swal2-html-container" className="flex flex-col	items-center justify-center" tabIndex="-1" role="dialog" aria-live="assertive" aria-modal="true" style={{ display: "flex" }}>
                                   <RxCrossCircled className="text-red-500" size={100} />
                                   <h2 className="swal2-title p-4 pb-3" id="swal2-title" style={{ display: "block" }}>Oops...</h2>
-                                  <div className="font-bold pb-4" id="swal2-html-container" style={{ display: "block" }}>No data found</div>
+                                  <div className="font-bold pb-4 text-lg" id="swal2-html-container" style={{ display: "block" }}>{noDataMessage}</div>
                                   <Button onClick={()=>handleNoDataModalClose()} >Ok</Button>
                               </div>
                               
@@ -538,6 +575,34 @@ export default function Fetch_Enquiry(){
             </div>
          </div>
       </div>
+	  {fetchEnquiryStatus == true && <div className={`mt-5`}>
+	  {/* <FetchTable/> */}
+	  <Table responsive striped bordered hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        {tableData?.length>0 ?
+         (<tbody>
+          {tableData?.map((row) => (
+            <tr key={row.id}>
+              <td>{row.first_name}</td>
+			  <td>{row?.email}</td>
+              <td>{row.phone}</td>
+            </tr>
+          ))}
+        </tbody>):
+          <tr>
+          <td colSpan="6" className="text-center">
+            <p className="text-muted">No data available in table</p>
+          </td>
+        </tr>
+        }
+      </Table>
+	  </div>}
    </div>
    <div className="col-sm-12 col-lg-6 col-xl-6">
       {/* <DatatablePage/> */}

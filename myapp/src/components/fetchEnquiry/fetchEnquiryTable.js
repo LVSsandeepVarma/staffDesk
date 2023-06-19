@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import CommentsModal from '../modals/commentsModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 const FetchTable = () => {
     const data = useSelector((state)=>state?.userInfoReducer)
     console.log(data?.value?.data?.assigned_new, "data")
@@ -14,8 +15,20 @@ const FetchTable = () => {
   const [filteredTable, setFilteredTable] = useState([]);
   useEffect(()=>{
     // convert timestamp to time format
-const tabledata = data?.value?.data?.new_enqs;
-const updatedTableData = tabledata.map( row=>{
+   const fetchEnquiryData =  async()=>{
+    try{
+      const token = localStorage.getItem("tmToken")
+      const response = await axios.get("https://admin.tradingmaterials.com/api/staff/fetch-enquiry",{headers:{Authorization: `Bearer ${token}`}})
+      console.log(response)
+      setTableData(response?.data?.data?.enqs)
+    }catch(err){
+      console.log(err,"error")
+    }
+
+   }
+    fetchEnquiryData()
+  // const tabledata = data?.value?.data?.new_enqs;
+  const updatedTableData = tableData?.map( row=>{
   const timestamp = row.created_at;
   const date = new Date(timestamp)
   const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -26,7 +39,7 @@ const updatedTableData = tabledata.map( row=>{
 })
 setTableData(updatedTableData)
   // setTableData(data?.value?.data?.assigned_new)
-},[data])
+},[])
 
     const handleSearchChange = (event) => {
       setSearchQuery(event.target.value);
@@ -92,8 +105,9 @@ setTableData(updatedTableData)
             <th>Action</th>
           </tr>
         </thead>
-        {currentData?.length>0 ? (<tbody>
-          {currentData.map((row) => (
+        {currentData?.length>0 ?
+         (<tbody>
+          {currentData?.map((row) => (
             <tr key={row.id}>
               <td>{row.first_name}</td>
               {!row.email_verified == 1 ?
@@ -104,7 +118,7 @@ setTableData(updatedTableData)
               </td>) : (<td>{row?.email}</td>)
               }
               <td>{row.phone}</td>
-              <td>{row.created_at}</td>
+              <td>{new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</td>
               <td><a href="/enquiry/assigned-enquiry#">click here</a></td>
             </tr>
           ))}

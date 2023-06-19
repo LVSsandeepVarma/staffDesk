@@ -127,9 +127,10 @@ body {
 }
 
 .dropdown-menu{
-  /* inset: -100px auto auto 0px !important; */
-  position: fixed !important;
+  inset: -4px auto auto 0px !important;
+  /* position: fixed !important; */
   z-index: 99999 !important;
+  overflow: hidden !important;
 }
 
 .timeline-line {

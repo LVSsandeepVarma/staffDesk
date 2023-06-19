@@ -14,6 +14,7 @@ import { DateRangePicker } from 'rsuite';
 import axios from 'axios';
 import "rsuite/dist/rsuite.css";
 import { useNavigate } from 'react-router-dom';
+import TruncateModal from '../modals/truncateModal';
 
 
 
@@ -33,7 +34,19 @@ const AttendancePage = () => {
     const [leaveReqData, setLeaveReqData] = useState([]);
     const [breakTimeData, setBreakTimeData] = useState([]);
     const [deleteStatus, setDeleteStatus] = useState("");
-    const [successStatus, setSuccessStatus] = useState("") 
+    const [successStatus, setSuccessStatus] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [text, setText] = useState("")
+
+    const handleShowModal = (info) => {
+      setShowModal(true);
+      setText(info)
+    };
+  
+    const handleCloseModal = () => {
+      setShowModal(false);
+    };
+
 
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -211,6 +224,8 @@ const handleSubmit = async(event) => {
     }
     deleteLeaveRequest()
   }
+
+
   return (
     <>
     <div className="container-scroller  ">
@@ -311,8 +326,9 @@ const handleSubmit = async(event) => {
           </div>
             {tab2Content === "leaves" && (
               <>
+                  <TruncateModal show={showModal} handleCloseTruncateModal={setShowModal} data={text} />
                 <div className='h-[45vh] overflow-auto'>
-                <Table striped bordered>
+                <Table striped bordered className='!table-auto	sm:!table-fixed'>
                 <thead>
                   <tr>
                     <th>From date</th>
@@ -331,7 +347,7 @@ const handleSubmit = async(event) => {
                       <td>{val.from_date}</td>
                       <td>{val.to_date}</td>
                       <td>{val.reason}</td>
-                      <td>{val.description}</td>
+                      <td className=' text-truncate' onMouseOver={()=>handleShowModal(val?.description)} style={{maxWidth:"200px"}}>{val.description}</td>
                       <td>{new Date(val?.created_at).toLocaleDateString()}</td>
                       <td className={`${ val.status == 0 ? "!text-orange-700	" : val.status == 1 ? "!text-teal-900	" : "!text-red-900"}}`}>{val.status == 0 ? "pending" : val.status == 1 ? "approved" : "rejected"}</td>
                       <td  onClick={handleDeleteLeaveRequest}>{val.status == 0 ? <button id={`${val.id}-${val.staff_id}`} className='btn btn-primary-outline'>Delete</button>: ""}</td>

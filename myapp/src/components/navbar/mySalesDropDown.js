@@ -80,7 +80,7 @@ const DayOfWeekDropdown = () => {
   return (
     <>
     <div className='!hidden md:!flex md:!items-center !ml-[15px] md:!ml-[50px] w-[10vw] md:!w-[30vw] text-white' >
-        My sales
+        <p className='w-[15%]'>My Sales</p>
         <Marquee direction='right'>
             {renderMarqueeItems()}
         </Marquee>

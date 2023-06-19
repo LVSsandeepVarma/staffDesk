@@ -17,7 +17,7 @@ import { setUserInfo } from "../../slice/userInfoSlice";
 import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice";
 // import { usePathname } from "next/navigation";
 import Loading from "../loader/loading";
-import DayOfWeekDropdown from "./myClientsDropDown";
+import DayOfWeekDropdown from "./mySalesDropDown";
 import CountdownTimer from "../screenLockCountdown/screenlockCountdown";
 import NavSearchResults from './navSearchResults';
 import ErrorTimedModal from '../modals/errorModal';
@@ -153,20 +153,22 @@ export default function TopNavbar(){
                 <div className="navbar-menu-wrapper d-flex align-items-center justify-end !grow-0	" style={{width: "auto"}}>
                   <BiLockAlt className="text-white text-xl mr-2	cursor-pointer" onClick={()=>{handleLockingScreen()}}/>
                   <AiOutlineBell className="text-white text-xl mr-2	" />
-                  <p className="align-center text-white  m-0">{userData?.value?.data?.staff?.name}</p>
-                  <img src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
+                  {/* <p className="align-center text-white  m-0">{userData?.value?.data?.staff?.name}</p>
+                  <img src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" /> */}
                   
                   <div className=" flex  ">
                     <div className="hidden lg:flex ">
                       <div className="relative ml-2">
-                        <div className="absolute flex h-full justify-end	 items-center	">
-                          < HiOutlineMagnifyingGlass className="mr-[10px]" />
-                        </div>
-                        <input type="text" className="form-control" placeholder="Search" aria-label="search" aria-describedby="search" />
+                        {/* <div className="absolute flex h-full justify-end	 items-center	">
+                          < HiOutlineMagnifyingGlass className="mr-[20px]" />
+                        </div> */}
+                        <input type="search" className="form-control" placeholder="Search" aria-label="search" aria-describedby="search" style={{backgroundImage: "/images/searchIcon.png"}} />
                         <div>
                           {showSearchRes == true ? <NavSearchResults/> : ""}
                         </div>
                       </div>
+                      <p className="flex items-center text-white  ml-2">{userData?.value?.data?.staff?.name}</p>
+                  <img src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
                     </div>
                     <div className="flex items-center !ml-[1rem]">
                       <button className="text-white	"><BsThreeDots onClick={toggleSidebar} /></button>
@@ -214,7 +216,7 @@ export default function TopNavbar(){
                     <a href="#" className="nav-link " >
                       <i className={`mdi mdi-view-headline menu-icon ${activePage == "enquiry" ? "nav_active":""}`}></i>
                       <span className={`menu-title ${activePage == "enquiry" ? "nav_active":""}`} >Enquiry</span>
-                      <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-1" id="count">{userData?.value?.data?.enq_counts?.ringing+userData?.value?.data?.new_enqs?.length+userData?.value?.data?.enq_counts?.postponed}</span>
+                      <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-1" id="count">{userData?.value?.data?.enq_counts?.ringing+userData?.value?.data?.enq_counts?.new+userData?.value?.data?.enq_counts?.postponed}</span>
                       <i className={`menu-arrow `}></i>
                     </a>
 
@@ -222,7 +224,7 @@ export default function TopNavbar(){
                       <ul className="submenu-item">
                         <li className={`nav-item ${activePage == "fetch" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/fetch">Fetch </a></li>
                         <li className={`nav-item ${activePage == "assigned-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/assigned-enquiry">Assigned 		 
-                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.new_enqs?.length} </span> 
+                        <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.new} </span> 
 </a></li>
                         <li className={`nav-item ${activePage == "ringing-enquiry" ? "nav_active":""}`}><a className="nav-link" href="/enquiry/ringing-enquiry">Ringing
                         <span className=" badge rounded-pill bg-[#25378b] fs-10 ml-2" id="count">{userData?.value?.data?.enq_counts?.ringing}</span></a></li>
@@ -271,7 +273,7 @@ export default function TopNavbar(){
                     </li>
                 </ul>
                 <div className="w-full flex justify-end items-center">
-                  <b>Login</b> : {userData?.value?.data?.login?.split(" ")[1]} |  
+                  <span className=''><b>Login</b> : {userData?.value?.data?.login?.split(" ")[1]} | </span> 
                   <span className="text-red-500"> &nbsp; <b>Late</b>: {parseInt((userData?.value?.data?.late_login)/3600)<10 ? `0${parseInt((userData?.value?.data?.late_login)/3600)}`: parseInt((userData?.value?.data?.late_login)/3600)}:{parseInt((userData?.value?.data?.late_login)/60) <10 ? `0${parseInt((userData?.value?.data?.late_login)/60)}`: parseInt((userData?.value?.data?.late_login)/60)}:{(userData?.value?.data?.late_login)%60}</span>
                 </div>
                 
