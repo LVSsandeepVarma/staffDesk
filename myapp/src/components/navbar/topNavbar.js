@@ -1,13 +1,13 @@
 // import Image from "next/image";
 import { useNavigate, useLocation } from 'react-router-dom';
 import '@mdi/font/css/materialdesignicons.min.css';
-import { Accordion } from "react-bootstrap";
+import { Accordion, Card } from "react-bootstrap";
 // import { MDBBadge } from 'mdb-react-ui-kit';
 import { MDBBadge } from "mdbreact";
 import { AiOutlineBell } from "react-icons/ai";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
-import { BsDisplay, BsThreeDots } from "react-icons/bs"
+import { BsClock, BsDisplay, BsThreeDots } from "react-icons/bs"
 import {BiLockAlt} from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
 import { FaUser, FaCog, FaEnvelope } from 'react-icons/fa';
@@ -23,6 +23,7 @@ import NavSearchResults from './navSearchResults';
 import ErrorTimedModal from '../modals/errorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { TbCircleDot } from 'react-icons/tb';
 export default function TopNavbar(){
   const navigate = useNavigate()
   const pathname = useLocation()
@@ -35,7 +36,28 @@ export default function TopNavbar(){
   const [activePage,setActivePage] = useState("dashboard")
   const [showSearchRes,  setShowSearchRes] = useState(false);
   const [showTimedErrorModal, setShowTimedErrorModal] = useState(false);
-  const leftSideBarRef = useRef(null)
+  const leftSideBarRef = useRef(null);
+  const [activityData, setActivityData] = useState([])
+
+  useEffect(()=>{
+    const fetchActivyData = async()=>{
+      try{
+        const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken");
+      const response =await axios.get(" https://admin.tradingmaterials.com/api/staff/activity", {
+        headers :{
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(response?.data?.data?.staff_logs)
+      setActivityData(response?.data?.data?.staff_logs?.activity);
+
+      }catch(err){
+        console.log("err", err)
+      }
+    }
+    fetchActivyData()
+  },[])
+
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
     setActiveTab("Profile")
@@ -51,6 +73,8 @@ export default function TopNavbar(){
       // logout functionality
       const  handleSignOut =  async()=>{
         try{
+
+          dispatch(setLoaderTrue())
           const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
           console.log(token, "token")
           const response = await axios.post("https://admin.tradingmaterials.com/api/staff/auth/logout",{},{
@@ -61,14 +85,16 @@ export default function TopNavbar(){
           console.log(response)
           if(response?.status){
             sessionStorage.removeItem("tmToken");
-            localStorage.removeItem("tmToken")
+            localStorage.removeItem("tmToken");
             
             navigate("/login")
           }
         }catch(err){
           setShowTimedErrorModal(true)
           console.log("log out failed", err)
+          dispatch(setLoaderFalse())
         }
+        dispatch(setLoaderFalse())
 
       }
   useEffect(() => {
@@ -98,7 +124,6 @@ export default function TopNavbar(){
     const fetchUserInfo = async () =>{
       try{
         const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
-        console.log(token)
         const response = await axios.get("https://admin.tradingmaterials.com/api/staff/get-user-info", {
           headers: {
             Authorization: `Bearer ${token}`
@@ -303,15 +328,15 @@ export default function TopNavbar(){
                 <li className="nav-item" role="presentation">
                   <button className={`nav-link ${activeTab === "Profile" ? "active" : ""}`} id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true" onClick={() => setActiveTab("Profile")}>Profile</button>
                 </li>
-                <li className="nav-item" role="presentation">
+                {/* <li className="nav-item" role="presentation">
                   <button className={`nav-link ${activeTab === "Chat" ? "active" : ""}`} id="profile-tab" data-bs-toggle="tab" data-bs-target="#chat" type="button" role="tab" aria-controls="chat" aria-selected="false" onClick={() => setActiveTab("Chat")}>Chat</button>
-                </li>
+                </li> */}
                 <li className="nav-item" role="presentation">
                   <button className={`nav-link ${activeTab === "Activity" ? "active" : ""}`} id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab" aria-controls="activity" aria-selected="false" onClick={() => setActiveTab("Activity")}>Activity</button>
                 </li>
-                <li className="nav-item" role="presentation">
+                {/* <li className="nav-item" role="presentation">
                   <button className={`nav-link ${activeTab === "Todo" ? "active" : ""}`} id="todo-tab" data-bs-toggle="tab" data-bs-target="#todo" type="button" role="tab" aria-controls="todo" aria-selected="false" onClick={() => setActiveTab("Todo")}>Todo</button>
-                </li>
+                </li> */}
               </ul>
               <div className="tab-content" id="myTabContent">
                 <div className={`tab-pane fade ${activeTab === "Profile" ? "show active" : ""}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -356,9 +381,38 @@ export default function TopNavbar(){
                     </nav>
                   </div>
                 </div>
-                <div className={`tab-pane fade ${activeTab === "Chat" ? "show active" : ""}`} id="chat" role="tabpanel" aria-labelledby="chat-tab">chat</div>
-                <div className={`tab-pane fade ${activeTab === "Activity" ? "show active" : ""}`} id="activity" role="tabpanel" aria-labelledby="activity-tab">activity</div>
-                <div className={`tab-pane fade ${activeTab === "Todo" ? "show active" : ""}`} id="todo" role="tabpanel" aria-labelledby="todo-tab">todo</div>
+                <div className={`tab-pane fade ${activeTab === "Activity" ? "show active" : ""}`} id="activity" role="tabpanel" aria-labelledby="activity-tab">
+                <div className="col-12 overflow-x-hidden min-h-[55vh] max-h-[55vh]  !overflow-y-visible	">
+                              <Card className="mt-[15px]">
+                                <Card.Title className="p-[1rem] pb-0">Activity</Card.Title>
+                                <Card.Body>
+                                <div className="timeline">
+                                  {activityData?.length >0 && activityData.map((activity,ind)=>(
+                                    <div key={`activity-${ind}`} className="timeline-item w-[11rem] sm: w-[16rem]">
+                                    <div className="timeline-icon">
+                                      <TbCircleDot />
+                                    </div>
+                                    <div className="timeline-content">
+                                      <div className="">
+                                        <div className="">
+                                          <h4 className='text-sm	'>{activity?.action}</h4>
+                                          <p className='text-xs'>{activity?.result}</p>
+                                        </div>
+                                          <div className="flex mt-3 items-center ">
+                                            <BsClock className="clock-icon mr-1" />
+                                            <small className="time">{new Date(activity?.created_at).toLocaleDateString()} {new Date(activity?.created_at).toLocaleTimeString()}</small>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  ))}
+    </div>
+                                </Card.Body>
+                              </Card>
+                              </div> 
+
+                </div>
+                {/* <div className={`tab-pane fade ${activeTab === "Todo" ? "show active" : ""}`} id="todo" role="tabpanel" aria-labelledby="todo-tab">todo</div> */}
 
               </div>
             </div>

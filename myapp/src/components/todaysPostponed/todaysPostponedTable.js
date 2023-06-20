@@ -27,7 +27,8 @@ const TodaysPostponedTable = () => {
     const [id, setId] = useState("");
     const [showCommetnsModal, setShowCommentsModal] = useState(false);
     const [verifyEmail, setVerifyEmail] = useState()
-    const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false)
+    const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false);
+   const [itemsInPage, setItemsInPage] = useState(10) 
 
     useEffect(()=>{
         const fetchUserInfo = async () =>{
@@ -76,7 +77,7 @@ const TodaysPostponedTable = () => {
   const itemsPerPage = 10;
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(tableData.length / itemsPerPage);
+  const totalPages = Math.ceil(tableData.length / itemsInPage);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,8 +94,8 @@ const TodaysPostponedTable = () => {
     }
   };
   // Get the current page's data
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const startIndex = (currentPage - 1) * itemsInPage;
+  const endIndex = startIndex + itemsInPage;
   let currentData = tableData.slice(startIndex, endIndex)
   if(searchQuery != ""){
     currentData = filteredTable.slice(startIndex, endIndex);
@@ -123,6 +124,11 @@ const TodaysPostponedTable = () => {
     setId(id)
   }
 
+  const handleItemsPerPageChange=(event)=>{
+    console.log("limit",event.target.value);
+    setItemsInPage(event.target.value)
+  }
+
   return (
     <div>
       <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
@@ -130,7 +136,17 @@ const TodaysPostponedTable = () => {
       <RingingModal show={ringingEnquiryModalShow} setShow={setRingingEnquiryShowModal} id={id} source={"TODAYS-POST"}/>
       <NotIntrestedModal show={notIntrestedModalShow} setShow={setNotIntrestedModalShow} id={id} source={"TODAYS-POST"}/>
       <EmailVerificationModal show={showEmailVerifyModal}  setShowEmailVerifyModal={setShowEmailVerifyModal} response={verifyEmail}  />
-
+      <div className='!flex'>
+      <div className='!flex justify-start w-[20%] items-center '>
+          Show 
+          <select value={itemsInPage} onChange={(e)=>{handleItemsPerPageChange(e)}} style={{border: "1px solid"}}>
+            <option value="10" >10</option>
+            <option value="15" >15</option>
+            <option value="20" >20</option>
+            <option value="50" >50</option>
+          </select>
+          Entries
+        </div>
       <div className='!flex justify-end !w-[100%] mb-1'>
        <div className="input-group !w-[15vw] ">
       <input
@@ -140,6 +156,7 @@ const TodaysPostponedTable = () => {
         value={searchQuery}
         onChange={handleSearchChange}
       />
+      </div>
       
     </div>
        </div>

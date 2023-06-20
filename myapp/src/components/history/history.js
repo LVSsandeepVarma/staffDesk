@@ -102,8 +102,8 @@ export default function Staff_History() {
                                         <h4>{enq.action}</h4>
                                         <p className="pt-3 pb-3">{enq.result}</p>
                                       </div>
-                                        <div className="flex ">
-                                          <BsClock className="clock-icon" />
+                                        <div className="flex items-center">
+                                          <BsClock className="clock-icon mr-1" />
                                           <p className="time">{enq?.updated_at?.split("T")[0]}</p>
                           
                                       </div>
@@ -130,7 +130,7 @@ export default function Staff_History() {
               <h4>Event 1</h4>
               <p>Some description of Event 1</p>
             </div>
-              <div className="flex ">
+              <div className="flex items-center">
                 <BsClock className="clock-icon" />
                 <p className="time">11/02/1123</p>
             </div>
@@ -330,7 +330,7 @@ export default function Staff_History() {
                                           <h4>{activity?.action}</h4>
                                           <p>{activity?.result}</p>
                                         </div>
-                                          <div className="flex mt-3">
+                                          <div className="flex mt-3 items-center">
                                             <BsClock className="clock-icon mr-1" />
                                             <p className="time">{new Date(activity?.created_at).toLocaleDateString()} {new Date(activity?.created_at).toLocaleTimeString()}</p>
                                         </div>

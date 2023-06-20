@@ -58,8 +58,8 @@ export default function DashboardData() {
         <>
             <div className='container mt-20 sm:mt-10'>
                 <div className=' row row-6 relative flex justify-center '>
-                    <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                    <div className='flex !items-center'>
+                    <Card className='mr-3 mb-3' style={{ width: '18rem'}}>
+                    <div className='flex !items-center h-[100%]'>
                    
                
                         <Card.Body>
@@ -91,8 +91,8 @@ export default function DashboardData() {
                             </Button>
                         </Card.Footer> */}
                     </Card>
-                    <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                        <div className='flex'>
+                    <Card className='mr-3 mb-3' style={{ width: '18rem'}}>
+                        <div className='flex items-center h-[100%]'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Total Enquiries</Card.Title>
                             <Carousel className='' activeIndex={carouselActiveIndexes[1]} prevLabel="" nextLabel="">
@@ -122,14 +122,48 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                        <div className='flex'>
+                        <div className='flex items-center h-[100%]'>
+                        <Card.Body>
+                            <Card.Title className='font-extrabold	'>Total Sales</Card.Title>
+                            <Carousel className='' activeIndex={carouselActiveIndexes[6]} prevLabel="" nextLabel="">
+                                <Carousel.Item>
+                                    <p>Today's Total Sales</p>
+                                    <p className='text-3xl	font-extrabold'>2,456K</p>
+                                </Carousel.Item>
+                                <Carousel.Item>
+                                    <p>Yesterday's Total Sales</p>
+                                    <p className='text-3xl	font-extrabold'>2,456K</p>
+                                </Carousel.Item>
+                                
+
+                            </Carousel>
+                        </Card.Body>
+                        <div className="ml-auto w-[25%] flex items-center justify-center ">
+                  <span className="bg-success-transparent icon-service text-success rounded-full !bg-green">
+                  <FontAwesomeIcon className=' !h-[4rem]' icon={faWallet} color='#ffc107'/>
+                  </span>
+                  </div>
+                        </div>
+                        <Card.Footer className="text-end bg-white border-0 flex justify-end ">
+                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[6]} onClick={()=>handlePrev("6")}>
+                                {'<'}
+                            </Button>
+                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[6]} onClick={()=>handleNext("6")}>
+                                {'>'}
+                            </Button>
+                        </Card.Footer>
+                    </Card>
+                    <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
+                        <div className='flex items-center h-[100%]'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Ringing Enquiries</Card.Title>
                             <Carousel className='' activeIndex={carouselActiveIndexes[2]} prevLabel="" nextLabel="">
                                 <Carousel.Item>
+                                    <p>today's Ringing Enquiries</p>
                                     <p className='text-3xl	font-extrabold'>8379</p>
                                 </Carousel.Item>
                                 <Carousel.Item>
+                                <p>yesterday's Ringing Enquiries</p>
                                     <p className='text-3xl	font-extrabold'>8379</p>
                                 </Carousel.Item>
                                 
@@ -152,14 +186,16 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                        <div className='flex'>
+                        <div className='flex items-center h-[100%]'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Postponed Enquiries</Card.Title>
                             <Carousel className='' activeIndex={carouselActiveIndexes[3]} prevLabel="" nextLabel="">
                                 <Carousel.Item>
+                                    <p>today's Postponed Enquirues</p>
                                     <p className='text-3xl font-extrabold	'>285</p>
                                 </Carousel.Item>
                                 <Carousel.Item>
+                                <p>Yesterday's Postponed Enquirues</p>
                                     <p className='text-3xl	font-extrabold'>285</p>
                                 </Carousel.Item>
                                 
@@ -181,15 +217,17 @@ export default function DashboardData() {
                             </Button>
                         </Card.Footer>
                     </Card>
-                    <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                        <div className='flex'>
+                    <Card className='mr-3 mb-3' style={{ width: '18rem'  }}>
+                        <div className='flex items-center h-[100%]'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Not Interested Enquiries</Card.Title>
                             <Carousel className='' activeIndex={carouselActiveIndexes[4]} prevLabel="" nextLabel="">
                                 <Carousel.Item>
+                                    <p>Today's Not Interested Enquiries</p>
                                     <p className='text-3xl	font-extrabold'>285</p>
                                 </Carousel.Item>
                                 <Carousel.Item>
+                                    <p>Yesterday's Not Interested Enquiries</p>
                                     <p className='text-3xl	font-extrabold'>285</p>
                                 </Carousel.Item>
                                 
@@ -212,14 +250,16 @@ export default function DashboardData() {
                         </Card.Footer>
                     </Card>
                     <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                        <div className='flex'>
+                        <div className='flex items-center h-[100%]'>
                         <Card.Body>
                             <Card.Title className='font-extrabold	'>Total Orders</Card.Title>
                             <Carousel className='' activeIndex={carouselActiveIndexes[5]} prevLabel="" nextLabel="">
                                 <Carousel.Item>
+                                    <p>Today's Total Orders</p>
                                     <p className='text-3xl	font-extrabold'>6,895</p>
                                 </Carousel.Item>
                                 <Carousel.Item>
+                                    <p>Yesterday's Total Orders</p>
                                     <p className='text-3xl	font-extrabold'>6,895</p>
                                 </Carousel.Item>
                                 
@@ -237,36 +277,6 @@ export default function DashboardData() {
                                 {'<'}
                             </Button>
                             <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[5]}  onClick={()=>handleNext("5")}>
-                                {'>'}
-                            </Button>
-                        </Card.Footer>
-                    </Card>
-                    <Card className='mr-3 mb-3' style={{ width: '18rem' }}>
-                        <div className='flex'>
-                        <Card.Body>
-                            <Card.Title className='font-extrabold	'>Total Sales</Card.Title>
-                            <Carousel className='' activeIndex={carouselActiveIndexes[6]} prevLabel="" nextLabel="">
-                                <Carousel.Item>
-                                    <p className='text-3xl	font-extrabold'>2,456K</p>
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <p className='text-3xl	font-extrabold'>2,456K</p>
-                                </Carousel.Item>
-                                
-
-                            </Carousel>
-                        </Card.Body>
-                        <div className="ml-auto w-[25%] flex items-center justify-center ">
-                  <span className="bg-success-transparent icon-service text-success rounded-full !bg-green">
-                  <FontAwesomeIcon className=' !h-[4rem]' icon={faWallet} color='#ffc107'/>
-                  </span>
-                  </div>
-                        </div>
-                        <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[6]} onClick={()=>handlePrev("6")}>
-                                {'<'}
-                            </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[6]} onClick={()=>handleNext("6")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>
