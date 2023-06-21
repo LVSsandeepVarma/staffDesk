@@ -49,8 +49,8 @@ const NotIntrestedModal = (props) => {
                 setErrorMsg(response?.data?.message)
               }
         } catch (error) {
-            console.log("error", error);
-            setErrorMsg(error?.data?.message)
+            console.log("error", error?.response?.data?.message);
+            setErrorMsg(error?.response?.data?.message)
 
         }
         handleClose();
@@ -72,6 +72,7 @@ const NotIntrestedModal = (props) => {
                             <Form.Label>Date</Form.Label>
                             <Form.Control type="date" min={new Date().toISOString().split('T')[0]} value={dateValue} onChange={handleDateChange} />
                         </Form.Group>
+                        {errorMsg !="" ? <p className='text-red-900'>{errorMsg}</p>: ""}
                         <Button className='mt-[20px] mb-[20px]' variant="primary" type="submit">
                             Submit
                         </Button>

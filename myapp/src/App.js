@@ -17,7 +17,9 @@ import OTP from './pages/reset-password/hash/page';
 import StaffAttendance from './pages/staff/attendance/page';
 import StaffHistory from './pages/staff/history/page';
 import Products from './components/EnquiryCompleted/products';
-
+import SignedEnquiry from './pages/enquiry/signed-enquiry/page';
+import OrderDetailsEnquiry from './pages/enquiry/invoice-enquiry/page';
+import Invoice_Enquiry from './components/invoiceEnquiry/invoiceEnquiry';
 
 
 
@@ -40,9 +42,12 @@ function App() {
             <Route path="/enquiry/not-todays-ringing-enquiry" element={<TRinging/>}></Route>
             <Route path="/locked" element={<LockedScreen/>}></Route>
             <Route path="/staff/attendance" element={<StaffAttendance/>}></Route>
-            <Route path="staff/history" element={<StaffHistory/>}></Route>
+            <Route path="/staff/history" element={<StaffHistory/>}></Route>
+            <Route path="/enquiry/signed" element={<SignedEnquiry/>}></Route>
+            <Route path="/enquiry/signed/client-details/" element={<OrderDetailsEnquiry/>}></Route>
+            <Route path='/enquiry/invoice-enquiry' element={<Invoice_Enquiry/>}></Route>
             {/* not protected route */}
-            <Route path='/staff/enquiry-completed' element={<Products/>}></Route>
+            <Route path='/staff/enquiry-completed/:client_id' element={<Products/>}></Route>
           </Routes>
         </BrowserRouter>
   );

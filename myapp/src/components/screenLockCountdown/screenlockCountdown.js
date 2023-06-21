@@ -104,7 +104,7 @@ const CountdownTimer = () => {
           <Modal.Title>Times Up!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>What would you like to do?</p>
+          <p>screen idle time reached, press continue or lock your screen?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleContinue}>

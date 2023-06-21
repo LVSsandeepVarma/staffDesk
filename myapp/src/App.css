@@ -110,7 +110,7 @@ body {
 }
 
 .optionListContainer{
-  position: absolute !important;
+  position: relative !important;
 }
 .multiSelectContainer ul{
   height: 16vh;
@@ -219,8 +219,13 @@ body {
   margin-bottom: 0;
 }
 
+.nav-pills .nav-link {
+  color: #25378b;
+}
+
 .nav-pills .nav-link.active{
   background-color: #25378b !important;
+  color: #fff
 }
 
 

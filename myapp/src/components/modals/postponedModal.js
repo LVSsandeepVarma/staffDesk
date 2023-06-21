@@ -31,7 +31,7 @@ const PostponedModal = (props) => {
     // Handle form submission
     console.log("postponed")
     try {
-      const token = sessionStorage?.getItem("tmToken")
+      const token = localStorage?.getItem("tmToken")
       console.log("poastpone modal")
       const response = await axios.post("https://admin.tradingmaterials.com/api/staff/move-enquiry",
         {
@@ -61,8 +61,8 @@ const PostponedModal = (props) => {
       }
       
     } catch (error) {
-      console.log("error", error);
-      setErrorMsg(error?.data?.message)
+      console.log("error", error?.response?.data?.message);
+      setErrorMsg(error?.response?.data?.message)
 
     }
 
@@ -110,6 +110,8 @@ const PostponedModal = (props) => {
             <Button className='mt-[20px] mb-[20px]' variant="primary" type="button" onClick={(e)=>{handleSubmit(e)}}>
               Submit
             </Button>
+            {errorMsg !="" ? <p className='text-red-900'>{errorMsg}</p>: ""}
+
           </Form>
         </Modal.Body>
       </Modal>

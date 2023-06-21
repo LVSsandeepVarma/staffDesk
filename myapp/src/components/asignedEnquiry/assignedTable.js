@@ -152,10 +152,10 @@ const PostponedTable = () => {
 
   return (
     <div>
-      <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
-      <PostponedModal show={show} setShow={setShow} id={id} source={"POSTPONED"}/>
-      <RingingModal show={ringingEnquiryModalShow} setShow={setRingingEnquiryShowModal} id={id} source={"POSTPONED"}/>
-      <NotIntrestedModal show={notIntrestedModalShow} setShow={setNotIntrestedModalShow} id={id} source={"POSTPONED"}/>
+      <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal} data={commentsArr}/>
+      <PostponedModal show={show} setShow={setShow} id={id} source={"NEW"}/>
+      <RingingModal show={ringingEnquiryModalShow} setShow={setRingingEnquiryShowModal} id={id} source={"NEW"}/>
+      <NotIntrestedModal show={notIntrestedModalShow} setShow={setNotIntrestedModalShow} id={id} source={"NEW"}/>
       <EmailVerificationModal show={showEmailVerifyModal}  setShowEmailVerifyModal={setShowEmailVerifyModal} response={verifyEmail}  />
       <div className='!flex'>
         <div className='!flex justify-start w-[20%] items-center '>

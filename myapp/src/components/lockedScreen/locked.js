@@ -20,6 +20,21 @@ export default function Locked() {
     const [password, setPassword] = useState("")
     const [saveCredentials, setSaveCredentials] = useState(false)
     const [responseError, setResponseError] = useState("")
+    
+
+    // useEffect(() => {
+    //     const handleBackButton = (event) => {
+    //       event.preventDefault();
+    //       // Optionally, you can perform custom actions here before navigating back
+    //       navigate(1);
+    //     };
+    
+    //     window.addEventListener('popstate', handleBackButton);
+    
+    //     return () => {
+    //       window.removeEventListener('popstate', handleBackButton);
+    //     };
+    //   }, [navigate]);
 
     useEffect(()=>{
         const fetchUserInfo = async () =>{
@@ -79,7 +94,7 @@ export default function Locked() {
                 }
             })
             console.log(response)
-            navigate("/dashboard")
+            navigate(-1)
             dispatch(setLoaderTrue())
             setResponseError("")
 
@@ -116,7 +131,9 @@ export default function Locked() {
                                                 <ErrorMessage className='text-red-900' name="password" component="div" />
 
                                             </div>
-                                            {responseError?.length ? <p className='text-red-900'>{responseError}</p> : ""}
+                                            {responseError?.length ? <p className='text-red-900'>{responseError}</p> : ""
+                                            // <p className='text-red-900'>Account Locked is considered as Break Time and calculated in your attendance.</p>
+                                            }
                                             <div className="mt-3">
                                                 <button type="submit" className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" >UNLOCK</button >
                                             </div>

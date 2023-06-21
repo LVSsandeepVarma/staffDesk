@@ -17,8 +17,9 @@ import emailVerification from '../verification/emailVerification';
 import EmailVerificationModal from '../modals/emailVerifiedModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
-const RingingTable = () => {
+const InvoiceTable = () => {
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTable, setFilteredTable] = useState([]);    const [show, setShow] = useState(false);
@@ -30,9 +31,9 @@ const RingingTable = () => {
     const [verifyEmail, setVerifyEmail] = useState()
     const [showEmailVerifyModal,setShowEmailVerifyModal] = useState(false);
     const [itemsInPage, setItemsInPage] = useState(10);
-
-    const [id, setId] = useState("")
-
+    const [id, setId] = useState("");
+    const navigate = useNavigate();
+    
     useEffect(()=>{
         const fetchUserInfo = async () =>{
             try{
@@ -201,7 +202,7 @@ const RingingTable = () => {
                         </td>
               {/* <td>{row.first_name}</td> */}
               {!row.email_verified == 1 ?
-              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
+              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>handleEmailverification(row.id)}>
 
               {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
               {row.email}
@@ -211,28 +212,9 @@ const RingingTable = () => {
               <td>{row.modified_date}</td>
               <td>{row.added_date}</td>
               <td > 
-              <ButtonGroup className="mt-2 mb-2">
-      <Dropdown>
-        <Dropdown.Toggle className="!flex items-center" variant="default" id="dropdown-basic">
-          Action <AiOutlineCaretDown/>
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          {/* <Dropdown.Item className="!flex justify-center" onClick={()=>{handleEmailverification(row.id)}}>
-           <AiOutlineReload className="mr-2" />
-          </Dropdown.Item> */}
-          <Dropdown.Divider />
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleRingingTransferModal(row.id)}}>
-            <CgPhone className="mr-2"/> Ringing
-          </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center" key={row.id} onClick={()=>{handlePostponedTransferModal(row.id)}}>
-           <BsCalendarPlus  className="mr-2"/> Postponed
-          </Dropdown.Item>
-          <Dropdown.Item className="!flex justify-center" onClick={()=>{handleNotIntrestedTransferModal(row.id)}}>
-           <TbPlugConnected className="mr-2"/> Not interested
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </ButtonGroup>
+                <ButtonGroup className="mt-2 mb-2 bg-danger" onClick={()=>navigate(`/staff/enquiry-completed/${row?.id}`)}>
+                    Action
+                </ButtonGroup>
             </td>
             <td > 
                 <div className='!flex items-center justify-center' onClick={()=>handleCommentModalDispaly(row?.id)}>
@@ -284,4 +266,4 @@ const RingingTable = () => {
   );
 };
 
-export default RingingTable;
+export default InvoiceTable;

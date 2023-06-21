@@ -152,7 +152,7 @@ const PostponedTable = () => {
 
   return (
     <div>
-      <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal}/>
+      <CommentsModal show = {showCommetnsModal} setShowCommentsModal={setShowCommentsModal} data={commentsArr}/>
       <PostponedModal show={show} setShow={setShow} id={id} source={"POSTPONED"}/>
       <RingingModal show={ringingEnquiryModalShow} setShow={setRingingEnquiryShowModal} id={id} source={"POSTPONED"}/>
       <NotIntrestedModal show={notIntrestedModalShow} setShow={setNotIntrestedModalShow} id={id} source={"POSTPONED"}/>

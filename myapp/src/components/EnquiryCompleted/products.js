@@ -9,7 +9,6 @@ import { Card } from "react-bootstrap"
 // import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice"
-import { BsCalendar, BsCalendar2Check } from 'react-icons/bs';
 import { DateRangePicker } from 'rsuite';
 import axios from 'axios';
 import "rsuite/dist/rsuite.css";
@@ -20,23 +19,17 @@ import Multiselect from 'multiselect-react-dropdown';
 
 
 const Products = () => {
-    const navigate = useNavigate() 
+    const navigate = useNavigate();
+    const dispatch = useDispatch() 
     const {combine, allowedMaxDays, before} = DateRangePicker
     const userData = useSelector((state) => state?.userInfoReducer)
     console.log(userData, "data")
     const loaderState = useSelector((state)=>state.loaderReducer.value)
-    const [tab2Content, setTab2Content] = useState("leaves");
-    const [selectedDateRange, setSelectedDateRange] = useState(["", ""]);
-    const [leaveType, setLeaveType] = useState("");
-    const [leaveDesc, setLeaveDesc] = useState("");
     const [error, setError] = useState([]);
     const [success, setSuccess] = useState("");
-    const [attendanceData , setAttendanceData] = useState([]);
-    const [leaveReqData, setLeaveReqData] = useState([]);
-    const [breakTimeData, setBreakTimeData] = useState([]);
-    const [deleteStatus, setDeleteStatus] = useState("");
-    const [successStatus, setSuccessStatus] = useState("");
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [productsCart, setProductsCart] = useState([])
+    const [relativeQty, setRelativeQty] = useState([]);
+    const [relativeTax, setRelativeTax] = useState([]);
   const [options, setOptions] = useState([
     { name: 'option1', label: 'Option 1' },
     { name: 'option2', label: 'Option 2' },
@@ -45,138 +38,6 @@ const Products = () => {
     { name: 'option5', label: 'Option 5' },
   ]);
 
-  const handleDropdownChange = (event) => {
-    setSelectedOptions(Array.from(event.target.selectedOptions, (option) => option.value));
-  };
-
-  const removeSelected = () => {
-    setSelectedOptions([]);
-  }; 
-
-    const dispatch = useDispatch();
-    useEffect(()=>{
-      const fetchAttendanceData = async()=>{
-        try{
-          const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
-          const response = await axios.get(" https://admin.tradingmaterials.com/api/staff/attendance", {
-            headers: { 
-              Authorization: `Bearer ${token}`
-            }
-          })
-          console.log(response, response?.data?.data["break-logs"])
-          const attendanceinfo = response?.data?.data?.attendance
-          const updatedInfo = attendanceinfo.map((val,ind)=>{
-            const dateTime = new Date(val.date);
-            const month =  dateTime.toLocaleString('default', { month: 'long' });
-            const day = dateTime.getDate();
-            const weekday = dateTime.toLocaleDateString('default', { weekday: 'long' });
-            return {...attendanceinfo[ind], "monthDay":  `${month} ${day}`,"weekday": `${weekday}`}
-          })
-          console.log("attendanceinfo",updatedInfo)
-          setAttendanceData(updatedInfo)
-          setLeaveReqData(response?.data?.data["leave-reqs"])
-          const breaklogs = response?.data?.data["break-logs"]
-          breaklogs.map((val,ind)=>{
-            const totalSeconds = val.break_time; // Example: 3665 seconds
-
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-
-            const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-            console.log(formattedTime);
-            breaklogs[ind].break_time = formattedTime
-          })
-          setBreakTimeData(response?.data?.data["break-logs"])
-
-        }catch(err)
-        {
-          console.log(err)
-
-        }
-      }
-      fetchAttendanceData();
-    },[])
-    var today = new Date();
-var dd = today.getDate()+2;
-
-var mm = today.getMonth()+1; 
-var yyyy = today.getFullYear();
-if(dd<10) 
-{
-    dd='0'+dd+2;
-} 
-
-if(mm<10) 
-{
-    mm='0'+mm;
-} 
-today = yyyy+'/'+mm+'/'+dd;
-
-console.log(today);
-const handleDateRangeChange = (value) => {
-  console.log(value)
-  value.map((val,ind)=>{
-    console.log(val)
-    const date = new Date(val);
-
-    // Get the year, month, and day from the Date object
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month starts from 0, so we add 1
-    const day = String(date.getDate()).padStart(2, "0");
-    
-    // Format the date as "yyyy/mm/dd"
-    const formattedDate = `${year}/${month}/${day}`;
-    
-    console.log(formattedDate); // Output: "2023/06/01"
-    const timeRange = selectedDateRange
-    timeRange[ind] = formattedDate
-    setSelectedDateRange([...timeRange])
-  }) 
-};
-
-const handleLeaveDesc = (event)=>{
-  setLeaveDesc(event.target.value)
-}
-
-const handleLeaveTypeChange = (event)=>{
-  setLeaveType(event.target.value)
-}
-
-const handleSubmit = async(event) => {
-  event.preventDefault();
-  console.log(userData?.value?.data?.staff?.id, "id")
-  try{
-    const formData = new FormData
-    formData.append("daterange" , `${selectedDateRange[0]}-${selectedDateRange[1]}`);
-    formData.append("reason" , leaveType)
-    formData.append("description", leaveDesc)
-    formData.append("staff_id", userData?.value?.data?.staff?.id)
-  const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
-   const response =await axios.post("https://admin.tradingmaterials.com/api/staff/leave-request", formData,{
-    headers:{
-      Authorization: `Bearer ${token}`
-    }
-   })
-   setError([])
-   setSuccess(response?.data?.message)
-   console.log(response)
-  }catch(err){
-    console.log("err", err?.response?.data?.errors)
-    const errorsArray = []
-    errorsArray[0] = err?.response?.data?.errors?.reason
-    errorsArray[1] = err?.response?.data?.errors?.description
-    errorsArray[2] = err?.response?.data?.errors?.daterange
-
-    setError(...errorsArray)
-    setSuccess("")
-
-  }
-  
-  // Perform submit logic with selectedDateRange value
-  console.log(selectedDateRange);
-};
     useEffect(()=>{
         if(loaderState){
             dispatch(setLoaderFalse())
@@ -191,12 +52,26 @@ const handleSubmit = async(event) => {
     setActiveTab(tab);
   };
 
-  const handleTabTwoContent =()=>{
-    if(tab2Content === "leaves") setTab2Content("apply leave")
-    else setTab2Content("leaves")
+  const handleSelectedOptions = (products)=>{
+    let selectedProductsArr = []
+    products?.map((val,ind)=>{
+      selectedProductsArr.push(val?.name)
+    })
+    setProductsCart([...selectedProductsArr])
   }
-  console.log(selectedDateRange, "selected date range")
 
+  const handleRemoveProduct = (products)=>{
+    let removedProductsArr = []
+    products?.map((val,ind)=>{
+      removedProductsArr = productsCart?.filter(item => item !== val?.name)
+    })
+    setProductsCart([...removedProductsArr])
+    }
+
+  const handleQtyChange=(val)=>{
+    console.log(val)
+
+  }
   return (
     <>
     <div className="container-scroller  ">
@@ -208,7 +83,7 @@ const handleSubmit = async(event) => {
                     <ol className="breadcrumb">
                         {/* <!-- breadcrumb --> */}
                         <li className="breadcrumb-item">Dashboard</li>
-                        <li className="breadcrumb-item active" aria-current="page">Attendance</li>
+                        <li className="breadcrumb-item active" aria-current="page">Invoice</li>
                     </ol>
                     {/* <!-- End breadcrumb --> */}
                     <div className="ml-auto">
@@ -231,11 +106,11 @@ const handleSubmit = async(event) => {
                 </div> */}
                  <div className="container">
                     <Card>
-                        <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Ringing Enquiries</Card.Title>
+                        <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Unpaid Invoices</Card.Title>
                         <Card.Body>
                         <div className="container mx-auto">
       <div className="flex">
-        <div className="w-1/4">
+        {/* <div className="w-1/4">
           <Tab.Container activeKey={activeTab} onSelect={handleTabChange}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
@@ -273,10 +148,10 @@ const handleSubmit = async(event) => {
                   <td>8:30 AM - 4:30 PM</td>
                 </tr>
                 {/* Add more rows as needed */}
-              </tbody>
-            </Table>
-          )}
-          {activeTab === 'tab2' && (
+              {/* </tbody> */}
+            {/* </Table> */}
+          {/* )} */}
+          {/* {activeTab === 'tab2' && (
             <>
             <div className='flex justify-around	'>
             <div className='w-[30%] mr-10'>
@@ -295,43 +170,118 @@ const handleSubmit = async(event) => {
                 // className='!relative'
                 options={options} // Options to display in the dropdown
                 selectedValues={""} // Preselected value to persist in dropdown
-                onSelect={(e)=>{console.log(e)}} // Function will trigger on select event
-                onRemove={(e)=>{console.log("removed", e)}} // Function will trigger on remove event
+                onSelect={(e)=>{handleSelectedOptions(e)}} // Function will trigger on select event
+                onRemove={(e)=>{handleRemoveProduct(e)}} // Function will trigger on remove event
                 displayValue="name" // Property name to display in the dropdown options
             />
             </Form.Group>
             </div>
             
           </div>
-          <Table striped bordered>
+          {productsCart?.length>0 && 
+          <Table responsive striped bordered>
               <thead>
                 <tr>
-                  <th>Day</th>
-                  <th>Attendance Log</th>
-                  <th>Time</th>
+                  <th>id</th>
+                  <th> product</th>
+                  <th>quantity</th>
+                  <th>tax</th>
+                  <th>price</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Monday</td>
-                  <td>John Doe</td>
-                  <td>9:00 AM - 5:00 PM</td>
+                {productsCart?.map((val,ind)=>(
+                  <tr key={ind}>
+                  <td>#00{ind}</td>
+                  <td>{val}</td>
+                  <td>
+                    <input onChange={(e)=>handleQtyChange([e?.target?.value,ind])} type='number' min={1}></input>
+                  </td>
+                  <td>
+                  <select>
+                    <option>0%</option>
+                    <option>5%</option>
+                    <option>10%</option>
+                  </select>
+                  </td>
+                  <td>$00.00</td>
                 </tr>
+                ))}
+                
+                {/* Add more rows as needed */}
+              {/* </tbody> */}
+            {/* </Table>} */}
+          {/* </> */}
+
+          {/* )} */}
+
+
+        {/* </div> */}
+        <>
+            <div className='flex justify-around	'>
+            <div className='w-[70%] mr-10'>
+            <Form.Group controlId="dropdown">
+              <Form.Label>Select Currency:</Form.Label>
+              <Form.Control as="select">
+                <option>USD</option>
+                <option>IND</option>
+              </Form.Control>
+            </Form.Group>
+            </div>
+            <div className='w-[70%] justify-end'>
+            <Form.Group controlId="multiSelect">
+            <Form.Label>select Products:</Form.Label>
+            <Multiselect
+                // className='!relative'
+                options={options} // Options to display in the dropdown
+                selectedValues={""} // Preselected value to persist in dropdown
+                onSelect={(e)=>{handleSelectedOptions(e)}} // Function will trigger on select event
+                onRemove={(e)=>{handleRemoveProduct(e)}} // Function will trigger on remove event
+                displayValue="name" // Property name to display in the dropdown options
+            />
+            </Form.Group>
+            </div>
+            
+          </div>
+          </>
+          </div>
+          <div className='!block mt-3'>
+          {productsCart?.length>0 && 
+          <Table  responsive striped bordered>
+              <thead>
                 <tr>
-                  <td>Tuesday</td>
-                  <td>Jane Smith</td>
-                  <td>8:30 AM - 4:30 PM</td>
+                  <th>id</th>
+                  <th> product</th>
+                  <th>quantity</th>
+                  <th>tax</th>
+                  <th>price</th>
                 </tr>
+              </thead>
+              <tbody>
+                {productsCart?.map((val,ind)=>(
+                  <tr key={ind}>
+                  <td>#00{ind}</td>
+                  <td>{val}</td>
+                  <td>
+                    <input onChange={(e)=>handleQtyChange([e?.target?.value,ind])} type='number' min={1}></input>
+                  </td>
+                  <td>
+                  <select>
+                    <option>0%</option>
+                    <option>5%</option>
+                    <option>10%</option>
+                  </select>
+                  </td>
+                  <td>$00.00</td>
+                </tr>
+                ))}
+                
                 {/* Add more rows as needed */}
               </tbody>
-            </Table>
-          </>
-
-          )}
-
-
-        </div>
-      </div>
+            </Table>}
+            </div>
+          
+      
     </div>
                         </Card.Body>
                     </Card>

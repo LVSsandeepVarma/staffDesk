@@ -9,7 +9,8 @@ import { Card } from "react-bootstrap"
 // import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { setLoaderFalse, setLoaderTrue } from "../../slice/loaderSlice"
-import { BsCalendar, BsCalendar2Check } from 'react-icons/bs';
+import { BsFillCartXFill, BsCalendar2Check } from 'react-icons/bs';
+import {FaRegAddressBook, FaCartArrowDown, FaFileInvoice} from "react-icons/fa"
 import { DateRangePicker } from 'rsuite';
 import axios from 'axios';
 import "rsuite/dist/rsuite.css";
@@ -19,7 +20,7 @@ import Loading from '../loader/loading';
 
 
 
-const AttendancePage = () => {
+const Orderdetails = () => {
     const navigate = useNavigate() 
     const {combine, allowedMaxDays, before} = DateRangePicker
     const userData = useSelector((state) => state?.userInfoReducer);
@@ -248,7 +249,7 @@ const handleSubmit = async(event) => {
                     <ol className="breadcrumb">
                         {/* <!-- breadcrumb --> */}
                         <li className="breadcrumb-item">Dashboard</li>
-                        <li className="breadcrumb-item active" aria-current="page">Attendance</li>
+                        <li className="breadcrumb-item active" aria-current="page">Product Details</li>
                     </ol>
                     {/* <!-- End breadcrumb --> */}
                     <div className="ml-auto">
@@ -271,7 +272,7 @@ const handleSubmit = async(event) => {
                 </div> */}
                 <div className="container">
                     <Card>
-                        <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Attendance</Card.Title>
+                        <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Order Details</Card.Title>
                         <Card.Body>
                         <div className="container mx-auto">
       <div className="block sm:flex">
@@ -279,150 +280,136 @@ const handleSubmit = async(event) => {
           <Tab.Container activeKey={activeTab} onSelect={handleTabChange}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
-                <Nav.Link eventKey="tab1">
+                <Nav.Link eventKey="tab1" >
                   <div className=' flex'>
-                  <BsCalendar className='flex mr-2'/>
-                   Attendance
+                  <FaRegAddressBook className='flex mr-2'/>
+                   Personal
                   </div>
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="tab2"><div className='flex'><BsCalendar2Check className='flex mr-2'/> Leave Request </div></Nav.Link>
+                <Nav.Link eventKey="tab2"><div className='flex'><FaCartArrowDown className='flex mr-2'/> Orders </div></Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="tab3"><div className='flex'><BsCalendar2Check className='flex mr-2'/>Break Time</div></Nav.Link>
+                <Nav.Link eventKey="tab3"><div className='flex'><FaFileInvoice className='flex mr-2'/>Invoices</div></Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="tab4"><div className='flex'><BsFillCartXFill className='flex mr-2'/>Canceled Orders</div></Nav.Link>
               </Nav.Item>
             </Nav>
           </Tab.Container>
         </div>
         <div className="w-[100%] sm:!w-3/4">
-          <div className="flex justify-between items-center mb-4">
+          {activeTab !== 'tab1' && <div className="flex justify-between items-center mb-4">
             <Button variant="primary">Previous</Button>
             <h3>June 2023</h3>
-          </div>
+          </div>}
           {/* {console.log(leaveReqData)} */}
           {activeTab === 'tab1' && (
             <div className='h-[45vh] overflow-auto'>
-              <Table striped bordered >
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Day</th>
-                    <th>Note</th>
-                    <th>Login</th>
-                    <th>Logout</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {attendanceData?.length >0 && attendanceData.map((val,ind)=>(
-                    <tr key = {ind} >
-                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.monthDay}</td>
-                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.day}</td>
-                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.note}</td>
-                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.login?.split(" ")[1]}</td>
-                      <td className={`${val.day == "Sunday" ? "!text-red-600" : ""} ${val.note == "absent" ? "!bg-red-200" : ""}`}>{val.logout?.split(" ")[1]}</td>
-                    </tr>
-                  ))}
-
-                  {/* Add more rows as needed */}
-                </tbody>
-              </Table>
+            <div className='overflow-x-hidden'>
+                <fieldset className='border border-indigo-600' style={{background:"aliceblue"}}>
+                    <legend className='!ml-2'>Personal Details:</legend>
+                    <div className='row !ml-2 mt-2 mb-2'>
+                        <div className='col-md-4'>
+                            <span><b>Name</b></span>
+                            <p>Sandeep</p>
+                        </div>
+                        <div className='col-md-4'>
+                            <span><b>email</b></span>
+                            <p>Sandeep@gmail.com</p>
+                        </div>
+                        <div className='col-md-4'>
+                            <span><b>Phone</b></span>
+                            <p>7901003266</p>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset className='border border-indigo-600 mt-4' style={{background:"aliceblue"}}>
+                    <legend className='!ml-2'>Billing Details:</legend>
+                    <div className='row !ml-2 mt-2 mb-2'>
+                        <div className='col-md-3'>
+                            <span><b>City</b></span>
+                            <p>Banglore</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <span><b>State</b></span>
+                            <p>Karnataka</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <span><b>Zipcode</b></span>
+                            <p>506602</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <span><b>Country</b></span>
+                            <p>India</p>
+                        </div>
+                    </div>
+                    <div className='row !ml-2'>
+                        <div className='col-10  mt-2 mb-2'>
+                            <span><b>Address</b></span>
+                            <p>address ..................</p>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset className='border border-indigo-600 mt-4' style={{background:"aliceblue"}}>
+                    <legend className='!ml-2'>Shipping Details:</legend>
+                    <div className='row !ml-2 mt-2 mb-2'>
+                    <div className='col-md-3'>
+                            <span><b>Name</b></span>
+                            <p>Sandeep</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <span><b>City</b></span>
+                            <p>Banglore</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <span><b>State</b></span>
+                            <p>Karnataka</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <span><b>Country</b></span>
+                            <p>India</p>
+                        </div>
+                    </div>
+                    <div className='row !ml-2'>
+                        <div className='col-10 mt-2 mb-2'>
+                            <span><b>Address</b></span>
+                            <p>address ..................</p>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
+      </div>
           )}
           {activeTab === 'tab2' && (
-            <div>
-              <div className="flex justify-end items-center mb-4">
-            <Button variant="primary" onClick={()=>handleTabTwoContent()}>{tab2Content}</Button>
-            {/* <h3>June 2023</h3> */}
-          </div>
-            {tab2Content === "leaves" && (
-              <>
-                  <TruncateModal show={showModal} handleCloseTruncateModal={setShowModal} data={text} />
-                <div className='h-[45vh] overflow-auto'>
-                <Table striped bordered className='!table-auto	sm:!table-fixed'>
-                <thead>
-                  <tr>
-                    <th>From date</th>
-                    <th>To Date</th>
-                    <th>Reason</th>
-                    <th>Description</th>
-                    <th>Created at</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})} */}
-                {leaveReqData?.length >0 && leaveReqData.map((val,ind)=>(
-                    <tr key = {ind}>
-                      <td>{val.from_date}</td>
-                      <td>{val.to_date}</td>
-                      <td>{val.reason}</td>
-                      <td className=' text-truncate' onMouseOver={()=>handleShowModal(val?.description)} style={{maxWidth:"200px"}}>{val.description}</td>
-                      <td>{new Date(val?.created_at).toLocaleDateString()}</td>
-                      <td className={`${ val.status == 0 ? "!text-orange-700	" : val.status == 1 ? "!text-teal-900	" : "!text-red-900"}}`}>{val.status == 0 ? "pending" : val.status == 1 ? "approved" : "rejected"}</td>
-                      <td  onClick={handleDeleteLeaveRequest}>{val.status == 0 ? <button id={`${val.id}-${val.staff_id}`} className='btn btn-primary-outline'>Delete</button>: ""}</td>
-                    </tr>
-                  ))}
-                  {/* Add more rows as needed */}
-                </tbody>
-                </Table>
-                </div>
-                <p className={`${deleteStatus?.length >0 ? "!text-red-800":""}`}>{deleteStatus}</p>
-                <p className={`${successStatus?.length >0 ? "!text-green-800":""}`}>{successStatus}</p>
-            </>
-            )}
-            {tab2Content === "apply leave" && (
-                          <div>
-
-                            <Card>
-                              <Card.Header>
-                                Leave Request
-                              </Card.Header>
-                              <Card.Body>
-                                <Form>
-                                  <Form.Group >
-                                    <Form.Label className='!block'>Date Range</Form.Label>
-                                    <DateRangePicker 
-                                      // format='yyyy/mm/dd'
-                                      disabledDate={combine(allowedMaxDays(4), before(today))}
-                                      // value={[selectedDateRange[0], selectedDateRange[1]]}
-                                      onOk={handleDateRangeChange}
-                                    />
-                                    {/* <Form.Control type="text" placeholder="Select dates" /> */}
-                                  </Form.Group>
-                                  <Form.Group >
-                                    <Form.Label className='!block'>Reason</Form.Label>
-                                    <Form.Select  onChange={handleLeaveTypeChange}>
-                                      <option value="">Select leave type</option>
-                                      <option value="casual">Casual Leave</option>
-                                      <option value="sick">Sick Leave</option>
-                                      <option value="emergency">Emergency Leave</option>   
-                                      <option value="emergency">Other</option>   
-                                    </Form.Select>
-                                    {/* <Form.Control type="text" placeholder="Select dates" /> */}
-                                  </Form.Group>
-                                  <Form.Group>
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control as="textarea" rows={3} onChange={handleLeaveDesc} />
-                                  </Form.Group>
-                                </Form>
-                              </Card.Body>
-                              <Card.Footer>
-                                {success?.length>0 && <p className='text-green-900' >{success}</p>}
-                                {error?.length > 0 && error.map((er,ind)=>(
-                                  <p key={ind} className='text-red-900'>{er}</p>
-                                ))}
-                                <Button variant="primary" onClick={handleSubmit} block>Submit</Button>
-                              </Card.Footer>
-                            </Card>
-                          </div>
-            )}
+            <div className='h-[45vh] overflow-auto'>
+            <Table striped bordered>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>lockout</th>
+                <th>Login</th>
+                <th>Break time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {breakTimeData.length>0 && breakTimeData.map((val,ind)=>(
+                <tr key={ind}>
+                  <td>{val.date}</td>
+                  <td>{val.lock_out}</td>
+                  <td>{val.log_in}</td>
+                  <td>{val.break_time}</td>
+                </tr>
+              ))}
+              {/* Add more rows as needed */}
+            </tbody>
+          </Table>
             </div>
           )}
           {activeTab === 'tab3' && (
             <div className='h-[45vh] overflow-auto'>
-              <Table responsive striped bordered>
+              <Table striped bordered>
                 <thead>
                   <tr>
                     <th>Date</th>
@@ -445,6 +432,11 @@ const handleSubmit = async(event) => {
               </Table>
             </div>
           )}
+          {activeTab === 'tab4' && (
+            <div className='h-[45vh] overflow-auto'>
+                Hello
+          </div>
+          )}
 
         </div>
       </div>
@@ -458,4 +450,4 @@ const handleSubmit = async(event) => {
   );
 };
 
-export default AttendancePage;
+export default Orderdetails;
