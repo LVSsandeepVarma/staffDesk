@@ -17,6 +17,7 @@ import "rsuite/dist/rsuite.css";
 import { useNavigate } from 'react-router-dom';
 import TruncateModal from '../modals/truncateModal';
 import Loading from '../loader/loading';
+import PersonalDetailsForm from './personalDetailsForm';
 
 
 
@@ -249,7 +250,7 @@ const handleSubmit = async(event) => {
                     <ol className="breadcrumb">
                         {/* <!-- breadcrumb --> */}
                         <li className="breadcrumb-item">Dashboard</li>
-                        <li className="breadcrumb-item active" aria-current="page">Product Details</li>
+                        <li className="breadcrumb-item active" aria-current="page">Invoice</li>
                     </ol>
                     {/* <!-- End breadcrumb --> */}
                     <div className="ml-auto">
@@ -306,8 +307,8 @@ const handleSubmit = async(event) => {
           </div>}
           {/* {console.log(leaveReqData)} */}
           {activeTab === 'tab1' && (
-            <div className='h-[45vh] overflow-auto'>
-            <div className='overflow-x-hidden'>
+            <div >
+            {/* <div className='overflow-x-hidden'>
                 <fieldset className='border border-indigo-600' style={{background:"aliceblue"}}>
                     <legend className='!ml-2'>Personal Details:</legend>
                     <div className='row !ml-2 mt-2 mb-2'>
@@ -379,7 +380,8 @@ const handleSubmit = async(event) => {
                         </div>
                     </div>
                 </fieldset>
-            </div>
+            </div> */}
+            <PersonalDetailsForm/>
       </div>
           )}
           {activeTab === 'tab2' && (
