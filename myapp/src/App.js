@@ -44,8 +44,8 @@ function App() {
             <Route path="/staff/attendance" element={<StaffAttendance/>}></Route>
             <Route path="/staff/history" element={<StaffHistory/>}></Route>
             <Route path="/enquiry/signed" element={<SignedEnquiry/>}></Route>
-            <Route path="/enquiry/signed/client-details/" element={<OrderDetailsEnquiry/>}></Route>
-            <Route path='/enquiry/invoice-enquiry' element={<Invoice_Enquiry/>}></Route>
+            <Route path="/enquiry/signed/client-details/:client_id" element={<OrderDetailsEnquiry/>}></Route>
+            <Route path='/enquiry/invoice' element={<Invoice_Enquiry/>}></Route>
             {/* not protected route */}
             <Route path='/staff/enquiry-completed/:client_id' element={<Products/>}></Route>
           </Routes>

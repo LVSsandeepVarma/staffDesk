@@ -101,12 +101,17 @@ export default function TopNavbar(){
     dispatch(setLoaderTrue())
     if(pathname.pathname.includes("staff")){
       setActivePage("staff")
+    }else if(pathname.pathname.includes("enquiry/signed")){
+      setActivePage("signed")
+    }else if(pathname.pathname.includes("invoice")){
+      setActivePage("invoice")
     }else if (pathname.pathname.includes("enquiry")){
       setActivePage("enquiry")
     }
     else if(pathname.pathname.includes("staff")){
       setActivePage("staff")
-    }else{
+    }
+    else{
       setActivePage("dashboard")
     }
     const handleOutsideClick = (event) => {
@@ -301,6 +306,18 @@ export default function TopNavbar(){
                       </ul>
                     </div>
                     </li>
+                    <li className="nav-item">
+                    <a className={`nav-link ${activePage == "signed" ? "nav_active":""}`} href="/enquiry/signed" >
+                      <i className={`mdi mdi-file-document menu-icon ${activePage == "signed" ? "nav_active":""}`}></i>
+                      <span className={`"menu-title ${activePage == "signed" ? "nav_active":""}"`}>Signed</span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className={`nav-link ${activePage == "invoice" ? "nav_active":""}`} href="/enquiry/invoice" >
+                      <i className={`mdi mdi-file-document menu-icon ${activePage == "invoice" ? "nav_active":""}`}></i>
+                      <span className={`"menu-title ${activePage == "invoice" ? "nav_active":""}"`}>Invoice</span>
+                    </a>
+                  </li>
                 </ul>
                 <div className="w-full contents  md:!flex justify-end items-center">
                   <span className=''><b>Login</b> : {userData?.value?.data?.login?.split(" ")[1]} | </span> 

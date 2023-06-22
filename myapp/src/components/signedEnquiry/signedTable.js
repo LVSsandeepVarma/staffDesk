@@ -22,7 +22,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-const InvoiceTable = () => {
+const SignedTable = () => {
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredTable, setFilteredTable] = useState([]);
@@ -325,4 +325,4 @@ const InvoiceTable = () => {
   );
 };
 
-export default InvoiceTable;
+export default SignedTable;

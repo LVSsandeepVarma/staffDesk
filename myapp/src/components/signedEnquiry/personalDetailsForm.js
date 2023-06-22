@@ -1,285 +1,310 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Form, Button } from 'react-bootstrap';
+import React from "react";
+import { Table } from "react-bootstrap";
 
-const validationSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  phone: Yup.string().required('Phone number is required'),
-  city: Yup.string().required('City is required'),
-  state: Yup.string().required('State is required'),
-  zipcode: Yup.string().required('Zipcode is required'),
-  country: Yup.string().required('Country is required'),
-  address1: Yup.string().required('Address 1 is required'),
-  address2: Yup.string(),
-});
 
-const PersonalDetailsForm = () => {
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      phone: '',
-      city: '',
-      state: '',
-      zipcode: '',
-      country: '',
-      address1: '',
-      address2: '',
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      // Handle form submission logic here
-    },
-  });
+const LastOrder = () => {
+
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <h2>Personal Details</h2>
-      <div className='row'>
-        <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.name && formik.errors.name}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
-      </Form.Group>
+    <>
+    <div>
+      <div className="row !flex !justify-center">
+        <div className="col-md-8 col-sm-12 col-12 ">
+          <p ><b>Name</b> : Sandeep</p>
+          <p ><b>email</b>: sandeep@gmail.com</p>
+          <p ><b>phone</b>: 7901003266</p>
+        </div>
+        <div className="col-md-4">
+          <p className="text-xl font-bold">ORD635RR19K8724</p>
+        </div>
       </div>
-      <div className='col-md-4'>
+      <div className="row mt-4">
+        <div className="col-md-6">
+          <p className="text-lg font-bold">Billing Address</p>
+          <p>Adddress 1,</p>
+          <p>Address2,</p>
+          <p>city, state,</p>
+          <p>country</p>
+          <div>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.email && formik.errors.email}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
-      </Form.Group>
+          </div>
+        </div>
+        <div className="col-md-6 flex justify-around ">
+          <div>
+            <p className="text-lg font-bold">Shipping Address</p>
+            <p>Adddress 1,</p>
+            <p>Address2,</p>
+            <p>city, state,</p>
+            <p>country</p>
+          </div>
+          
+        </div>
       </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Phone</Form.Label>
-        <Form.Control
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={formik.values.phone}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.phone && formik.errors.phone}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.phone}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      </div>
+      <div>
+        {/* centered div */}
+        <div className="row mt-4 flex max-h-96 overflow-y-scroll ">
+          <div className="col-md-12">
+          <p className="text-lg font-bold">Product Details</p>
+          <Table responsive  bordered hover >
+            <thead>
+              <tr>
+                <th className="!font-bold">SL No.</th>
+                <th className="!font-bold">Porducts</th>
+                <th className="!font-bold">Quantity</th>
+                <th className="!font-bold">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                <p>01</p>
+                </td>
+                <td >
+                <div className="!max-w-[50%]">
+                <p>porduct 1</p> {/* product*/}
+                <small className="break-word ">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>5</p>
+                </td>
+                <td>
+                <p> 180</p>
+                </td>
+              </tr>
+              {/* row-2 */}
+              <tr>
+                <td>
+                <p>02</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 2</p> {/* product*/}
+                <small className="break-word">prod 2 desc</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>3</p>
+                </td>
+                <td>
+                <p> 270</p>
+                </td>
+              </tr>
+              {/* row-3 */}
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <p>03</p>
+                </td>
+                <td className="!max-w-[50%]">
+                <div>
+                <p>porduct 3</p> {/* product*/}
+                <small className="break-word">Long content that needs to wrap onto multiple lines</small> {/* description*/ }
+                </div>
+                </td>
+                <td>
+                <p>1</p>
+                </td>
+                <td>
+                <p> 100</p>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
 
-      <h2>Billing Address</h2>
-      <div className='row'>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>City</Form.Label>
-        <Form.Control
-          type="text"
-          name="city"
-          placeholder="City"
-          value={formik.values.city}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.city && formik.errors.city}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.city}</Form.Control.Feedback>
-      </Form.Group>
+            
+          </div>
+        </div>
+        {/*summary end div */}
+        <div className="row">
+          <div className="col-md-8"></div>
+          <div className="col-md-4">
+          <div className="flex justify-end mt-3 !pr-[55px]">
+        <div>
+          <p className="font-bold text-lg">Summary</p>
+          <p><b>Total</b> : 000</p>
+          <p><b>Subtotal</b>: 000</p>
+          <p><b>Discount</b>: 000</p>
+          <p><b>tax</b>: 000</p>
+          <p><b>Final Price</b>: 000</p>
+          </div>
+          
+        </div>
+          </div>
+        </div>
       </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>State</Form.Label>
-        <Form.Control
-          type="text"
-          name="state"
-          placeholder="State"
-          value={formik.values.state}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.state && formik.errors.state}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.state}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Zipcode</Form.Label>
-        <Form.Control
-          type="text"
-          name="zipcode"
-          placeholder="Zipcode"
-          value={formik.values.zipcode}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.zipcode && formik.errors.zipcode}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.zipcode}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Country</Form.Label>
-        <Form.Select
-          name="country"
-          value={formik.values.country}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.country && formik.errors.country}
-        >
-          <option value="">Select Country</option>
-          {/* Add country options here */}
-        </Form.Select>
-        <Form.Control.Feedback type="invalid">{formik.errors.country}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Address 1</Form.Label>
-        <Form.Control
-          type="text"
-          name="address1"
-          placeholder="Address 1"
-          value={formik.values.address1}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.address1 && formik.errors.address1}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.address1}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Address 2</Form.Label>
-        <Form.Control
-          type="text"
-          name="address2"
-          placeholder="Address 2"
-          value={formik.values.address2}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.address2 && formik.errors.address2}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.address2}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      </div>
-
-      <h2>Shipping Address</h2>
-      <div className='row'>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>City</Form.Label>
-        <Form.Control
-          type="text"
-          name="city"
-          placeholder="City"
-          value={formik.values.city}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.city && formik.errors.city}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.city}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>State</Form.Label>
-        <Form.Control
-          type="text"
-          name="state"
-          placeholder="State"
-          value={formik.values.state}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.state && formik.errors.state}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.state}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Zipcode</Form.Label>
-        <Form.Control
-          type="text"
-          name="zipcode"
-          placeholder="Zipcode"
-          value={formik.values.zipcode}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.zipcode && formik.errors.zipcode}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.zipcode}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Country</Form.Label>
-        <Form.Select
-          name="country"
-          value={formik.values.country}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.country && formik.errors.country}
-        >
-          <option value="">Select Country</option>
-          {/* Add country options here */}
-        </Form.Select>
-        <Form.Control.Feedback type="invalid">{formik.errors.country}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Address 1</Form.Label>
-        <Form.Control
-          type="text"
-          name="address1"
-          placeholder="Address 1"
-          value={formik.values.address1}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.address1 && formik.errors.address1}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.address1}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      <div className='col-md-4'>
-      <Form.Group className="mb-3">
-        <Form.Label>Address 2</Form.Label>
-        <Form.Control
-          type="text"
-          name="address2"
-          placeholder="Address 2"
-          value={formik.values.address2}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.address2 && formik.errors.address2}
-        />
-        <Form.Control.Feedback type="invalid">{formik.errors.address2}</Form.Control.Feedback>
-      </Form.Group>
-      </div>
-      </div>
-
-      <Button type="submit">Submit</Button>
-    </Form>
+    </div>
+    </>
   );
 };
 
-export default PersonalDetailsForm;
+export default LastOrder;

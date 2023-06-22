@@ -21,7 +21,8 @@ import { faExclamation, faExclamationCircle } from '@fortawesome/free-solid-svg-
 const TodaysPostponedTable = () => {
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredTable, setFilteredTable] = useState([]);    const [show, setShow] = useState(false);
+  const [filteredTable, setFilteredTable] = useState([]);
+    const [show, setShow] = useState(false);
     const [ringingEnquiryModalShow, setRingingEnquiryShowModal] = useState(false);
     const [notIntrestedModalShow, setNotIntrestedModalShow] = useState(false);
     const [id, setId] = useState("");

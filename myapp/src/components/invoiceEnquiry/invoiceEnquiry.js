@@ -36,7 +36,7 @@ export default function Invoice_Enquiry() {
                     <ol className="breadcrumb">
                         {/* <!-- breadcrumb --> */}
                         <li className="breadcrumb-item">Home</li>
-                        <li className="breadcrumb-item active" aria-current="page">Ringing</li>
+                        <li className="breadcrumb-item active" aria-current="page">Signed</li>
                     </ol>
                     {/* <!-- End breadcrumb --> */}
                     <div className="ml-auto">
@@ -49,7 +49,7 @@ export default function Invoice_Enquiry() {
                         </div>
                     </div>
                 </div>
-                <div className=" page-header container " style={{display:"block"}}>
+                {/* <div className=" page-header container " style={{display:"block"}}>
                     <button type="button" onClick={()=>navigate("/enquiry/assigned-enquiry")} className="btn btn-outline-secondary  !text-[#467fcf]  position-relative mr-2 py-2 fs-14"> Assigned | {userData?.value?.data?.enq_counts?.new} </button>
                     <button type="button" onClick={()=>navigate("/enquiry/ringing-enquiry")} className="btn btn-outline-secondary text-white  !bg-[#28afd0] position-relative mr-2 py-2 fs-14"> Ringing | {userData?.value?.data?.enq_counts?.ringing} </button>
                     <button type="button" onClick={()=>navigate("/enquiry/postponed-enquiry")} className="btn btn-outline-secondary !text-[#5eba00] position-relative mr-2 py-2 fs-14"> Postponed | {userData?.value?.data?.enq_counts?.postponed} </button>
@@ -57,7 +57,7 @@ export default function Invoice_Enquiry() {
                     <button type="button" onClick={()=>navigate("/enquiry/not-todays-ringing-enquiry")} className="btn btn-outline-secondary !text-[#467fcf] position-relative mr-2 py-2 fs-14"> Today Ringing | {userData?.value?.data?.enq_counts?.t_ring}  </button>
                     <button type="button" onClick={()=>navigate("/enquiry/not-todays-postponed-enquiry")} className="btn btn-outline-secondary  !text-[#ffc107] position-relative mr-2 py-2 fs-14"> Today Postponed | {userData?.value?.data?.enq_counts?.t_post} </button>
 
-                </div>
+                </div> */}
                 <div className="container">
                     <Card>
                         <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Ringing Enquiries</Card.Title>

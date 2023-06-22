@@ -114,7 +114,7 @@ today = yyyy+'/'+mm+'/'+dd;
 const handleDateRangeChange = (value) => {
   //console.log(value)
   value.map((val,ind)=>{
-    //console.log(val)
+    console.log(val)
     const date = new Date(val);
 
     // Get the year, month, and day from the Date object

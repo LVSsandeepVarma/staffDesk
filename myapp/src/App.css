@@ -21177,32 +21177,32 @@ code {
 }
 
 .badge-success, .preview-list .preview-item .preview-thumbnail .badge.badge-online {
-  color: #23af47;
+  color: #23af47 !important;
   border: 1px solid #23af47;
 }
 
 .badge-info, .preview-list .preview-item .preview-thumbnail .badge.badge-offline {
-  color: #02abfe;
+  color: #02abfe !important;
   border: 1px solid #02abfe;
 }
 
 .badge-warning, .preview-list .preview-item .preview-thumbnail .badge.badge-busy {
-  color: #fbbc06;
+  color: #fbbc06 !important;
   border: 1px solid #fbbc06;
 }
 
 .badge-danger {
-  color: #e94437;
+  color: #e94437 !important;
   border: 1px solid #e94437;
 }
 
 .badge-light {
-  color: #e1e6fa;
+  color: #e1e6fa !important;
   border: 1px solid #e1e6fa;
 }
 
 .badge-dark {
-  color: #1c2c42;
+  color: #1c2c42 !important;
   border: 1px solid #1c2c42;
 }
 
