@@ -249,7 +249,7 @@ export default function CanceledOrderTable() {
                     aria-label="Customer: activate to sort column ascending"
                     style={{ width: "89.4688px" }}
                   >
-                    Customer
+                    Products
                   </th>
                   <th
                     className="sorting"

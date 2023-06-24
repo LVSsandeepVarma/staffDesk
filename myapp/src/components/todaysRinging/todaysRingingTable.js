@@ -151,69 +151,71 @@ const handleItemsPerPageChange=(event)=>{
       </div>
     </div>
        </div>
-      <Table responsive striped bordered hover>
-        <thead>
-          <tr>
-            <th>ENQUIRY</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>MODIFIED DATE</th>
-            <th>ADDED DATE</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-        {currentData.length > 0 ? (<tbody>
-          {currentData.map((row) => (
-            <tr key={row.id}>
-              <td className="">
-                <h5 className="text-[#25378b] mb-1">{row.first_name}</h5>
-                <p className="mb-0">{row.city} / {row.country} /ip</p>
-              </td>
-              {/* <td>{row.first_name}</td> */}
-              {!row.email_verified == 1 ?
-              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
+       <div className='!overflow-x-auto sm:!overflow-x-auto  md:!overflow-x-visible' >
+        <Table responsive striped bordered hover>
+          <thead>
+            <tr>
+              <th>ENQUIRY</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>MODIFIED DATE</th>
+              <th>ADDED DATE</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          {currentData.length > 0 ? (<tbody>
+            {currentData.map((row) => (
+              <tr key={row.id}>
+                <td className="">
+                  <h5 className="text-[#25378b] mb-1">{row.first_name}</h5>
+                  <p className="mb-0">{row.city} / {row.country} /ip</p>
+                </td>
+                {/* <td>{row.first_name}</td> */}
+                {!row.email_verified == 1 ?
+                (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} onClick={()=>setShowCommentsModal(true)}>
 
-              {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
-              {row.email}
-              </td>) : (<td>{row?.email}</td>)
-              }
-                            <td>{row.phone}</td>
-              <td>{row.modified_date}</td>
-              <td>{row.added_date}</td>
-              <td >
-                <ButtonGroup className="mt-2 mb-2">
-                  <Dropdown>
-                    <Dropdown.Toggle className="!flex items-center" variant="default" id="dropdown-basic">
-                      Action <AiOutlineCaretDown />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {/* <Dropdown.Item className="!flex justify-center"  onClick={()=>{handleEmailverification(row.id)}}>
-                        <AiOutlineReload className="mr-2" />
-                      </Dropdown.Item> */}
-                      <Dropdown.Divider />
-                      <Dropdown.Item className="!flex justify-center" onClick={() => { handleRingingTransferModal(row.id) }}>
-                        <CgPhone className="mr-2" /> Ringing
-                      </Dropdown.Item>
-                      <Dropdown.Item className="!flex justify-center" key={row.id} onClick={() => { handlePostponedTransferModal(row.id) }}>
-                        <BsCalendarPlus className="mr-2" /> Postponed
-                      </Dropdown.Item>
-                      <Dropdown.Item className="!flex justify-center" onClick={() => { handleNotIntrestedTransferModal(row.id) }}>
-                        <TbPlugConnected className="mr-2" /> Not interested
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </ButtonGroup>
+                {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
+                {row.email}
+                </td>) : (<td>{row?.email}</td>)
+                }
+                              <td>{row.phone}</td>
+                <td>{row.modified_date}</td>
+                <td>{row.added_date}</td>
+                <td >
+                  <ButtonGroup className="mt-2 mb-2">
+                    <Dropdown>
+                      <Dropdown.Toggle className="!flex items-center" variant="default" id="dropdown-basic">
+                        Action <AiOutlineCaretDown />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {/* <Dropdown.Item className="!flex justify-center"  onClick={()=>{handleEmailverification(row.id)}}>
+                          <AiOutlineReload className="mr-2" />
+                        </Dropdown.Item> */}
+                        <Dropdown.Divider />
+                        <Dropdown.Item className="!flex justify-center" onClick={() => { handleRingingTransferModal(row.id) }}>
+                          <CgPhone className="mr-2" /> Ringing
+                        </Dropdown.Item>
+                        <Dropdown.Item className="!flex justify-center" key={row.id} onClick={() => { handlePostponedTransferModal(row.id) }}>
+                          <BsCalendarPlus className="mr-2" /> Postponed
+                        </Dropdown.Item>
+                        <Dropdown.Item className="!flex justify-center" onClick={() => { handleNotIntrestedTransferModal(row.id) }}>
+                          <TbPlugConnected className="mr-2" /> Not interested
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </ButtonGroup>
+                </td>
+              </tr>
+            ))}
+          </tbody>) : (
+            <tr>
+              <td colSpan="6" className="text-center">
+                <p className="text-muted">No data available in table</p>
               </td>
             </tr>
-          ))}
-        </tbody>) : (
-          <tr>
-            <td colSpan="6" className="text-center">
-              <p className="text-muted">No data available in table</p>
-            </td>
-          </tr>
-        )}
-      </Table>
+          )}
+        </Table>
+      </div>
 
       <div className='!flex  justify-end'>
             <ul className="pagination">

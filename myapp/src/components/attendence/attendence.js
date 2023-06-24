@@ -37,7 +37,10 @@ const AttendancePage = () => {
     const [deleteStatus, setDeleteStatus] = useState("");
     const [successStatus, setSuccessStatus] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [text, setText] = useState("")
+    const [text, setText] = useState("");
+    const [leaveDateErr, setLeaveDateErr] = useState("");
+    const [leaveReqDescErr, setLeaveReqErrDesc] = useState("");
+    const [leaveReqTypeErr, setLeaveTypeErr] = useState("");
 
     const handleShowModal = (info) => {
       setShowModal(true);
@@ -129,15 +132,18 @@ const handleDateRangeChange = (value) => {
     const timeRange = selectedDateRange
     timeRange[ind] = formattedDate
     setSelectedDateRange([...timeRange])
+    setLeaveDateErr("")
   }) 
 };
 
 const handleLeaveDesc = (event)=>{
   setLeaveDesc(event.target.value)
+  setLeaveReqErrDesc("")
 }
 
 const handleLeaveTypeChange = (event)=>{
-  setLeaveType(event.target.value)
+  setLeaveType(event.target.value);
+  setLeaveTypeErr("");
 }
 
 const handleSubmit = async(event) => {
@@ -145,6 +151,15 @@ const handleSubmit = async(event) => {
   dispatch(setLoaderTrue())
   //console.log(userData?.value?.data?.staff?.id, "id")
   try{
+    console.log(selectedDateRange,leaveType, leaveDesc)
+    if(selectedDateRange[0]?.length ==0 || selectedDateRange[1]?.length ==0 ){
+      setLeaveDateErr("date range required");
+    }if(leaveType?.length ==0){
+      setLeaveTypeErr("leave type required")
+    }if(leaveDesc?.length ==0 ){
+      setLeaveReqErrDesc("description for leave req required")
+    }
+    if((selectedDateRange[0]?.length !=0 || selectedDateRange[1]?.length !=0) && (leaveType?.length !=0) && (leaveDesc?.length !=0)){
     const formData = new FormData
     formData.append("daterange" , `${selectedDateRange[0]}-${selectedDateRange[1]}`);
     formData.append("reason" , leaveType)
@@ -166,6 +181,7 @@ const handleSubmit = async(event) => {
    setSuccess(response?.data?.message)
    //console.log(response)
    window?.location?.reload()
+  }
   }catch(err){
     //console.log("err", err?.response?.data?.errors)
     const errorsArray = []
@@ -339,6 +355,7 @@ const handleSubmit = async(event) => {
               <>
                   <TruncateModal show={showModal} handleCloseTruncateModal={setShowModal} data={text} />
                 <div className='h-[45vh] overflow-auto'>
+                  
                 <Table striped bordered className='!table-auto	sm:!table-fixed'>
                 <thead>
                   <tr>
@@ -353,7 +370,7 @@ const handleSubmit = async(event) => {
                 </thead>
                 <tbody>
                   {/* {leaveReqData.map((val,ind)=>{console.log(val,val.from_date, val[ind]?.from_date)})} */}
-                {leaveReqData?.length >0 && leaveReqData.map((val,ind)=>(
+                {leaveReqData?.length >0 ? leaveReqData.map((val,ind)=>(
                     <tr key = {ind}>
                       <td>{val.from_date}</td>
                       <td>{val.to_date}</td>
@@ -363,7 +380,13 @@ const handleSubmit = async(event) => {
                       <td className={`${ val.status == 0 ? "!text-orange-700	" : val.status == 1 ? "!text-teal-900	" : "!text-red-900"}}`}>{val.status == 0 ? "pending" : val.status == 1 ? "approved" : "rejected"}</td>
                       <td  onClick={handleDeleteLeaveRequest}>{val.status == 0 ? <button id={`${val.id}-${val.staff_id}`} className='btn btn-primary-outline'>Delete</button>: ""}</td>
                     </tr>
-                  ))}
+                  )):(
+                    <tr>
+                    <td colSpan="7" className="text-center">
+                      <p className="text-muted">No data available in table</p>
+                    </td>
+                  </tr>
+                  )}
                   {/* Add more rows as needed */}
                 </tbody>
                 </Table>
@@ -384,13 +407,16 @@ const handleSubmit = async(event) => {
                                   <Form.Group >
                                     <Form.Label className='!block'>Date Range</Form.Label>
                                     <DateRangePicker 
+                                    placeholder="yyyy-mm-dd ~ yyyy-mm-dd"
                                       // format='yyyy/mm/dd'
                                       disabledDate={combine(allowedMaxDays(4), before(today))}
                                       // value={[selectedDateRange[0], selectedDateRange[1]]}
                                       onOk={handleDateRangeChange}
                                     />
                                     {/* <Form.Control type="text" placeholder="Select dates" /> */}
+                                    <p  className='text-red-900'>{leaveDateErr}</p>
                                   </Form.Group>
+
                                   <Form.Group >
                                     <Form.Label className='!block'>Reason</Form.Label>
                                     <Form.Select  onChange={handleLeaveTypeChange}>
@@ -402,14 +428,17 @@ const handleSubmit = async(event) => {
                                     </Form.Select>
                                     {/* <Form.Control type="text" placeholder="Select dates" /> */}
                                   </Form.Group>
+                                  <p  className='text-red-900'>{leaveReqTypeErr}</p>
                                   <Form.Group>
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control as="textarea" rows={3} onChange={handleLeaveDesc} />
                                   </Form.Group>
+                                  <p  className='text-red-900'>{leaveReqDescErr}</p>
                                 </Form>
                               </Card.Body>
                               <Card.Footer>
                                 {success?.length>0 && <p className='text-green-900' >{success}</p>}
+                                {error?.map((er,ind)=>{console.log(er)})}
                                 {error?.length > 0 && error.map((er,ind)=>(
                                   <p key={ind} className='text-red-900'>{er}</p>
                                 ))}

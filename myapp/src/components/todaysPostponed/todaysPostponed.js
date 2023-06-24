@@ -19,7 +19,7 @@ export default function Todays_Postponed_Enquiry() {
 
     return (
         <>
-            <div className="container-scroller  ">
+            <div className="container-scroller sm:relative top-[0px] sm:top-[60px] md:top-[100px] lg:top-[0px] marqueePosition">
                 <TopNavbar />
                 <div className="top-[63px] sm:top-[0px]">
                     <NavbarMarquee />
@@ -28,7 +28,7 @@ export default function Todays_Postponed_Enquiry() {
                     <ol className="breadcrumb">
                         {/* <!-- breadcrumb --> */}
                         <li className="breadcrumb-item">Home</li>
-                        <li className="breadcrumb-item active" aria-current="page">Not Interested</li>
+                        <li className="breadcrumb-item active" aria-current="page">Todays Postponed</li>
                     </ol>
                     {/* <!-- End breadcrumb --> */}
                     <div className="ml-auto">

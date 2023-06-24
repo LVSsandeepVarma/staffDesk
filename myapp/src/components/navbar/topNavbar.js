@@ -1,7 +1,7 @@
 // import Image from "next/image";
 import { useNavigate, useLocation } from 'react-router-dom';
 import '@mdi/font/css/materialdesignicons.min.css';
-import { Accordion, Card } from "react-bootstrap";
+import { Accordion, Alert, Card } from "react-bootstrap";
 // import { MDBBadge } from 'mdb-react-ui-kit';
 import { MDBBadge } from "mdbreact";
 import { AiOutlineBell } from "react-icons/ai";
@@ -24,6 +24,7 @@ import ErrorTimedModal from '../modals/errorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { TbCircleDot } from 'react-icons/tb';
+import NotificationAlert from '../alerts/alert';
 export default function TopNavbar(){
   const navigate = useNavigate()
   const pathname = useLocation()
@@ -37,7 +38,9 @@ export default function TopNavbar(){
   const [showSearchRes,  setShowSearchRes] = useState(false);
   const [showTimedErrorModal, setShowTimedErrorModal] = useState(false);
   const leftSideBarRef = useRef(null);
-  const [activityData, setActivityData] = useState([])
+  const [activityData, setActivityData] = useState([]);
+  const tokenExpiryStatus = useSelector((state)=>state?.tokenExpireReducer?.value);
+  console.log(tokenExpiryStatus,"tokenExpiryStatus")
 
   useEffect(()=>{
     const fetchActivyData = async()=>{
@@ -173,6 +176,7 @@ export default function TopNavbar(){
       return(
         <>
         {loaderState.value == true ? <Loading/> : ""}
+        {tokenExpiryStatus == true && <NotificationAlert/>}
         {/* <ErrorTimedModal show={showTimedErrorModal} handleClose={handleClose}/> */}
         <div className="horizontal-menu">
             <nav className="navbar top-navbar col-lg-12 col-12 p-0 bg-[#25378b] h-[auto] ">
@@ -214,9 +218,9 @@ export default function TopNavbar(){
               </div>
             </nav>
             
-            <nav className={` ${toggleBottomNavbar == true ? "bottom-navbar header-toggled" : "!hidden sm:!block"} bottom-navbar header-toggled`}>
+            <nav className={` ${toggleBottomNavbar == true ? "bottom-navbar header-toggled" : "!hidden md:!block"} bottom-navbar header-toggled`}>
               <div className="container !flex">
-                <ul className="!block sm:!flex nav  page-navigation !justify-start	">
+                <ul className="!block sm:!flex !col-md-8 nav  page-navigation !justify-start	">
                   <li className="nav-item">
                     <a className={`nav-link ${activePage == "dashboard" ? "nav_active":""}`} href="/dashboard" >
                       <i className={`mdi mdi-shield-check menu-icon ${activePage == "dashboard" ? "nav_active":""}`}></i>
@@ -319,7 +323,7 @@ export default function TopNavbar(){
                     </a>
                   </li>
                 </ul>
-                <div className="w-full contents  md:!flex justify-end items-center">
+                <div className="w-full contents col-md-4  md:!flex justify-end items-center">
                   <span className=''><b>Login</b> : {userData?.value?.data?.login?.split(" ")[1]} | </span> 
                   <span className="text-red-500"> &nbsp; <b>Late</b>: {parseInt((userData?.value?.data?.late_login)/3600)<10 ? `0${parseInt((userData?.value?.data?.late_login)/3600)}`: parseInt((userData?.value?.data?.late_login)/3600)}:{parseInt((userData?.value?.data?.late_login)/60) <10 ? `0${parseInt((userData?.value?.data?.late_login)/60)}`: parseInt((userData?.value?.data?.late_login)/60)}:{(userData?.value?.data?.late_login)%60}</span>
                 </div>

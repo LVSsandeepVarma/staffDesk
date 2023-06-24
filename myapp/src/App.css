@@ -228,6 +228,13 @@ body {
   color: #fff
 }
 
+@media (min-width: 992px) and (max-width: 1023px) {
+  .marqueePosition {
+    position: static !important;
+  }
+}
+
+
 
 /*
 .carousel-control-prev{

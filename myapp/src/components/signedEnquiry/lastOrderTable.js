@@ -82,7 +82,8 @@ const LastOrderTable = () => {
           <div className="col-md-12">
           <p className="text-lg font-bold">Product Details</p>
           <div className="flex row !justify-center">
-          {tableData?.map((val,ind)=>(
+            {tableData?.length > 0 && 
+          tableData?.map((val,ind)=>(
             <div className={`flex  ${tableData?.length>1 ? "col-md-4": "col-md-5"}  `}>
               <Card style={{ width: '100%' }}>
               <Card.Header>{val?.order_id}</Card.Header>

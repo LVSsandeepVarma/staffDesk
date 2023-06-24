@@ -233,7 +233,7 @@ export default function OrderTable() {
                 <Card.Text>Amount: {val?.Total}</Card.Text>
                 <Card.Text>
                 Order status: 
-                <label  className={`!text-[0.75rem] badge ${val?.Status == "Paid" ?"badge-success" : val?.Status == "Un Paid"? "badge-danger": "badge-warning"}`}>{val?.Status}</label>
+                <label  className={`ml-2 !text-[0.75rem] badge ${val?.Status == "Paid" ?"badge-success" : val?.Status == "Un Paid"? "badge-danger": "badge-warning"}`}>{val?.Status}</label>
                 </Card.Text>
                 </div>
               </Card.Body>

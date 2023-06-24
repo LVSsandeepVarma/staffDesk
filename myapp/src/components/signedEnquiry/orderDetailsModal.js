@@ -34,6 +34,7 @@ const MyModal = ({ showModal, handleClose, clientId }) => {
           <tr>
             <th>Order id</th>
             <th>Phone</th>
+            <th>Products</th>
             <th>Purchased Date </th>
             <th>Price</th>
           </tr>
@@ -44,14 +45,17 @@ const MyModal = ({ showModal, handleClose, clientId }) => {
               <td>Row 1</td>
               <td>Row 1</td>
               <td>Row 1</td>
+              <td>Row 1</td>
             </tr>
             <tr>
               <td>Row 2</td>
               <td>Row 2</td>
               <td>Row 2</td>
               <td>Row 2</td>
+              <td>Row 2</td>
             </tr>
             <tr>
+              <td>Row 3</td>
               <td>Row 3</td>
               <td>Row 3</td>
               <td>Row 3</td>

@@ -49,9 +49,19 @@ const CountdownTimer = () => {
       // Redirect to locked page after 5 seconds (adjust as needed)
     }
 
+    document.addEventListener('click', handleContinue);
+    document.addEventListener('mouseup', handleContinue);
+    document.addEventListener('scroll', handleContinue)
+
+
+
     
 
     return () => {
+      document.removeEventListener('click', handleContinue);
+      document.removeEventListener('mouseup', handleContinue);
+          document.removeEventListener('scroll', handleContinue)
+
       clearInterval(blinkInterval);
       clearInterval(intervalId);
       clearTimeout(timeoutId)

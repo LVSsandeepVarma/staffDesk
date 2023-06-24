@@ -25,12 +25,14 @@ export default function Asigned_enquiry() {
     return (
         <>
             {loader?.value == true ? <Loading/>: ""}
-            <div className="container-scroller  ">
+            <div className="container-scroller  sm:relative top-[0px] sm:top-[60px] md:top-[100px] lg:top-[0px] marqueePosition">
                 <TopNavbar />
                 <div className="top-[63px] sm:top-[0px]">
                     <NavbarMarquee />
                 </div>
-                <div className="page-header container ">
+                
+                <div className="page-header container">
+                
                     <ol className="breadcrumb">
                         {/* <!-- breadcrumb --> */}
                         <li className="breadcrumb-item">Home</li>

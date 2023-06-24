@@ -18,7 +18,7 @@ export default function Postponed_Enquiry() {
 
     return (
         <>
-            <div className="container-scroller  ">
+            <div className="container-scroller sm:relative top-[0px] sm:top-[60px] md:top-[100px] lg:top-[0px] marqueePosition">
                 <TopNavbar />
                 <div className="top-[63px] sm:top-[0px]">
                     <NavbarMarquee />
@@ -50,7 +50,7 @@ export default function Postponed_Enquiry() {
                 </div>
                 <div className="container">
                     <Card>
-                        <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Not Intrested Enquiries</Card.Title>
+                        <Card.Title className="card-header border-bottom py-3 !bg-[#25378b] text-white">Postponed</Card.Title>
                         <Card.Body>
                             <PostponedTable/>
                         </Card.Body>

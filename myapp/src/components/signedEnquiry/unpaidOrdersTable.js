@@ -249,7 +249,7 @@ export default function UnpaidOrderTable() {
                     aria-label="Customer: activate to sort column ascending"
                     style={{ width: "89.4688px" }}
                   >
-                    Customer
+                    Products
                   </th>
                   <th
                     className="sorting"
@@ -284,7 +284,7 @@ export default function UnpaidOrderTable() {
                   >
                     Discount
                   </th>
-                  <th
+                  {/* <th
                     className="sorting"
                     tabindex="0"
                     aria-controls="order-listing"
@@ -294,7 +294,7 @@ export default function UnpaidOrderTable() {
                     style={{ width: "66.5469px" }}
                   >
                     Status
-                  </th>
+                  </th> */}
                   <th
                     className="sorting"
                     tabindex="0"
@@ -317,7 +317,7 @@ export default function UnpaidOrderTable() {
                       <td>{obj?.Total}</td>
                       <td>{obj?.SubTotal}</td>
                       <td>{obj?.Discount}</td>
-                      <td>
+                      {/* <td>
                         <label
                           className={`badge ${
                             obj?.Status == "Paid"
@@ -329,7 +329,7 @@ export default function UnpaidOrderTable() {
                         >
                           {obj?.Status}
                         </label>
-                      </td>
+                      </td> */}
                       <td className="text-start">
                         <button
                           className="btn btn-light"

@@ -48,7 +48,7 @@ export default function Staff_History() {
     return (
         <>
             {loader?.value == true ? <Loading/>: ""}
-            <div className="container-scroller  ">
+            <div className="container-scroller sm:relative top-[0px] sm:top-[60px] md:top-[100px] lg:top-[0px] marqueePosition">
                 <TopNavbar />
                 <div className="top-[63px] sm:top-[0px]">
                     <NavbarMarquee />

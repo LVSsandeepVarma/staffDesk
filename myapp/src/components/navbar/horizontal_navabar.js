@@ -43,11 +43,11 @@ export default function Top_navbar() {
       <main>
         <div className="container-scroller  	">
           <TopNavbar/>
-          <div className="top-[63px] sm:top-[0px]">
+          <div className="static sm:relative top-[0px] sm:top-[60px] md:top-[100px] lg:top-[0px] marqueePosition">
           <NavbarMarquee/>
           {/* <DashboardData/> */}
                         <div className="container-fluid page-body-wrapper">
-      <div className="main-panel">
+      <div className="main-panel !pt-[35px] lg:!pt-[0px]">
           <div className="content-wrapper">
               <div className="row">
                 <div className="col-md-12">
@@ -57,7 +57,7 @@ export default function Top_navbar() {
                       <h6 className="fw-normal mb-0 text-muted">You have done 57.6% more sales today.</h6>
                     </div>
                     <div className="col-sm-6">
-                      <div className="d-flex align-items-center justify-content-end">
+                      <div className="d-flex align-justify-content-end">
                         <div className="border-right-dark pe-4 mb-3 mb-xl-0 d-xl-block d-none">
                           <p className="text-muted">Today</p>
                           <h6 className="font-weight-medium text-muted mb-0">{new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</h6>
@@ -94,7 +94,7 @@ export default function Top_navbar() {
                       <div className="row ">
                         <div className="col-12 col-sm-6 mb-xs-4  pt-2 pb-2 mb-xl-0">
                         </div>
-                        <div className="col-12 col-sm-6 mb-xs-4 mb-xl-0 pt-2 pb-2 text-md-right d-none d-md-block">
+                        <div className="col-12 col-sm-6 mb-xs-4 mb-xl-0 pt-2 pb-2 text-md-right d-md-block">
                           <div className="d-flex justify-content-end">
                             <button className="btn d-flex align-items-center">
                             <i className="mdi mdi-download me-1"></i>

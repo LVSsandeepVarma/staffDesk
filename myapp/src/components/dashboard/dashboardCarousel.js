@@ -20,9 +20,10 @@ export default function DashboardData() {
     const handlePrev = (id) => {
         console.log(id)
         // setActiveIndex((prevIndex) => (prevIndex === 0 ? prevIndex : prevIndex - 1));
+        console.log(disablePrevButton,disableNextButton)
         const carouselIndexes = [...carouselActiveIndexes];
         // if(carouselIndexes[id] == 0){
-            const prevButtonsArr = [...disableNextButton]
+            const prevButtonsArr = [...disablePrevButton]
             prevButtonsArr[id] = true;
             setDisablePrevButton([...prevButtonsArr])
             const nextButtonArr = [...disableNextButton]
@@ -42,7 +43,7 @@ export default function DashboardData() {
         // setActiveIndex((prevIndex) => (prevIndex === 0 ? prevIndex : prevIndex - 1));
         const carouselIndexes = [...carouselActiveIndexes];
         // if(carouselIndexes[id] == 0){
-            const prevButtonsArr = [...disableNextButton]
+            const prevButtonsArr = [...disablePrevButton]
             prevButtonsArr[id] = false;
             setDisablePrevButton([...prevButtonsArr])
             const nextButtonArr = [...disableNextButton]
@@ -57,7 +58,7 @@ export default function DashboardData() {
     return (
         <>
             <div className='container mt-20 sm:mt-10'>
-                <div className=' row row-6 relative flex justify-center '>
+                <div className=' row row-6 relative flex justify-start '>
                     <Card className='mr-3 mb-3' style={{ width: '18rem'}}>
                     <div className='flex !items-center h-[100%]'>
                    
@@ -83,10 +84,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         {/* <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[0]}  onClick={()=>handlePrev("0")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[2] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disablePrevButton[0]}  onClick={()=>handlePrev("0")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[0]} onClick={()=>handleNext("0")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[2] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disableNextButton[0]} onClick={()=>handleNext("0")}>
                                 {'>'}
                             </Button>
                         </Card.Footer> */}
@@ -113,10 +114,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[1]} onClick={()=>handlePrev("1")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 r0ounded-full ${disablePrevButton[1] == true ? "!hidden": "!flex" } items-center justify-center	`} onClick={()=>handlePrev("1")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[1]} onClick={()=>handleNext("1")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[1] == true ? "!hidden": "!flex" } items-center justify-center	`}  onClick={()=>handleNext("1")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>
@@ -145,10 +146,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[6]} onClick={()=>handlePrev("6")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disablePrevButton[6] == true ? "!hidden": "!flex" } items-center justify-center	`}  onClick={()=>handlePrev("6")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[6]} onClick={()=>handleNext("6")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[6] == true ? "!hidden": "!flex" } items-center justify-center	`}  onClick={()=>handleNext("6")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>
@@ -177,10 +178,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[2]} onClick={()=>handlePrev("2")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disablePrevButton[2] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disablePrevButton[2]} onClick={()=>handlePrev("2")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[2]} onClick={()=>handleNext("2")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[2] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disableNextButton[2]} onClick={()=>handleNext("2")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>
@@ -209,10 +210,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[3]} onClick={()=>handlePrev("3")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disablePrevButton[3] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disablePrevButton[3]} onClick={()=>handlePrev("3")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[3]} onClick={()=>handleNext("3")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[3] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disableNextButton[3]} onClick={()=>handleNext("3")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>
@@ -241,10 +242,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[4]} onClick={()=>handlePrev("4")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disablePrevButton[4] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disablePrevButton[4]} onClick={()=>handlePrev("4")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[4]} onClick={()=>handleNext("4")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[4] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disableNextButton[4]} onClick={()=>handleNext("4")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>
@@ -273,10 +274,10 @@ export default function DashboardData() {
                   </div>
                         </div>
                         <Card.Footer className="text-end bg-white border-0 flex justify-end ">
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disablePrevButton[5]} onClick={()=>handlePrev("5")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disablePrevButton[5] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disablePrevButton[5]} onClick={()=>handlePrev("5")}>
                                 {'<'}
                             </Button>
-                            <Button className="bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full !flex items-center justify-center	" disabled={disableNextButton[5]}  onClick={()=>handleNext("5")}>
+                            <Button className={`bg-white border-1px h-[30px] w-[30px] text-dark rounded-full  ml-1 rounded-full ${disableNextButton[5] == true ? "!hidden": "!flex" } items-center justify-center	`} disabled={disableNextButton[5]}  onClick={()=>handleNext("5")}>
                                 {'>'}
                             </Button>
                         </Card.Footer>

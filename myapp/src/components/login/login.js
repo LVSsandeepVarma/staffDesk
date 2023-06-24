@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-bootstrap';
+
 import * as Yup from 'yup';
 // import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,7 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaUserEdit } from 'react-icons/fa';
 import { faUserAstronaut, faUserCheck, faUserLock } from '@fortawesome/free-solid-svg-icons';
-import { FormCheck, FormLabel } from 'react-bootstrap';
+import { FormCheck, FormLabel, Popover } from 'react-bootstrap';
+import { expireTokenFalse, expireTokenTrue } from '../../slice/tokenExpireSlice';
 // login component
 export default function Login() {
     const navigate = useNavigate()
@@ -19,9 +22,11 @@ export default function Login() {
     const loaderState = useSelector((state)=>state.loaderReducer.value)
     // const router = useRouter();
     const [email,setEmail] = useState("");
+    const [tokenExpaired, setTokenExpaired] = useState(false)
     const [password, setPassword] = useState("")
     const [saveCredentials, setSaveCredentials] = useState(false)
-    const [responseError, setResponseError] = useState("")
+    const [responseError, setResponseError] = useState("");
+    const [timeOutId, setTimeOutId] = useState()
 
     useEffect(()=>{
         const credentials= localStorage?.getItem("saveCredentials")
@@ -40,27 +45,69 @@ export default function Login() {
             .max(10, 'Password maximum length should be 15 charecters long')
 
     });
+    // useEffect(() => {
+    //     return () => {
+    //         console.log("in clear timeout")
+    //       // Clear the token and the timeout when the component unmounts
+    //       clearTimeout(timeOutId);
+    //     };
+    //   }, [timeOutId]);
     // form submit handler
     const handleSubmit = async(values) => {
         // Handle form submission
         dispatch(setLoaderTrue())
         try{
+            dispatch(expireTokenFalse())
             const response= await axios.post("https://admin.tradingmaterials.com/api/staff/auth/login",{"email":values.email,"password":values.password})
             console.log(response.data?.token)
             localStorage.setItem("tmToken",response.data?.token);
             navigate("/dashboard")
             dispatch(setLoaderTrue())
-            setResponseError("")
+            setResponseError("");
+
+            const SavedUserTokenExiry=()=>{
+                const now = new Date();
+                const currentHour = now.getHours();
+                const currentMinute = now.getMinutes();
+                const currentSecond = now.getSeconds();
+
+                // Calculate the remaining time until 12 am
+                const remainingTime = ((24 - currentHour - 1) * 3600 +(59 - currentMinute) * 60 +(60 - currentSecond))*1000;
+                console.log(remainingTime)
+                const timeOutInterval = setTimeout(() => {
+                    // Execute your code here
+                    localStorage.removeItem("tmToken");
+                    console.log("token expaired");
+                    dispatch(expireTokenTrue())
+                    console.log('Executing code at 12 am');
+                  }, remainingTime);
+
+                  return ()=>{
+                    clearTimeout(timeOutInterval)
+                    dispatch(expireTokenFalse)
+                }
+
+            }
 
             if(saveCredentials){
                 console.log("saved")    
-                localStorage.setItem("tmToken", response.data?.token)        
+                localStorage.setItem("tmToken", response.data?.token)    
+                SavedUserTokenExiry()    
                 // need to add tw token from api respomse
             }else{
                 let expireToken;
-                expireToken = setInterval(()=>{
-                    localStorage.removeItem("tmToken")
-                }, 7200000)
+                setTimeOutId(expireToken)
+                expireToken = setTimeout(()=>{
+                    localStorage.removeItem("tmToken");
+                    console.log("token expaired");
+                    dispatch(expireTokenTrue())
+                }, 720000)
+
+                return ()=>{
+                    clearTimeout(expireToken)
+                    dispatch(expireTokenFalse)
+                }
+                
             }
 
         }catch(error){

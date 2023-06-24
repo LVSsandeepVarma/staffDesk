@@ -180,14 +180,15 @@ const RingingTable = () => {
       
     </div>
        </div>
-      <Table responsive striped bordered hover>
+       <div className='!overflow-x-auto sm:!overflow-x-auto  md:!overflow-x-visible' >
+       <Table   striped bordered hover >
         <thead>
           <tr>
             <th>ENQUIRY</th>
             <th>Email</th>
             <th>Phone</th>
             <th>MODIFIED DATE</th>
-            <th>ADDED DATE</th>
+            {/* <th>ADDED DATE</th> */}
             <th>ACTION</th>
             <th></th>
           </tr>
@@ -209,14 +210,16 @@ const RingingTable = () => {
               }
                             <td>{row.phone}</td>
               <td>{row.modified_date}</td>
-              <td>{row.added_date}</td>
+              {/* <td>{row.created_at}</td> */}
               <td > 
               <ButtonGroup className="mt-2 mb-2">
       <Dropdown>
-        <Dropdown.Toggle className="!flex items-center" variant="default" id="dropdown-basic">
+        <Dropdown.Toggle className="!flex items-center relative" variant="default" id="dropdown-basic">
           Action <AiOutlineCaretDown/>
         </Dropdown.Toggle>
-        <Dropdown.Menu>
+        <Dropdown.Menu style={{position: "absolute",
+    inset: "-100px auto auto 0px !important",
+    transform: "translate3d(0px, 40px, 0px)"}}>
           {/* <Dropdown.Item className="!flex justify-center" onClick={()=>{handleEmailverification(row.id)}}>
            <AiOutlineReload className="mr-2" />
           </Dropdown.Item> */}
@@ -251,6 +254,8 @@ const RingingTable = () => {
           </tr>
           )}
       </Table>
+       </div>
+      
 
       <div className='!flex  justify-end'>
             <ul className="pagination">

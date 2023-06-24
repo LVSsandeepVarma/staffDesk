@@ -136,51 +136,52 @@ const NotIntrestedTable = () => {
     </div>
        </div>
        </div>
-
-      <Table responsive striped bordered hover>
-        <thead>
-          <tr>
-            <th>ENQUIRY</th>
-            <th>EMAIL</th>
-            <th>PHONE</th>
-            <th>ADDED DATE</th>
-            <th></th>
-          </tr>
-        </thead>
-        {currentData.length>0 ? (<tbody>
-          {currentData.map((row) => (
-            <tr key={row?.id}>
-                <td className="">
-                           <h5 className="text-[#25378b] mb-1">{row.first_name}</h5>
-                           <p className="mb-0">{row.city} / {row.country} /ip</p>
-                        </td>
-              {/* <td>{row.first_name}</td> */}
-              {!row.email_verified == 1 ?
-              (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} >
-
-              {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
-              {row.email}
-              </td>) : (<td>{row?.email}</td>)
-              }
-              <td>{row.phone}</td>
-              <td>{row.created_at?.substring(0, 10)}</td>
-              <td > 
-                <div className='!flex items-center justify-center' onClick={()=>handleCommentModalDispaly(row?.id)}>
-                    <FontAwesomeIcon className='mr-2' color="grey" icon={faComment} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
-                    <FontAwesomeIcon color="#25378b" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
-                </div>
-                
-            </td>
+       <div className='!overflow-x-auto sm:!overflow-x-auto  md:!overflow-x-visible' >
+        <Table  striped bordered hover>
+          <thead>
+            <tr>
+              <th>ENQUIRY</th>
+              <th>EMAIL</th>
+              <th>PHONE</th>
+              <th>ADDED DATE</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>):
-          <tr>
-          <td colSpan="6" className="text-center">
-            <p className="text-muted">No data available in table</p>
-          </td>
-        </tr>
-        }
-      </Table>
+          </thead>
+          {currentData.length>0 ? (<tbody>
+            {currentData.map((row) => (
+              <tr key={row?.id}>
+                  <td className="">
+                            <h5 className="text-[#25378b] mb-1">{row.first_name}</h5>
+                            <p className="mb-0">{row.city} / {row.country} /ip</p>
+                          </td>
+                {/* <td>{row.first_name}</td> */}
+                {!row.email_verified == 1 ?
+                (<td className={!row?.email_verified && 'cursor-pointer text-warning iconWrap Email_Varify'} >
+
+                {!row.email_verified == 1 && <FontAwesomeIcon color="#ffc107" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>}
+                {row.email}
+                </td>) : (<td>{row?.email}</td>)
+                }
+                <td>{row.phone}</td>
+                <td>{row.created_at?.substring(0, 10)}</td>
+                <td > 
+                  <div className='!flex items-center justify-center' onClick={()=>handleCommentModalDispaly(row?.id)}>
+                      <FontAwesomeIcon className='mr-2' color="grey" icon={faComment} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
+                      <FontAwesomeIcon color="#25378b" icon={faExclamationCircle} data-id="148" style={{cursor:"pointer"}}></FontAwesomeIcon>
+                  </div>
+                  
+              </td>
+              </tr>
+            ))}
+          </tbody>):
+            <tr>
+            <td colSpan="6" className="text-center">
+              <p className="text-muted">No data available in table</p>
+            </td>
+          </tr>
+          }
+        </Table>
+      </div>
             <div className='!flex  justify-end'>
             <ul className="pagination">
           <li class={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>

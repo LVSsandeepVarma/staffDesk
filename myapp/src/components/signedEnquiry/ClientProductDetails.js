@@ -266,17 +266,17 @@ const Orderdetails = () => {
   return (
     <>
       {loaderState.value == true ? <Loading /> : ""}
-      <div className="container-scroller  ">
-        <TopNavbar />
-        <div className="top-[63px] sm:top-[0px]">
-          <NavbarMarquee />
-        </div>
+      <div className="container-scroller sm:relative top-[0px] sm:top-[60px] md:top-[100px] lg:top-[0px] marqueePosition">
+                <TopNavbar />
+                <div className="top-[63px] sm:top-[0px]">
+                    <NavbarMarquee />
+                </div>
         <div className="page-header container ">
           <ol className="breadcrumb">
             {/* <!-- breadcrumb --> */}
             <li className="breadcrumb-item">Dashboard</li>
             <li className="breadcrumb-item active" aria-current="page">
-              Invoice
+              Signed
             </li>
           </ol>
           {/* <!-- End breadcrumb --> */}
@@ -338,7 +338,7 @@ const Orderdetails = () => {
                           <Nav.Link eventKey="tab3">
                             <div className="flex">
                               <FaFileInvoice className="flex mr-2" />
-                              unpaid
+                              Unpaid Orders
                             </div>
                           </Nav.Link>
                         </Nav.Item>
@@ -346,7 +346,7 @@ const Orderdetails = () => {
                           <Nav.Link eventKey="tab4">
                             <div className="flex">
                               <BsFillCartXFill className="flex mr-2" />
-                              Canceled Orders
+                              Cancelled Orders
                             </div>
                           </Nav.Link>
                         </Nav.Item>

@@ -37,7 +37,7 @@ const TodaysPostponedTable = () => {
               const token = sessionStorage.getItem("tmToken")?.length ? sessionStorage.getItem("tmToken") : localStorage.getItem("tmToken")
               const response = await axios.get("https://admin.tradingmaterials.com/api/staff/enq-by-type?", {
                 params: {
-                    type: 'POSTPONED'
+                    type: 'TODAYS-POST'
                   },
                 headers: {
                   Authorization: `Bearer ${token}`
@@ -161,7 +161,8 @@ const TodaysPostponedTable = () => {
       
     </div>
        </div>
-      <Table responsive striped bordered hover>
+       <div className='!overflow-x-auto sm:!overflow-x-auto  md:!overflow-x-visible' >
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>ENQUIRY</th>
@@ -222,6 +223,7 @@ const TodaysPostponedTable = () => {
         </tr>
         }
       </Table>
+      </div>
 
       <div className='!flex  justify-end'>
             <ul className="pagination">
