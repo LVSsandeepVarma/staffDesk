@@ -10,6 +10,7 @@ import loaderSlice, { setLoaderFalse, setLoaderTrue } from '../../slice/loaderSl
 import Loading from '../loader/loading';
 import { setUserInfo } from '../../slice/userInfoSlice';
 import { useNavigate } from 'react-router-dom';
+import { BsPerson } from 'react-icons/bs';
 // login component
 export default function Locked() {
     const dispatch = useDispatch();
@@ -120,8 +121,15 @@ export default function Locked() {
                                         <img src="/images/logo.png" alt="logo" />
                                     </div>
                                     <div className=' mb-[2rem] flex flex-col items-center'>
-                                    <img src="/images/emptyProfile.png" width={150} height={150} alt="" className="justify-center profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" style={{width:"5rem", height: "5rem"}} />
-                                    <h4 className='block text-bold-500'>{userInfo?.value?.data?.staff?.username}</h4>
+                                    <image
+                      className=" rounded-full flex justify-center items-center bg-zinc-400"
+                      src="/images/emptyProfile.png" 
+                      width={"7rem"}
+                      height={"7rem"}
+                      // Replace with the URL or path to your profile picture
+                      alt="Profile" >
+                        <BsPerson size={60}/>
+                      </image>                                    <h4 className='block text-bold-500'>{userInfo?.value?.data?.staff?.username}</h4>
                                     </div>
 
                                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={(values) => {handleSubmit(values)}}>

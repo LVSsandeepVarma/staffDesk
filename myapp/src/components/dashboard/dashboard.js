@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DashboardData from "./dashboardCarousel";
 
 export default function DashboardMainComponent(){
@@ -39,7 +39,7 @@ export default function DashboardMainComponent(){
                       <div className="d-flex align-items-center justify-content-end">
                         <div className="border-right-dark pe-4 mb-3 mb-xl-0 d-xl-block d-none">
                           <p className="text-muted">Today</p>
-                          <h6 className="font-weight-medium text-muted mb-0">{new Date(date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</h6>
+                          <h6 className="font-weight-medium text-muted mb-0">{new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</h6>
                         </div>
                         <div className="pe-4 ps-4 mb-3 mb-xl-0 d-xl-block d-none">
                           <p className="text-muted">Category</p>

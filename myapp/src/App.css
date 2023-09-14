@@ -32,6 +32,19 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+body::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 .nav_active{
   color: darkblue !important
 }
@@ -10904,9 +10917,10 @@ progress {
 .tt-hint:focus {
   color: #212529;
   background-color: #fff;
-  border-color: #86b7fe;
-  outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  border-color: #86b7fe !important;
+  outline: 0 !important;
+  border-width: 1px !important;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
 }
 
 .form-control::-webkit-date-and-time-value, .asColorPicker-input::-webkit-date-and-time-value, .dataTables_wrapper select::-webkit-date-and-time-value, .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-date-and-time-value,
@@ -14581,10 +14595,11 @@ fieldset:disabled .wizard > .actions a,
   opacity: 1;
 }
 
-.btn-close:disabled, .btn-close.disabled {
+.btn-close:disabled, .btn-close.disabled, .disabled{
   pointer-events: none;
   user-select: none;
   opacity: 0.25;
+  cursor:not-allowed
 }
 
 .btn-close-white {
@@ -19668,10 +19683,10 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-  outline: none;
+  outline: none !important;
   outline-width: 0;
   outline-color: transparent;
-  box-shadow: none;
+  box-shadow: none !important;
   outline-style: none;
 }
 
@@ -29839,5 +29854,15 @@ div.tagsinput span.tag a {
   }
 }
 
+button:disabled {
+  background-color: -internal-light-dark(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3)) !important;
+  color: -internal-light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3));
+  border-color: -internal-light-dark(rgba(118, 118, 118, 0.3), rgba(195, 195, 195, 0.3));
+}
+
 /*# sourceMappingURL=../maps/horizontal-layout-light/style.css.map */
 
+.hide-calendar-icon::-webkit-calendar-picker-indicator {
+  display: none!important;
+   -webkit-appearance: none;
+ }

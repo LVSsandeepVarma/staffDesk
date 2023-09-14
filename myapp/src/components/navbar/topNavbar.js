@@ -7,7 +7,7 @@ import { MDBBadge } from "mdbreact";
 import { AiOutlineBell } from "react-icons/ai";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
-import { BsClock, BsDisplay, BsThreeDots } from "react-icons/bs"
+import { BsClock, BsDisplay, BsPerson, BsThreeDots } from "react-icons/bs"
 import {BiLockAlt} from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
 import { FaUser, FaCog, FaEnvelope } from 'react-icons/fa';
@@ -109,7 +109,11 @@ export default function TopNavbar(){
     }else if(pathname.pathname.includes("invoice")){
       setActivePage("invoice")
     }else if (pathname.pathname.includes("enquiry")){
-      setActivePage("enquiry")
+      if(pathname.pathname.includes("orders")){
+        setActivePage("orders")
+      }else{
+        setActivePage("enquiry")
+      }
     }
     else if(pathname.pathname.includes("staff")){
       setActivePage("staff")
@@ -205,7 +209,7 @@ export default function TopNavbar(){
                         </div>
                       </div>
                       <p className="flex items-center text-white  ml-2">{userData?.value?.data?.staff?.name}</p>
-                  <img src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2" />
+                  <image src="/images/emptyProfile.png" width={50} height={50} alt="" className="profile-pic w-8 h-8 rounded-full bg-zinc-400	ml-2  flex justify-center items-center" ><BsPerson size={20}/> </image>
                     </div>
                     <div className="flex items-center !ml-[1rem]">
                       <button className="text-white	"><BsThreeDots onClick={toggleSidebar} /></button>
@@ -310,11 +314,22 @@ export default function TopNavbar(){
                       </ul>
                     </div>
                     </li>
-                    <li className="nav-item">
-                    <a className={`nav-link ${activePage == "signed" ? "nav_active":""}`} href="/enquiry/signed" >
-                      <i className={`mdi mdi-file-document menu-icon ${activePage == "signed" ? "nav_active":""}`}></i>
-                      <span className={`"menu-title ${activePage == "signed" ? "nav_active":""}"`}>Signed</span>
+                    <li className="!hidden lg:!block md:!block nav-item mega-menu">
+                    <a className={`nav-link ${activePage == "orders" ? "nav_active":""}`} href="#" >
+                      <i className={`mdi mdi-view-headline menu-icon ${activePage == "orders" ? "nav_active":""}`}></i>
+                      <span className={`"menu-title ${activePage == "orders" ? "nav_active":""}"`}>Orders</span>
                     </a>
+
+                    <div className={`submenu !left-[285px]`}>
+                      <ul className='submenu-item'>
+                      <li className="nav-item"><a className="nav-link" href="/enquiry/orders/placed">Orders Placed </a></li>
+                        <li className="nav-item"><a className="nav-link" href="/enquiry/orders/dispatched">Orders Dispatched</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/enquiry/orders/delivered">Orders Delivered </a></li>
+                        <li className="nav-item"><a className="nav-link" href="/enquiry/orders/returned">Orders Returned</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/enquiry/orders/cancelled">Orders Cancelled</a></li>
+
+                      </ul>
+                    </div>
                   </li>
                   <li className="nav-item">
                     <a className={`nav-link ${activePage == "invoice" ? "nav_active":""}`} href="/enquiry/invoice" >
@@ -363,11 +378,15 @@ export default function TopNavbar(){
                 <div className={`tab-pane fade ${activeTab === "Profile" ? "show active" : ""}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   <div className="flex items-center justify-center py-4">
 
-                    <img
-                      className="w-12 h-12 rounded-full"
-                      src="/images/emptyProfile.png" // Replace with the URL or path to your profile picture
-                      alt="Profile"
-                    />
+                    <image
+                      className="w-12 h-12 rounded-full flex justify-center items-center bg-zinc-400"
+                      src="/images/emptyProfile.png" 
+                      width={"4rem"}
+                      height={"4rem"}
+                      // Replace with the URL or path to your profile picture
+                      alt="Profile" >
+                        <BsPerson size={40}/>
+                      </image>
                   </div>
                   <div className="flex justify-center">
                     <p>test</p>

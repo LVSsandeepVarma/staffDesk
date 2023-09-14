@@ -20,6 +20,12 @@ import Products from './components/EnquiryCompleted/products';
 import SignedEnquiry from './pages/enquiry/signed-enquiry/page';
 import OrderDetailsEnquiry from './pages/enquiry/invoice-enquiry/page';
 import Invoice_Enquiry from './components/invoiceEnquiry/invoiceEnquiry';
+import OrderPlaced from './pages/orders/order-placed/page';
+import OrderDelivered from './pages/orders/order-delivered/page';
+import OrderReturned from './pages/orders/order-returned/page.';
+import OrderCancelled from './pages/orders/order-cancelled/page';
+import OrderDispatched from './pages/orders/order-dispatched/page';
+import OrderDashboard from './pages/orders/order-dashboard/page';
 
 
 
@@ -46,6 +52,12 @@ function App() {
             <Route path="/enquiry/signed" element={<SignedEnquiry/>}></Route>
             <Route path="/enquiry/signed/client-details/:client_id" element={<OrderDetailsEnquiry/>}></Route>
             <Route path='/enquiry/invoice' element={<Invoice_Enquiry/>}></Route>
+            <Route path="/enquiry/orders/placed" element={<OrderPlaced/>}></Route>
+            <Route path="/enquiry/orders/dispatched" element={<OrderDispatched/>}></Route>
+            <Route path="/enquiry/orders/delivered" element={<OrderDelivered/>}></Route>
+            <Route path="/enquiry/orders/returned" element={<OrderReturned/>}></Route>
+            <Route path="/enquiry/orders/cancelled" element={<OrderCancelled/>}></Route>
+            <Route path='/enquiry/orders/view/:order_id' element={<OrderDashboard/>}></Route>
             {/* not protected route */}
             <Route path='/staff/enquiry-completed/:client_id' element={<Products/>}></Route>
           </Routes>
