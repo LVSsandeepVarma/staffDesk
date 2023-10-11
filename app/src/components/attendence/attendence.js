@@ -271,7 +271,7 @@ const handleSubmit = async(event) => {
         <div className="w-3/4">
           <div className="flex justify-between items-center mb-4">
             <Button variant="primary">Previous</Button>
-            <h3>June 2023</h3>
+            <h3>{new Date().getMonth()} {new Date().getFullYear()}</h3>
           </div>
           {console.log(leaveReqData)}
           {activeTab === 'tab1' && (

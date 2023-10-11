@@ -1,4 +1,4 @@
-"use client"
+import React from "react"
 import TopNavbar from "../navbar/topNavbar";
 import { useState } from "react";
 import {Modal, Button} from "react-bootstrap"

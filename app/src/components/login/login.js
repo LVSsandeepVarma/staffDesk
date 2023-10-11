@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import loaderSlice, { setLoaderFalse, setLoaderTrue } from '@/store/slice/loaderSlice';
+import { setLoaderFalse, setLoaderTrue } from '@/store/slice/loaderSlice';
 import Loading from '../loader/loading';
 // login component
 export default function Login() {
